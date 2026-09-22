@@ -6,30 +6,44 @@ public class Weapon : MonoBehaviour
     public GameObject projectile;
     public GunType gType;
     public float cooldown;
-    public float burstDelay;
+    public float burstFireDelay;
+    public float maxIceCharge;
 
+    public float iceCharge;
+    private bool iceCharging;
     private Coroutine gunFireRoutine;
+
+    private void Update()
+    {
+        if (iceCharging)
+            iceCharge = Mathf.Min(iceCharge + Time.deltaTime, maxIceCharge);
+        else
+            iceCharge = Mathf.Max(iceCharge - Time.deltaTime, 0f);
+        
+    }
     public void Charge()
     {
         if (gType == GunType.Fire)
         {
-            // Nothing happens
+            // Shoot Fire Gun
+            gunFireRoutine ??= StartCoroutine(FireBurst());
         }
         else if (gType == GunType.Ice)
         {
-            Debug.Log("Charging Ice Projectile...");
+            if (gunFireRoutine != null)
+                iceCharging = true;
         }
     }
     public void Shoot()
     {
         if (gType == GunType.Fire)
         {
-            // Shoot Gun
-            gunFireRoutine ??= StartCoroutine(FireBurst());
+            // No release effect
         }
         else if (gType == GunType.Ice)
         {
-
+            gunFireRoutine ??= StartCoroutine(IceSpear());
+            iceCharging = false;
         }
     }
     IEnumerator FireBurst()
@@ -43,14 +57,28 @@ public class Weapon : MonoBehaviour
             proj.transform.position = transform.position;
             proj.transform.forward = transform.forward;
             burst++;
-            yield return new WaitForSeconds(burstDelay);
-            timer += burstDelay;
+            yield return new WaitForSeconds(burstFireDelay);
+            timer += burstFireDelay;
         }
         while (timer < cooldown)
         {
             timer += Time.deltaTime;
             yield return null;
         }
+        gunFireRoutine = null;
+    }
+    IEnumerator IceSpear()
+    {
+        GameObject proj = Instantiate(projectile);
+        proj.transform.position = transform.position;
+        proj.transform.forward = transform.forward;
+        proj.transform.localScale *= (iceCharge / maxIceCharge) + 1f;
+
+        Projectile p = proj.GetComponent<Projectile>();
+        p.travelSpeed *= (iceCharge / maxIceCharge) + 1f;
+        p.damage *= (iceCharge / maxIceCharge) + 1f;
+
+        yield return new WaitForSeconds(cooldown);
         gunFireRoutine = null;
     }
 }

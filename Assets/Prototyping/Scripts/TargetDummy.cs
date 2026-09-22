@@ -43,7 +43,7 @@ public class TargetDummy : MonoBehaviour
 
     public void TakeDamage()
     {
-        flashRoutine ??= StartCoroutine(DamageFeedback(flashTime));
+        flashRoutine ??= StartCoroutine(DamageFeedback(0.5f));
     }
     private IEnumerator DamageFeedback(float duration)
     {

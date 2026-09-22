@@ -11,11 +11,11 @@ public class Player : MonoBehaviour
         Debug.DrawRay(rightWeapon.transform.position, playerCam.transform.forward*100f, Color.cyan);
         Debug.DrawRay(leftWeapon.transform.position, playerCam.transform.forward*100f, Color.cyan);
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             rightWeapon.Charge();
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(1))
         {
             leftWeapon.Charge();
         }

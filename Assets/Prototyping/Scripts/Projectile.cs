@@ -16,10 +16,9 @@ public class Projectile : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent<TargetDummy>(out TargetDummy dummy))
+        if (other.gameObject.TryGetComponent<TargetDummy>(out TargetDummy dummy))
         {
             dummy.TakeDamage();
             Destroy(gameObject);
