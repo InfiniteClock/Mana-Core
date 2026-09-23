@@ -233,8 +233,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2119628390}
-  - {fileID: 1848002062}
-  - {fileID: 2113624910}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &26685105
@@ -893,11 +891,11 @@ Transform:
   m_GameObject: {fileID: 1848002061}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.3, z: 0.6}
+  m_LocalPosition: {x: 0.5, y: -0.40000004, z: 0.5999999}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 26685104}
+  m_Father: {fileID: 2119628390}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1848002063
 BoxCollider:
@@ -992,7 +990,7 @@ MonoBehaviour:
   projectile: {fileID: 5462679850225452715, guid: ca2dcc37b273e234eadb85830a544fa9, type: 3}
   gType: 0
   cooldown: 0.5
-  burstFireDelay: 0.12
+  burstFireDelay: 0.08
   maxIceCharge: 0
   iceCharge: 0
 --- !u!1 &1914949280
@@ -1253,11 +1251,11 @@ Transform:
   m_GameObject: {fileID: 2113624909}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0.3, z: 0.6}
+  m_LocalPosition: {x: -0.5, y: -0.40000004, z: 0.5999999}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 26685104}
+  m_Father: {fileID: 2119628390}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2113624911
 BoxCollider:
@@ -1351,9 +1349,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   projectile: {fileID: 5462679850225452715, guid: 1a9a5979440cc864e8eafae17c2ee95f, type: 3}
   gType: 1
-  cooldown: 0.5
+  cooldown: 0.75
   burstFireDelay: 0
-  maxIceCharge: 2
+  maxIceCharge: 1.25
   iceCharge: 0
 --- !u!1 &2119628387
 GameObject:
@@ -1367,6 +1365,7 @@ GameObject:
   - component: {fileID: 2119628389}
   - component: {fileID: 2119628388}
   - component: {fileID: 2119628391}
+  - component: {fileID: 2119628392}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1447,6 +1446,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1918067864}
+  - {fileID: 1848002062}
+  - {fileID: 2113624910}
   m_Father: {fileID: 26685104}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2119628391
@@ -1493,6 +1494,21 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &2119628392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119628387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b271228cd0660714c84c01cc37969a85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraLook
+  mouseXSensitivity: 100
+  mouseYSensitivity: 60
+  playerBody: {fileID: 26685104}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     private float lifeTimer;
     public void Update()
     {
-        transform.Translate(transform.forward * travelSpeed * Time.deltaTime);
+        transform.Translate((travelSpeed * Time.deltaTime) * transform.forward, Space.World);
 
         if (lifeTimer < lifeTime)
             lifeTimer += Time.deltaTime;
