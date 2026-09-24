@@ -121,10 +121,10 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _MaterializationAmount: 0.321
+    - _MaterializationAmount: 0
     - _MaterializationDirection: 1
     - _MaterializationScale: 140
-    - _MaterializationWidth: 0.02
+    - _MaterializationWidth: 0.01
     - _Metallic: 0
     - _NormalsStrength: 0.5
     - _OcclusionStrength: 1
