@@ -1441,7 +1441,7 @@
     "m_Title": "Texture Offset ",
     "m_Position": {
         "x": -2408.0,
-        "y": 1414.9998779296875
+        "y": 1415.0
     }
 }
 
@@ -2888,9 +2888,9 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "4b707e6525524a448b2b962a8f4f0105",
-    "m_Title": "Directional Texture Offset",
+    "m_Title": "Directional Texture Offset Switch",
     "m_Position": {
-        "x": -1851.0001220703125,
+        "x": -1851.0,
         "y": 1866.9998779296875
     }
 }
@@ -4003,7 +4003,7 @@
     "m_Title": "Materialization [Random Noise]",
     "m_Position": {
         "x": -935.0000610351563,
-        "y": 1416.000244140625
+        "y": 1415.999755859375
     }
 }
 
@@ -4957,10 +4957,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -618.0,
-            "y": 556.0,
-            "width": 207.99996948242188,
-            "height": 302.00006103515627
+            "x": -664.0000610351563,
+            "y": 555.0000610351563,
+            "width": 208.00003051757813,
+            "height": 302.0
         }
     },
     "m_Slots": [
@@ -5262,8 +5262,8 @@
     "m_ObjectId": "97c72f20fb86469fb7ed77eece9e0ae7",
     "m_Title": "Materialization Output",
     "m_Position": {
-        "x": -96.00006103515625,
-        "y": 811.0
+        "x": -96.0002670288086,
+        "y": 810.9996948242188
     }
 }
 
@@ -5381,10 +5381,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -619.0,
-            "y": 524.0,
-            "width": 191.99996948242188,
-            "height": 34.00006103515625
+            "x": -666.0001220703125,
+            "y": 525.0000610351563,
+            "width": 192.00009155273438,
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -5823,8 +5823,8 @@
     "m_ObjectId": "aea3e67efeda4cf5aed69c168c750924",
     "m_Title": "Materialization [Directional]",
     "m_Position": {
-        "x": -1838.0,
-        "y": 458.9999694824219
+        "x": -1838.0001220703125,
+        "y": 459.0000305175781
     }
 }
 
@@ -5925,10 +5925,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -636.0,
-            "y": 904.9999389648438,
-            "width": 182.00003051757813,
-            "height": 34.00006103515625
+            "x": -423.0,
+            "y": 851.0000610351563,
+            "width": 181.99989318847657,
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -6088,8 +6088,8 @@
     "m_ObjectId": "b728e74cbeed47d691318f0fa5080004",
     "m_Title": "PBR Setup",
     "m_Position": {
-        "x": -766.0000610351563,
-        "y": -42.00000762939453
+        "x": -766.000244140625,
+        "y": -42.0
     }
 }
 
@@ -6340,8 +6340,8 @@
     "m_ObjectId": "c00149f5cbd34478be8b87544ff4433d",
     "m_Title": "Position to UV swap",
     "m_Position": {
-        "x": -2092.999755859375,
-        "y": 454.99993896484377
+        "x": -2093.0,
+        "y": 454.9998779296875
     }
 }
 

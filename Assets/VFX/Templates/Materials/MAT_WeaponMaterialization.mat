@@ -127,6 +127,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Directional_Random: 1
     - _Directional_Random_Noise: 0
     - _DstBlend: 0
     - _DstBlendAlpha: 0
@@ -139,6 +140,7 @@ Material:
     - _MaterializationScale: 140
     - _MaterializationWidth: 0.01
     - _Metallic: 0
+    - _Noise_Pattern: 1
     - _NormalsStrength: 0.5
     - _OcclusionStrength: 1
     - _Parallax: 0.005
