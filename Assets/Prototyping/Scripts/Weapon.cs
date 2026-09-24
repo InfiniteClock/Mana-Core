@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public enum GunType { Fire, Ice }
 public class Weapon : MonoBehaviour
