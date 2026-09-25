@@ -7,6 +7,26 @@
             "id": "45193483-5a4e-4194-afd7-2f92773cfe49",
             "actions": [
                 {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "98c2ed9f-21ae-443d-804b-057ac3610e80",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
+                },
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "2465d69c-8b67-4dd0-be0d-797b9321d8ed",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
+                },
+                {
                     "name": "Right Fire",
                     "type": "Button",
                     "id": "dd8ca764-ab8b-42c8-8974-157efec93b0b",
@@ -27,23 +47,13 @@
                     "priority": 0
                 },
                 {
-                    "name": "Look",
-                    "type": "Value",
-                    "id": "98c2ed9f-21ae-443d-804b-057ac3610e80",
-                    "expectedControlType": "Vector2",
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "d72336a9-7645-43e6-b0e3-666290e9cfbf",
+                    "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true,
-                    "priority": 0
-                },
-                {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "2465d69c-8b67-4dd0-be0d-797b9321d8ed",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true,
+                    "interactions": "Press",
+                    "initialStateCheck": false,
                     "priority": 0
                 }
             ],
@@ -221,6 +231,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0094fcd-f46b-4d7f-8c87-94b28ae31b07",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8541239d-6814-4513-b103-065ca9510ded",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
