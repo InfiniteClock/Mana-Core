@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public enum MovementState { walking, sprinting, airborne }
+
     [Header("Guns")]
     public Camera playerCam;
     public Weapon rightWeapon;
@@ -13,22 +15,32 @@ public class Player : MonoBehaviour
 
     [Header("Movement")]
     public float baseMoveSpeed;
+    public float baseSprintSpeed;
     public float baseAccelMultiplier;
     public float groundDrag;
+
+
+    private float moveSpeed;
+    private bool isSprinting;
+    private Vector2 rawMoveInput;
+    private MovementState moveState;
+    private InputAction moveInput;
+    private InputAction sprintInput;
+    private Rigidbody rb;
+
+    [Header("Jumping")]
     public float jumpHeight;
     public float jumpCooldown;
     public float airMultiplier;
     public float gravity;
     
-
     private float jumpForce;
     private float apexJumpTime;
     private bool isJumping;
     private bool canJump;
-    private Vector2 rawMoveInput;
-    private InputAction moveInput;
+    
     private InputAction jumpInput;
-    private Rigidbody rb;
+    
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -47,6 +59,7 @@ public class Player : MonoBehaviour
         leftFireInput = InputSystem.actions.FindAction("Left Fire");
 
         moveInput = InputSystem.actions.FindAction("Move");
+        sprintInput = InputSystem.actions.FindAction("Sprint");
         jumpInput = InputSystem.actions.FindAction("Jump");
 
         // Interaction = Press Only
@@ -54,8 +67,11 @@ public class Player : MonoBehaviour
         rightFireInput.canceled += RightFire;
         leftFireInput.performed += LeftCharge;
         leftFireInput.canceled += LeftFire;
+        sprintInput.performed += OnSprint;
+        sprintInput.canceled += OnSprintCancel;
         jumpInput.performed += OnJump;
         jumpInput.canceled += OnJumpCancel;
+
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -68,18 +84,12 @@ public class Player : MonoBehaviour
         rightFireInput.canceled -= RightFire;
         leftFireInput.performed -= LeftCharge;
         leftFireInput.canceled -= LeftFire;
+        sprintInput.performed -= OnSprint;
+        sprintInput.canceled -= OnSprintCancel;
         jumpInput.performed -= OnJump;
         jumpInput.canceled -= OnJumpCancel;
     }
-    private void OnDrawGizmos()
-    {
-        if (isGrounded)
-            Gizmos.color = Color.red;
-        else 
-            Gizmos.color = Color.green;
-        
-        Gizmos.DrawWireCube(transform.position + (Vector3.down * playerHeight * 0.25f), new Vector3(playerWidth, playerHeight * 0.5f + 0.05f, playerWidth));
-    }
+    
     private void FixedUpdate()
     {
         // Ground Check
@@ -89,7 +99,7 @@ public class Player : MonoBehaviour
 
         Move();
         SpeedControl();
-
+        StateHandler();
 
         // Apply Drag
         if (isGrounded && canJump)
@@ -107,6 +117,28 @@ public class Player : MonoBehaviour
         // Check for player input changes
         CheckInput();
 
+    }
+    private void StateHandler()
+    {
+        // Sprinting
+        if (isGrounded && isSprinting)
+        {
+            moveState = MovementState.sprinting;
+            moveSpeed = baseSprintSpeed;
+        }
+
+        // Walking
+        else if (isGrounded)
+        {
+            moveState = MovementState.walking;
+            moveSpeed = baseMoveSpeed;
+        }
+
+        // Airborne
+        else
+        {
+            moveState = MovementState.airborne;
+        }
     }
     private void CheckInput()
     {
@@ -129,12 +161,12 @@ public class Player : MonoBehaviour
 
         if (isGrounded)
         {
-            rb.AddForce(inputDirection.normalized * baseMoveSpeed * baseAccelMultiplier, ForceMode.Force);
+            rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier, ForceMode.Force);
         }
 
         else if (!isGrounded)
         {
-            rb.AddForce(inputDirection.normalized * baseMoveSpeed * baseAccelMultiplier * airMultiplier, ForceMode.Force);
+            rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * airMultiplier, ForceMode.Force);
 
             // Applies gravity to the player while airborne
             rb.AddForce(Vector3.up * gravity, ForceMode.Force);
@@ -145,9 +177,9 @@ public class Player : MonoBehaviour
         Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         // Prevents player from moving faster than movespeed in x and z directions while ignoring y speed
-        if (flatVelocity.magnitude > baseMoveSpeed)
+        if (flatVelocity.magnitude > moveSpeed)
         {
-            Vector3 limitedVelocity = flatVelocity.normalized * baseMoveSpeed;
+            Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
             rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
         }
 
@@ -166,10 +198,24 @@ public class Player : MonoBehaviour
 
     }
     private void ResetJump() => canJump = true;
+    
+    // Input Call Functions
     private void RightCharge(InputAction.CallbackContext context) => rightWeapon.Charge();
     private void LeftCharge(InputAction.CallbackContext context) => leftWeapon.Charge();
     private void RightFire(InputAction.CallbackContext context) => rightWeapon.Shoot(); 
     private void LeftFire(InputAction.CallbackContext context) => leftWeapon.Shoot();
+    private void OnSprint(InputAction.CallbackContext context) => isSprinting = true;
+    private void OnSprintCancel(InputAction.CallbackContext context) => isSprinting = false;
     private void OnJump(InputAction.CallbackContext context) => isJumping = true;
     private void OnJumpCancel(InputAction.CallbackContext context) => isJumping = false;
+
+    private void OnDrawGizmos()
+    {
+        if (isGrounded)
+            Gizmos.color = Color.red;
+        else
+            Gizmos.color = Color.green;
+
+        Gizmos.DrawWireCube(transform.position + (Vector3.down * playerHeight * 0.25f), new Vector3(playerWidth, playerHeight * 0.5f + 0.05f, playerWidth));
+    }
 }
