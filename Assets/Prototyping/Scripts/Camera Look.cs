@@ -29,7 +29,7 @@ public class CameraLook : MonoBehaviour
 
         // Locks vertical rotation between stated values
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -60, 60);
+        xRotation = Mathf.Clamp(xRotation, -85, 90);
 
         camera.localRotation = Quaternion.Euler(xRotation, 0, 0);
 

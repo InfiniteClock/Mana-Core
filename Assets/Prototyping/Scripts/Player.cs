@@ -19,8 +19,10 @@ public class Player : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     public float gravity;
+    
 
-    public float jumpForce;
+    private float jumpForce;
+    private float apexJumpTime;
     private bool isJumping;
     private bool canJump;
     private Vector2 rawMoveInput;
@@ -30,12 +32,14 @@ public class Player : MonoBehaviour
 
     [Header("Ground Check")]
     public float playerHeight;
+    public float playerWidth;
     public LayerMask whatIsGround;
     private bool isGrounded;
-    private void Start()
+    private void OnValidate()
     {
         // Formula for calculating initial velocity from max height and gravity
-        jumpForce = Mathf.Sqrt(Mathf.Abs(jumpHeight * gravity * 2f));
+        apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / gravity);
+        jumpForce = 2f * jumpHeight / apexJumpTime;
     }
     private void OnEnable()
     {
@@ -67,28 +71,42 @@ public class Player : MonoBehaviour
         jumpInput.performed -= OnJump;
         jumpInput.canceled -= OnJumpCancel;
     }
+    private void OnDrawGizmos()
+    {
+        if (isGrounded)
+            Gizmos.color = Color.red;
+        else 
+            Gizmos.color = Color.green;
+        
+        Gizmos.DrawWireCube(transform.position + (Vector3.down * playerHeight * 0.25f), new Vector3(playerWidth, playerHeight * 0.5f + 0.05f, playerWidth));
+    }
     private void FixedUpdate()
     {
+        // Ground Check
+        // Box cast aligned to player orientation and width. Ideally should be ratio of 0.7 : 1 so box falls within capsule radius
+        isGrounded = Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.down, out RaycastHit hit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
+        
+
         Move();
         SpeedControl();
+
+
+        // Apply Drag
+        if (isGrounded && canJump)
+            rb.linearDamping = groundDrag;
+        else
+            rb.linearDamping = 0;
     }
     private void Update()
     {
-        // Ground Check
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.05f, whatIsGround);
-
         // Draw rays from player guns for debugging direciton
         Debug.DrawRay(rightWeapon.transform.position, playerCam.transform.forward*20f, Color.cyan);
         Debug.DrawRay(leftWeapon.transform.position, playerCam.transform.forward*20f, Color.cyan);
 
+        
         // Check for player input changes
-        CheckInput();        
+        CheckInput();
 
-        // Apply Drag
-        if (isGrounded)
-            rb.linearDamping = groundDrag;
-        else
-            rb.linearDamping = 0;
     }
     private void CheckInput()
     {
@@ -140,6 +158,9 @@ public class Player : MonoBehaviour
         // Reset vertical velocity
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
+        // Turn off linear drag for the first frame that the grounded check is still active for
+        rb.linearDamping = 0f;
+
         // Apply jumpforce
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
@@ -151,5 +172,4 @@ public class Player : MonoBehaviour
     private void LeftFire(InputAction.CallbackContext context) => leftWeapon.Shoot();
     private void OnJump(InputAction.CallbackContext context) => isJumping = true;
     private void OnJumpCancel(InputAction.CallbackContext context) => isJumping = false;
-    
 }
