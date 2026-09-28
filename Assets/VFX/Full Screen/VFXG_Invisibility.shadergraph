@@ -1531,7 +1531,7 @@
     "m_ObjectId": "3200c0cf839544cd8507bc712c1a7691",
     "m_Title": "Alternative noise [Radial]",
     "m_Position": {
-        "x": -1834.0,
+        "x": -1834.0001220703125,
         "y": 450.0
     }
 }
@@ -3097,7 +3097,7 @@
     "m_Title": "Noise Texture [Directional]",
     "m_Position": {
         "x": -2738.0,
-        "y": 457.0
+        "y": 456.9999694824219
     }
 }
 
@@ -3416,7 +3416,7 @@
     "m_ObjectId": "956e99d8869648409653a8fd5c983e3d",
     "m_Title": "Noise Breathing",
     "m_Position": {
-        "x": -1649.0,
+        "x": -1649.0001220703125,
         "y": 1046.0
     }
 }
@@ -3939,7 +3939,7 @@
     "m_Title": "Vignette",
     "m_Position": {
         "x": -2230.0,
-        "y": 3.0
+        "y": 2.999988555908203
     }
 }
 
