@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public enum MovementState { walking, sprinting, airborne }
+    public enum MovementState { walking, sprinting, crouching, sliding, airborne }
 
     [Header("Guns")]
     public Camera playerCam;
@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private InputAction leftFireInput;
 
     [Header("Movement")]
+    public Transform orientation;
     public float baseMoveSpeed;
     public float baseSprintSpeed;
     public float baseAccelMultiplier;
@@ -38,15 +39,22 @@ public class Player : MonoBehaviour
     private float apexJumpTime;
     private bool isJumping;
     private bool canJump;
-    
     private InputAction jumpInput;
-    
+
+    [Header("Crouching/Sliding")]
+    public float crouchSpeed;
+    public float crouchYScale;
+
+    private bool isCrouching;
+    private float startYScale;
+    private InputAction crouchInput;
 
     [Header("Ground Check")]
     public float playerHeight;
     public float playerWidth;
     public LayerMask whatIsGround;
     private bool isGrounded;
+
     private void OnValidate()
     {
         // Formula for calculating initial velocity from max height and gravity
@@ -60,7 +68,9 @@ public class Player : MonoBehaviour
 
         moveInput = InputSystem.actions.FindAction("Move");
         sprintInput = InputSystem.actions.FindAction("Sprint");
+        crouchInput = InputSystem.actions.FindAction("Crouch");
         jumpInput = InputSystem.actions.FindAction("Jump");
+        
 
         // Interaction = Press Only
         rightFireInput.performed += RightCharge;
@@ -69,12 +79,16 @@ public class Player : MonoBehaviour
         leftFireInput.canceled += LeftFire;
         sprintInput.performed += OnSprint;
         sprintInput.canceled += OnSprintCancel;
+        crouchInput.performed += OnCrouch;
+        crouchInput.canceled += OnCrouchCancel;
         jumpInput.performed += OnJump;
         jumpInput.canceled += OnJumpCancel;
 
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        startYScale = transform.localScale.y;
 
         ResetJump();
     }
@@ -86,6 +100,8 @@ public class Player : MonoBehaviour
         leftFireInput.canceled -= LeftFire;
         sprintInput.performed -= OnSprint;
         sprintInput.canceled -= OnSprintCancel;
+        crouchInput.performed -= OnCrouch;
+        crouchInput.canceled -= OnCrouchCancel;
         jumpInput.performed -= OnJump;
         jumpInput.canceled -= OnJumpCancel;
     }
@@ -126,7 +142,12 @@ public class Player : MonoBehaviour
             moveState = MovementState.sprinting;
             moveSpeed = baseSprintSpeed;
         }
-
+        // Crouching
+        if (isGrounded && isCrouching)
+        {
+            moveState = MovementState.crouching;
+            moveSpeed = crouchSpeed;
+        }
         // Walking
         else if (isGrounded)
         {
@@ -154,10 +175,22 @@ public class Player : MonoBehaviour
             // Reset jump after cooldown
             Invoke(nameof(ResetJump), jumpCooldown);
         }
+
+
+        if (isCrouching)
+        {
+            // Shrinks player Y scale when crouching, and adds small downward force
+            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+        }
+        else
+        {
+            // Grows player Y scale back to normal
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+        }
     }
     private void Move()
     {
-        Vector3 inputDirection = transform.forward * rawMoveInput.y + transform.right * rawMoveInput.x;
+        Vector3 inputDirection = orientation.forward * rawMoveInput.y + orientation.right * rawMoveInput.x;
 
         if (isGrounded)
         {
@@ -206,6 +239,13 @@ public class Player : MonoBehaviour
     private void LeftFire(InputAction.CallbackContext context) => leftWeapon.Shoot();
     private void OnSprint(InputAction.CallbackContext context) => isSprinting = true;
     private void OnSprintCancel(InputAction.CallbackContext context) => isSprinting = false;
+    private void OnCrouch(InputAction.CallbackContext context)
+    {
+        isCrouching = true;
+        if (isGrounded)
+            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+    }
+    private void OnCrouchCancel(InputAction.CallbackContext context) => isCrouching = false;
     private void OnJump(InputAction.CallbackContext context) => isJumping = true;
     private void OnJumpCancel(InputAction.CallbackContext context) => isJumping = false;
 

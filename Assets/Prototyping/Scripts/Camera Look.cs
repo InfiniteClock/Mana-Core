@@ -5,23 +5,22 @@ public class CameraLook : MonoBehaviour
 {
     public float mouseXSensitivity = 100f;
     public float mouseYSensitivity = 100f;
-    public Transform playerBody;
+    public Transform orientation;
 
     private InputAction lookInput;
     private float xRotation = 0f;
-    private Camera cam;
+    private float yRotation = 0f;
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        cam = GetComponent<Camera>();
 
         lookInput = InputSystem.actions.FindAction("Look");
     }
     private void Update()
     {
-        HandleRotation(cam.transform);
+        HandleRotation();
     }
-    public void HandleRotation(Transform camera)
+    public void HandleRotation()
     {
         float mouseX = lookInput.ReadValue<Vector2>().x * mouseXSensitivity * Time.deltaTime;
         float mouseY = lookInput.ReadValue<Vector2>().y * mouseYSensitivity * Time.deltaTime;
@@ -31,10 +30,12 @@ public class CameraLook : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -85, 90);
 
-        camera.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        yRotation += mouseX;
+
+        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
 
         // Horizontal player rotation
-        playerBody.Rotate(Vector3.up * mouseX);
+        orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
 
     }
 }
