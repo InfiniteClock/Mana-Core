@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
 
     private bool isCrouching;
     private bool isSliding;
-    private float slideTimer;
+    public float slideTimer;
     private float startYScale;
     private InputAction crouchInput;
 
@@ -160,7 +160,7 @@ public class Player : MonoBehaviour
         // Priority of states: Sliding > Crouching > Sprinting > Walking > Airborne
 
         // Sliding
-        if (isGrounded && isSliding)
+        if (isSliding)
         {
             moveState = MovementState.sliding;
 
@@ -200,6 +200,7 @@ public class Player : MonoBehaviour
         // Check if desired move speed has changed drastically (and current move speed isn't 0) - if so, run the Lerp coroutine
         if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
         {
+            Debug.Log("Drastic Speed Inrease Detected!");
             if (momentumRoutine != null) 
                 StopCoroutine(momentumRoutine);
             momentumRoutine = StartCoroutine(SmoothlyLerpMoveSpeed());
@@ -277,7 +278,7 @@ public class Player : MonoBehaviour
         // Sliding
         if (isSliding)
         {
-            if (!OnSlope() || rb.linearVelocity.y > -0.1f)
+            if ((!OnSlope() && isGrounded) || rb.linearVelocity.y > -0.1f)
             {
                 rb.AddForce(inputDirection.normalized * slideForce, ForceMode.Force);
 
