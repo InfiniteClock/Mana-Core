@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour
     public Camera playerCam;
     public Weapon rightWeapon;
     public Weapon leftWeapon;
+    public TextMeshProUGUI speedText;
     private InputAction rightFireInput;
     private InputAction leftFireInput;
 
@@ -24,7 +26,8 @@ public class Player : MonoBehaviour
     private float moveSpeed;
     private bool isSprinting;
     private Vector2 rawMoveInput;
-    [SerializeField]private MovementState moveState;
+    private Vector3 inputDirection;
+    public MovementState moveState;
     private InputAction moveInput;
     private InputAction sprintInput;
     private Rigidbody rb;
@@ -44,8 +47,13 @@ public class Player : MonoBehaviour
     [Header("Crouching/Sliding")]
     public float crouchSpeed;
     public float crouchYScale;
+    public float maxSlideTime;
+    public float slideForce;
+    public float minSpeedToSlide;
 
     private bool isCrouching;
+    private bool isSliding;
+    private float slideTimer;
     private float startYScale;
     private InputAction crouchInput;
 
@@ -64,7 +72,7 @@ public class Player : MonoBehaviour
     private void OnValidate()
     {
         // Formula for calculating initial velocity from max height and gravity
-        apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / gravity);
+        apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
         jumpForce = 2f * jumpHeight / apexJumpTime;
     }
     private void OnEnable()
@@ -118,9 +126,7 @@ public class Player : MonoBehaviour
         // Box cast aligned to player orientation and width. Ideally should be ratio of 0.7 : 1 so box falls within capsule radius
         isGrounded = Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.down, out RaycastHit hit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
 
-
         Move();
-        SpeedControl();
         StateHandler();
 
         // Apply Drag
@@ -138,14 +144,24 @@ public class Player : MonoBehaviour
 
         // Check for player input changes
         CheckInput();
+        SpeedControl();
 
+        Vector3 hSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        speedText.text = ("True Speed : "+rb.linearVelocity.magnitude+"\nHorizontal Speed : " + hSpeed.magnitude + "\nVertical Speed : " + rb.linearVelocity.y + "\nSlope Angle : " + slopeHit.normal);
     }
     private void StateHandler()
     {
-        // Priority of states: Crouching > Sprinting > Walking > Airborne
+        // Priority of states: Sliding > Crouching > Sprinting > Walking > Airborne
+
+        // Sliding
+        if (isGrounded && isSliding)
+        {
+            moveState = MovementState.sliding;
+            moveSpeed = baseSprintSpeed;
+        }
 
         // Crouching
-        if (isGrounded && isCrouching)
+        else if (isGrounded && isCrouching)
         {
             moveState = MovementState.crouching;
             moveSpeed = crouchSpeed;
@@ -187,6 +203,12 @@ public class Player : MonoBehaviour
 
         if (isCrouching)
         {
+            // Sets sliding to true if player is moving fast enough AND is applying movement input AND the slide timer hasn't ended
+            if (rb.linearVelocity.magnitude > minSpeedToSlide && rawMoveInput.magnitude > 0.5f && slideTimer > 0f)
+                isSliding = true;
+            else
+                isSliding = false;
+
             // Shrinks player Y scale when crouching, and adds small downward force
             transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
         }
@@ -194,16 +216,34 @@ public class Player : MonoBehaviour
         {
             // Grows player Y scale back to normal
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+            isSliding = false;
         }
     }
     private void Move()
     {
-        Vector3 inputDirection = orientation.forward * rawMoveInput.y + orientation.right * rawMoveInput.x;
+        inputDirection = orientation.forward * rawMoveInput.y + orientation.right * rawMoveInput.x;
+
+        // Sliding
+        if (isSliding)
+        {
+            if (!OnSlope() || rb.linearVelocity.y > -0.1f)
+            {
+                rb.AddForce(inputDirection.normalized * slideForce, ForceMode.Force);
+
+                // Counts timer down only if sliding on level terrain or uphill
+                slideTimer -= Time.deltaTime;
+            }
+            else
+            {
+                rb.AddForce(GetSlopeMoveDirection() * slideForce, ForceMode.Force);
+            }
+        }
 
         // On Slope
-        if (OnSlope() && !exitingSlope)
+        else if (OnSlope() && !exitingSlope)
         {
-            rb.AddForce(GetSlopeMoveDirection(inputDirection) * moveSpeed * baseAccelMultiplier, ForceMode.Force);
+            // Requires 2x acceleration multiplier on slopes due to higher downward force and friction
+            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * baseAccelMultiplier * 2f, ForceMode.Force);
 
             if (rb.linearVelocity.y > 0)
             {
@@ -221,10 +261,11 @@ public class Player : MonoBehaviour
         else if (!isGrounded)
         {
             rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * airMultiplier, ForceMode.Force);
-
-            // Applies gravity to the player while airborne
-            rb.AddForce(Vector3.up * gravity, ForceMode.Force);
         }
+
+        // Applies gravity to the player while airborne ALWAYS
+        if (!isGrounded)
+            rb.AddForce(Vector3.down * gravity, ForceMode.Force);
     }
     private void SpeedControl()
     {
@@ -272,7 +313,7 @@ public class Player : MonoBehaviour
     
     private bool OnSlope()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.05f))
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < maxSlopeAngle && angle != 0;
@@ -280,11 +321,11 @@ public class Player : MonoBehaviour
 
         return false;
     }
-    private Vector3 GetSlopeMoveDirection(Vector3 moveDirection)
+    private Vector3 GetSlopeMoveDirection()
     {
-        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+        return Vector3.ProjectOnPlane(inputDirection, slopeHit.normal).normalized;
     }
-
+    
 
     // Input Call Functions
     private void RightCharge(InputAction.CallbackContext context) => rightWeapon.Charge();
@@ -296,6 +337,7 @@ public class Player : MonoBehaviour
     private void OnCrouch(InputAction.CallbackContext context)
     {
         isCrouching = true;
+        slideTimer = maxSlideTime;
         if (isGrounded)
             rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
     }
