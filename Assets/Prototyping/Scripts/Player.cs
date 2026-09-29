@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     private float moveSpeed;
     private bool isSprinting;
     private Vector2 rawMoveInput;
-    private MovementState moveState;
+    [SerializeField]private MovementState moveState;
     private InputAction moveInput;
     private InputAction sprintInput;
     private Rigidbody rb;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     public float gravity;
-    
+
     private float jumpForce;
     private float apexJumpTime;
     private bool isJumping;
@@ -55,6 +55,12 @@ public class Player : MonoBehaviour
     public LayerMask whatIsGround;
     private bool isGrounded;
 
+    [Header("Slopes")]
+    public float maxSlopeAngle;
+
+    private bool exitingSlope;
+    private RaycastHit slopeHit;
+
     private void OnValidate()
     {
         // Formula for calculating initial velocity from max height and gravity
@@ -70,7 +76,7 @@ public class Player : MonoBehaviour
         sprintInput = InputSystem.actions.FindAction("Sprint");
         crouchInput = InputSystem.actions.FindAction("Crouch");
         jumpInput = InputSystem.actions.FindAction("Jump");
-        
+
 
         // Interaction = Press Only
         rightFireInput.performed += RightCharge;
@@ -105,13 +111,13 @@ public class Player : MonoBehaviour
         jumpInput.performed -= OnJump;
         jumpInput.canceled -= OnJumpCancel;
     }
-    
+
     private void FixedUpdate()
     {
         // Ground Check
         // Box cast aligned to player orientation and width. Ideally should be ratio of 0.7 : 1 so box falls within capsule radius
         isGrounded = Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.down, out RaycastHit hit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
-        
+
 
         Move();
         SpeedControl();
@@ -126,27 +132,29 @@ public class Player : MonoBehaviour
     private void Update()
     {
         // Draw rays from player guns for debugging direciton
-        Debug.DrawRay(rightWeapon.transform.position, playerCam.transform.forward*20f, Color.cyan);
-        Debug.DrawRay(leftWeapon.transform.position, playerCam.transform.forward*20f, Color.cyan);
+        Debug.DrawRay(rightWeapon.transform.position, playerCam.transform.forward * 20f, Color.cyan);
+        Debug.DrawRay(leftWeapon.transform.position, playerCam.transform.forward * 20f, Color.cyan);
 
-        
+
         // Check for player input changes
         CheckInput();
 
     }
     private void StateHandler()
     {
-        // Sprinting
-        if (isGrounded && isSprinting)
-        {
-            moveState = MovementState.sprinting;
-            moveSpeed = baseSprintSpeed;
-        }
+        // Priority of states: Crouching > Sprinting > Walking > Airborne
+
         // Crouching
         if (isGrounded && isCrouching)
         {
             moveState = MovementState.crouching;
             moveSpeed = crouchSpeed;
+        }
+        // Sprinting
+        else if (isGrounded && isSprinting)
+        {
+            moveState = MovementState.sprinting;
+            moveSpeed = baseSprintSpeed;
         }
         // Walking
         else if (isGrounded)
@@ -192,11 +200,24 @@ public class Player : MonoBehaviour
     {
         Vector3 inputDirection = orientation.forward * rawMoveInput.y + orientation.right * rawMoveInput.x;
 
-        if (isGrounded)
+        // On Slope
+        if (OnSlope() && !exitingSlope)
+        {
+            rb.AddForce(GetSlopeMoveDirection(inputDirection) * moveSpeed * baseAccelMultiplier, ForceMode.Force);
+
+            if (rb.linearVelocity.y > 0)
+            {
+                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+            }
+        }
+
+        // On Ground
+        else if (isGrounded)
         {
             rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier, ForceMode.Force);
         }
 
+        // In Air
         else if (!isGrounded)
         {
             rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * airMultiplier, ForceMode.Force);
@@ -207,19 +228,32 @@ public class Player : MonoBehaviour
     }
     private void SpeedControl()
     {
-        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-
-        // Prevents player from moving faster than movespeed in x and z directions while ignoring y speed
-        if (flatVelocity.magnitude > moveSpeed)
+        // Limit speed on a slope differently than on level ground
+        if (OnSlope() && !exitingSlope)
         {
-            Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
-            rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
+            if (rb.linearVelocity.magnitude > moveSpeed)
+                rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
         }
 
-        
+
+        // Limits player speed on flat ground
+        else
+        {
+            Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+            // Prevents player from moving faster than movespeed in x and z directions while ignoring y speed
+            if (flatVelocity.magnitude > moveSpeed)
+            {
+                Vector3 limitedVelocity = flatVelocity.normalized * moveSpeed;
+                rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
+            }
+        }
+
     }
     private void Jump()
     {
+        exitingSlope = true;
+
         // Reset vertical velocity
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
@@ -230,8 +264,28 @@ public class Player : MonoBehaviour
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
     }
-    private void ResetJump() => canJump = true;
+    private void ResetJump() 
+    {
+        canJump = true; 
+        exitingSlope = false;
+    }
     
+    private bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.05f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
+        }
+
+        return false;
+    }
+    private Vector3 GetSlopeMoveDirection(Vector3 moveDirection)
+    {
+        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
+
+
     // Input Call Functions
     private void RightCharge(InputAction.CallbackContext context) => rightWeapon.Charge();
     private void LeftCharge(InputAction.CallbackContext context) => leftWeapon.Charge();

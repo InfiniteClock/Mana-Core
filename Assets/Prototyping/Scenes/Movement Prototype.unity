@@ -186,6 +186,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
+  maxSlopeAngle: 45
 --- !u!54 &26685106
 Rigidbody:
   m_ObjectHideFlags: 0
