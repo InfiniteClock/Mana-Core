@@ -1,5 +1,5 @@
+using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,11 +19,16 @@ public class Player : MonoBehaviour
     public Transform orientation;
     public float baseMoveSpeed;
     public float baseSprintSpeed;
+    public float baseSlideSpeed;
+    public float speedIncreaseMulti;
+    public float slopeIncreaseMulti;
     public float baseAccelMultiplier;
     public float groundDrag;
 
-
+    
     private float moveSpeed;
+    private float desiredMoveSpeed;
+    private float lastDesiredMoveSpeed;
     private bool isSprinting;
     private Vector2 rawMoveInput;
     private Vector3 inputDirection;
@@ -31,6 +36,7 @@ public class Player : MonoBehaviour
     private InputAction moveInput;
     private InputAction sprintInput;
     private Rigidbody rb;
+    private Coroutine momentumRoutine;
 
     [Header("Jumping")]
     public float jumpHeight;
@@ -157,26 +163,32 @@ public class Player : MonoBehaviour
         if (isGrounded && isSliding)
         {
             moveState = MovementState.sliding;
-            moveSpeed = baseSprintSpeed;
+
+            // Apply sliding speed if moving downhill or on flat
+            if (OnSlope() && rb.linearVelocity.y < 0.1f)
+                desiredMoveSpeed = baseSlideSpeed;
+            // Apply sprint speed if moving uphill
+            else
+                desiredMoveSpeed = baseSprintSpeed;
         }
 
         // Crouching
         else if (isGrounded && isCrouching)
         {
             moveState = MovementState.crouching;
-            moveSpeed = crouchSpeed;
+            desiredMoveSpeed = crouchSpeed;
         }
         // Sprinting
         else if (isGrounded && isSprinting)
         {
             moveState = MovementState.sprinting;
-            moveSpeed = baseSprintSpeed;
+            desiredMoveSpeed = baseSprintSpeed;
         }
         // Walking
         else if (isGrounded)
         {
             moveState = MovementState.walking;
-            moveSpeed = baseMoveSpeed;
+            desiredMoveSpeed = baseMoveSpeed;
         }
 
         // Airborne
@@ -184,6 +196,20 @@ public class Player : MonoBehaviour
         {
             moveState = MovementState.airborne;
         }
+
+        // Check if desired move speed has changed drastically (and current move speed isn't 0) - if so, run the Lerp coroutine
+        if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
+        {
+            if (momentumRoutine != null) 
+                StopCoroutine(momentumRoutine);
+            momentumRoutine = StartCoroutine(SmoothlyLerpMoveSpeed());
+        }
+        else
+        {
+            moveSpeed = desiredMoveSpeed;
+        }
+        lastDesiredMoveSpeed = desiredMoveSpeed;
+
     }
     private void CheckInput()
     {
@@ -218,6 +244,31 @@ public class Player : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
             isSliding = false;
         }
+    }
+    private IEnumerator SmoothlyLerpMoveSpeed()
+    {
+        // Lerps movement speed to desired value
+        float time = 0f;
+        float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
+        float startValue = moveSpeed;
+
+        while (time < difference)
+        {
+            moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
+
+            if (OnSlope())
+            {
+                float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                float slopeAngleIncrease = 1 + (slopeAngle / 90f);
+
+                time = Time.deltaTime * speedIncreaseMulti * slopeIncreaseMulti * slopeAngleIncrease;
+            }
+            else
+                time += Time.deltaTime * speedIncreaseMulti;
+            yield return null;
+        }
+
+        moveSpeed = desiredMoveSpeed;
     }
     private void Move()
     {
