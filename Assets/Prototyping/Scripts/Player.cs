@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public Weapon rightWeapon;
     public Weapon leftWeapon;
     public TextMeshProUGUI speedText;
+
     private InputAction rightFireInput;
     private InputAction leftFireInput;
 
@@ -26,13 +27,13 @@ public class Player : MonoBehaviour
     public float groundDrag;
 
     
-    public float moveSpeed;
+    private float moveSpeed;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
     private bool isSprinting;
     private Vector2 rawMoveInput;
     private Vector3 inputDirection;
-    public MovementState moveState;
+    private MovementState moveState;
     private InputAction moveInput;
     private InputAction sprintInput;
     private Rigidbody rb;
@@ -59,7 +60,8 @@ public class Player : MonoBehaviour
 
     private bool isCrouching;
     private bool isSliding;
-    public float slideTimer;
+    private bool canStand;
+    private float slideTimer;
     private float startYScale;
     private InputAction crouchInput;
 
@@ -128,21 +130,19 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Move();
+        StateHandler();
+    }
+    private void Update()
+    {
         // Ground Check
         // Box cast aligned to player orientation and width. Ideally should be ratio of 0.7 : 1 so box falls within capsule radius
         isGrounded = Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.down, out RaycastHit hit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
 
-        Move();
-        StateHandler();
+        // Ceiling Check
+        // Box cast aligned to player orientation and width. Same as ground check but for above instead of below;
+        canStand = !Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.up, out RaycastHit upHit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
 
-        // Apply Drag
-        if (isGrounded && canJump)
-            rb.linearDamping = groundDrag;
-        else
-            rb.linearDamping = 0;
-    }
-    private void Update()
-    {
         // Draw rays from player guns for debugging direciton
         Debug.DrawRay(rightWeapon.transform.position, playerCam.transform.forward * 20f, Color.cyan);
         Debug.DrawRay(leftWeapon.transform.position, playerCam.transform.forward * 20f, Color.cyan);
@@ -152,8 +152,16 @@ public class Player : MonoBehaviour
         CheckInput();
         SpeedControl();
 
+
+        // Apply Drag
+        if (isGrounded && canJump)
+            rb.linearDamping = groundDrag;
+        else
+            rb.linearDamping = 0;
+
+        // Debugging Text
         Vector3 hSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        speedText.text = ("True Speed : "+rb.linearVelocity.magnitude+"\nHorizontal Speed : " + hSpeed.magnitude + "\nVertical Speed : " + rb.linearVelocity.y + "\nSlope Angle : " + slopeHit.normal);
+        speedText.text = ("True Speed : "+rb.linearVelocity.magnitude+"\nHorizontal Speed : " + hSpeed.magnitude + "\nVertical Speed : " + rb.linearVelocity.y + "\nSlope Angle : " + Vector3.Angle(Vector3.up, slopeHit.normal));
     }
     private void StateHandler()
     {
@@ -173,7 +181,7 @@ public class Player : MonoBehaviour
         }
 
         // Crouching
-        else if (isGrounded && isCrouching)
+        else if (isGrounded && CrouchBuffer())
         {
             moveState = MovementState.crouching;
             desiredMoveSpeed = crouchSpeed;
@@ -228,7 +236,7 @@ public class Player : MonoBehaviour
         }
 
 
-        if (isCrouching)
+        if (CrouchBuffer())
         {
             // Sets sliding to true if player is moving fast enough AND is applying movement input AND the slide timer hasn't ended
             if (rb.linearVelocity.magnitude > minSpeedToSlide && rawMoveInput.magnitude > 0.5f && slideTimer > 0f)
@@ -379,7 +387,27 @@ public class Player : MonoBehaviour
     {
         return Vector3.ProjectOnPlane(inputDirection, slopeHit.normal).normalized;
     }
-    
+    private void CrouchStart()
+    {
+        isCrouching = true;
+        slideTimer = maxSlideTime;
+        if (isGrounded)
+            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+    }
+    private bool CrouchBuffer()
+    {
+        if (!isCrouching)
+        {
+            if (!canStand)
+                return true;
+            else
+                return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
     // Input Call Functions
     private void RightCharge(InputAction.CallbackContext context) => rightWeapon.Charge();
@@ -388,13 +416,7 @@ public class Player : MonoBehaviour
     private void LeftFire(InputAction.CallbackContext context) => leftWeapon.Shoot();
     private void OnSprint(InputAction.CallbackContext context) => isSprinting = true;
     private void OnSprintCancel(InputAction.CallbackContext context) => isSprinting = false;
-    private void OnCrouch(InputAction.CallbackContext context)
-    {
-        isCrouching = true;
-        slideTimer = maxSlideTime;
-        if (isGrounded)
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-    }
+    private void OnCrouch(InputAction.CallbackContext context) => CrouchStart();
     private void OnCrouchCancel(InputAction.CallbackContext context) => isCrouching = false;
     private void OnJump(InputAction.CallbackContext context) => isJumping = true;
     private void OnJumpCancel(InputAction.CallbackContext context) => isJumping = false;
@@ -402,10 +424,17 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (isGrounded)
-            Gizmos.color = Color.red;
-        else
             Gizmos.color = Color.green;
+        else
+            Gizmos.color = Color.red;
 
         Gizmos.DrawWireCube(transform.position + (Vector3.down * playerHeight * 0.25f), new Vector3(playerWidth, playerHeight * 0.5f + 0.05f, playerWidth));
+
+        if (canStand)
+            Gizmos.color = Color.green;
+        else
+            Gizmos.color = Color.blue;
+
+        Gizmos.DrawWireCube(transform.position + (Vector3.up * playerHeight * 0.25f), new Vector3(playerWidth, playerHeight * 0.5f + 0.05f, playerWidth));
     }
 }

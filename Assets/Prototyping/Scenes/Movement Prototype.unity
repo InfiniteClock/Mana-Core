@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 26685100}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 71.606, z: -86.102}
+  m_LocalPosition: {x: 0, y: 1, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -179,8 +179,6 @@ MonoBehaviour:
   slopeIncreaseMulti: 2.5
   baseAccelMultiplier: 8
   groundDrag: 4
-  moveSpeed: 0
-  moveState: 0
   jumpHeight: 4
   jumpCooldown: 0.25
   airMultiplier: 0.4
@@ -189,8 +187,7 @@ MonoBehaviour:
   crouchYScale: 0.5
   maxSlideTime: 0.75
   slideForce: 200
-  minSpeedToSlide: 4
-  slideTimer: 0
+  minSpeedToSlide: 6
   playerHeight: 2
   playerWidth: 0.7
   whatIsGround:
