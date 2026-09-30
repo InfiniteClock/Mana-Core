@@ -2,10 +2,15 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class Player : MonoBehaviour
 {
     public enum MovementState { walking, sprinting, crouching, sliding, airborne }
+
+    [SerializeField] private UniversalRendererData rendererData;
+    [SerializeField] private string dashingFeatureName = "Dash VFX";
+    private ScriptableRendererFeature dashVFX;
 
     [Header("Guns")]
     public Camera playerCam;
@@ -83,13 +88,38 @@ public class Player : MonoBehaviour
         // Formula for calculating initial velocity from max height and gravity
         apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
         jumpForce = 2f * jumpHeight / apexJumpTime;
+
+        if (rendererData != null)
+        {
+            foreach (var feature in rendererData.rendererFeatures)
+            {
+                if (feature.name == dashingFeatureName)
+                {
+                    dashVFX = feature;
+                    break;
+                }
+            }
+        }
     }
+
 #else
     private void Start()
     {
         // Formula for calculating initial velocity from max height and gravity
         apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
         jumpForce = 2f * jumpHeight / apexJumpTime;
+
+        if (rendererData != null)
+        {
+            foreach (var feature in rendererData.rendererFeatures)
+            {
+                if (feature.name == dashingFeatureName)
+                {
+                    dashVFX = feature;
+                    break;
+                }
+            }
+        }
     }
 #endif
     private void OnEnable()
@@ -181,6 +211,8 @@ public class Player : MonoBehaviour
         {
             moveState = MovementState.sliding;
 
+            dashVFX.SetActive(true);
+
             // Apply sliding speed if moving downhill or on flat
             if (OnSlope() && rb.linearVelocity.y < 0.1f)
                 desiredMoveSpeed = baseSlideSpeed;
@@ -194,6 +226,7 @@ public class Player : MonoBehaviour
         {
             moveState = MovementState.crouching;
             desiredMoveSpeed = crouchSpeed;
+            dashVFX.SetActive(false);
         }
         // Sprinting
         else if (isGrounded && isSprinting)
@@ -206,6 +239,7 @@ public class Player : MonoBehaviour
         {
             moveState = MovementState.walking;
             desiredMoveSpeed = baseMoveSpeed;
+            dashVFX.SetActive(false);
         }
 
         // Airborne
