@@ -77,12 +77,21 @@ public class Player : MonoBehaviour
     private bool exitingSlope;
     private RaycastHit slopeHit;
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         // Formula for calculating initial velocity from max height and gravity
         apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
         jumpForce = 2f * jumpHeight / apexJumpTime;
     }
+#else
+    private void Start()
+    {
+        // Formula for calculating initial velocity from max height and gravity
+        apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
+        jumpForce = 2f * jumpHeight / apexJumpTime;
+    }
+#endif
     private void OnEnable()
     {
         rightFireInput = InputSystem.actions.FindAction("Right Fire");
