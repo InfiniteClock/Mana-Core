@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     public float groundDrag;
 
     
-    private float moveSpeed;
+    public float moveSpeed;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
     private bool isSprinting;
@@ -200,7 +200,7 @@ public class Player : MonoBehaviour
         // Check if desired move speed has changed drastically (and current move speed isn't 0) - if so, run the Lerp coroutine
         if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
         {
-            Debug.Log("Drastic Speed Inrease Detected!");
+            //Debug.Log("Drastic Speed Inrease Detected!");
             if (momentumRoutine != null) 
                 StopCoroutine(momentumRoutine);
             momentumRoutine = StartCoroutine(SmoothlyLerpMoveSpeed());
@@ -260,9 +260,9 @@ public class Player : MonoBehaviour
             if (OnSlope())
             {
                 float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
-                float slopeAngleIncrease = 1 + (slopeAngle / 90f);
+                float slopeAngleIncrease = 1f + (slopeAngle / 90f);
 
-                time = Time.deltaTime * speedIncreaseMulti * slopeIncreaseMulti * slopeAngleIncrease;
+                time += Time.deltaTime * speedIncreaseMulti * slopeIncreaseMulti * slopeAngleIncrease;
             }
             else
                 time += Time.deltaTime * speedIncreaseMulti;
@@ -278,12 +278,15 @@ public class Player : MonoBehaviour
         // Sliding
         if (isSliding)
         {
-            if ((!OnSlope() && isGrounded) || rb.linearVelocity.y > -0.1f)
+            if (!OnSlope() || rb.linearVelocity.y > -0.1f)
             {
                 rb.AddForce(inputDirection.normalized * slideForce, ForceMode.Force);
 
                 // Counts timer down only if sliding on level terrain or uphill
                 slideTimer -= Time.deltaTime;
+
+                if (isGrounded)
+                    rb.AddForce(Vector3.down * 80f, ForceMode.Force);
             }
             else
             {
@@ -322,14 +325,14 @@ public class Player : MonoBehaviour
     private void SpeedControl()
     {
         // Limit speed on a slope differently than on level ground
-        if (OnSlope() && !exitingSlope)
+        if (OnSlope() && !exitingSlope && isGrounded)
         {
             if (rb.linearVelocity.magnitude > moveSpeed)
                 rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
         }
 
 
-        // Limits player speed on flat ground
+        // Limits player speed on flat ground and in air
         else
         {
             Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
@@ -341,7 +344,6 @@ public class Player : MonoBehaviour
                 rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
             }
         }
-
     }
     private void Jump()
     {

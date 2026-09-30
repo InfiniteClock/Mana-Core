@@ -179,6 +179,7 @@ MonoBehaviour:
   slopeIncreaseMulti: 2.5
   baseAccelMultiplier: 8
   groundDrag: 4
+  moveSpeed: 0
   moveState: 0
   jumpHeight: 4
   jumpCooldown: 0.25
@@ -186,7 +187,7 @@ MonoBehaviour:
   gravity: 20
   crouchSpeed: 3.5
   crouchYScale: 0.5
-  maxSlideTime: 1
+  maxSlideTime: 0.75
   slideForce: 200
   minSpeedToSlide: 4
   slideTimer: 0
