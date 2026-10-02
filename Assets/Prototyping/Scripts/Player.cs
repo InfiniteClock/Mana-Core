@@ -6,13 +6,13 @@ using UnityEngine.Rendering.Universal;
 
 public class Player : MonoBehaviour
 {
-    public enum MovementState { walking, sprinting, crouching, sliding, airborne }
+    public enum MovementState { walking, sprinting, crouching, sliding, airborne, dashing }
 
     [SerializeField] private UniversalRendererData rendererData;
     [SerializeField] private string dashingFeatureName = "Dash VFX";
     private ScriptableRendererFeature dashVFX;
 
-    [Header("Guns")]
+    [Header("Camera")]
     public Camera playerCam;
     public Weapon rightWeapon;
     public Weapon leftWeapon;
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     public float baseMoveSpeed;
     public float baseSprintSpeed;
     public float baseSlideSpeed;
-    public float speedIncreaseMulti;
+    public float baseSpeedChangeFactor;
     public float slopeIncreaseMulti;
     public float baseAccelMultiplier;
     public float groundDrag;
@@ -35,10 +35,13 @@ public class Player : MonoBehaviour
     private float moveSpeed;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
+    private float speedChangeFactor;
     private bool isSprinting;
+    public bool keepMomentum;
     private Vector2 rawMoveInput;
     private Vector3 inputDirection;
     private MovementState moveState;
+    private MovementState lastMoveState;
     private InputAction moveInput;
     private InputAction sprintInput;
     private Rigidbody rb;
@@ -69,6 +72,13 @@ public class Player : MonoBehaviour
     private float slideTimer;
     private float startYScale;
     private InputAction crouchInput;
+
+    [Header("Abilities")]
+    public float baseDashSpeed;
+    public float dashSpeedChangeFactor;
+
+    [HideInInspector]
+    public bool isDashing;
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -169,8 +179,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
         StateHandler();
+        Move();
     }
     private void Update()
     {
@@ -192,22 +202,36 @@ public class Player : MonoBehaviour
         SpeedControl();
 
 
-        // Apply Drag
-        if (isGrounded && canJump)
+        // Apply Drag (when in a grounded state only)
+        if (moveState == MovementState.walking ||
+            moveState == MovementState.sprinting ||
+            moveState == MovementState.crouching ||
+            moveState == MovementState.sliding)
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
 
         // Debugging Text
         Vector3 hSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        speedText.text = ("True Speed : "+rb.linearVelocity.magnitude+"\nHorizontal Speed : " + hSpeed.magnitude + "\nVertical Speed : " + rb.linearVelocity.y + "\nSlope Angle : " + Vector3.Angle(Vector3.up, slopeHit.normal));
+        speedText.text = ("True Speed : "+rb.linearVelocity.magnitude.ToString("0.0") +
+            "\nHorizontal Speed : " + hSpeed.magnitude.ToString("0.0") + 
+            "\nVertical Speed : " + rb.linearVelocity.y.ToString("0.0") + 
+            "\nCurrent State : " + moveState.ToString() +
+            "\nSlope Angle : " + Vector3.Angle(Vector3.up, slopeHit.normal));
     }
     private void StateHandler()
     {
-        // Priority of states: Sliding > Crouching > Sprinting > Walking > Airborne
+        // Priority of states: Dashing > Sliding > Crouching > Sprinting > Walking > Airborne
+
+        if (isDashing)
+        {
+            moveState = MovementState.dashing;
+            desiredMoveSpeed = baseDashSpeed;
+            speedChangeFactor = dashSpeedChangeFactor;
+        }
 
         // Sliding
-        if (isSliding)
+        else if (isSliding)
         {
             moveState = MovementState.sliding;
 
@@ -215,10 +239,14 @@ public class Player : MonoBehaviour
 
             // Apply sliding speed if moving downhill or on flat
             if (OnSlope() && rb.linearVelocity.y < 0.1f)
+            {
                 desiredMoveSpeed = baseSlideSpeed;
+            }
             // Apply sprint speed if moving uphill
             else
+            {
                 desiredMoveSpeed = baseSprintSpeed;
+            }
         }
 
         // Crouching
@@ -246,21 +274,48 @@ public class Player : MonoBehaviour
         else
         {
             moveState = MovementState.airborne;
+
+            // Sets desired air speed to walking speed unless the player was moving at sprint speed already
+            if (desiredMoveSpeed < baseSprintSpeed)
+                desiredMoveSpeed = baseMoveSpeed;
+            else
+                desiredMoveSpeed = baseSprintSpeed;
         }
 
-        // Check if desired move speed has changed drastically (and current move speed isn't 0) - if so, run the Lerp coroutine
-        if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
+        //// Check if desired move speed has changed drastically (and current move speed isn't 0) - if so, run the Lerp coroutine
+        //if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
+        //{
+        //    //Debug.Log("Drastic Speed Inrease Detected!");
+        //    if (momentumRoutine != null) 
+        //        StopCoroutine(momentumRoutine);
+        //    momentumRoutine = StartCoroutine(SmoothlyLerpMoveSpeed());
+        //}
+        //else
+        //{
+        //    moveSpeed = desiredMoveSpeed;
+        //}
+
+        bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
+        if (lastMoveState == MovementState.dashing) keepMomentum = true;
+
+        if (desiredMoveSpeedHasChanged)
         {
-            //Debug.Log("Drastic Speed Inrease Detected!");
-            if (momentumRoutine != null) 
+            // Stop the coroutine when desired move speed changes - we are done lerping regardless
+            if (momentumRoutine != null)
                 StopCoroutine(momentumRoutine);
-            momentumRoutine = StartCoroutine(SmoothlyLerpMoveSpeed());
+
+            if (keepMomentum)
+            {
+                momentumRoutine = StartCoroutine(SmoothlyLerpMoveSpeed());
+            }
+            else
+            {
+                moveSpeed = desiredMoveSpeed;
+            }
         }
-        else
-        {
-            moveSpeed = desiredMoveSpeed;
-        }
+
         lastDesiredMoveSpeed = desiredMoveSpeed;
+        lastMoveState = moveState;
 
     }
     private void CheckInput()
@@ -304,6 +359,8 @@ public class Player : MonoBehaviour
         float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
         float startValue = moveSpeed;
 
+        float boostFactor = speedChangeFactor;
+
         while (time < difference)
         {
             moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
@@ -313,17 +370,22 @@ public class Player : MonoBehaviour
                 float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
                 float slopeAngleIncrease = 1f + (slopeAngle / 90f);
 
-                time += Time.deltaTime * speedIncreaseMulti * slopeIncreaseMulti * slopeAngleIncrease;
+                time += Time.deltaTime * speedChangeFactor * slopeIncreaseMulti * slopeAngleIncrease;
             }
             else
-                time += Time.deltaTime * speedIncreaseMulti;
+                time += Time.deltaTime * speedChangeFactor;
             yield return null;
         }
 
+        speedChangeFactor = baseSpeedChangeFactor;
         moveSpeed = desiredMoveSpeed;
+        keepMomentum = false;
     }
     private void Move()
     {
+        // Ignore regular movement control if dashing
+        if (moveState == MovementState.dashing) return;
+
         inputDirection = orientation.forward * rawMoveInput.y + orientation.right * rawMoveInput.x;
 
         // Sliding
@@ -369,7 +431,7 @@ public class Player : MonoBehaviour
             rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * airMultiplier, ForceMode.Force);
         }
 
-        // Applies gravity to the player while airborne ALWAYS
+        // Applies gravity to the player while airborne and not dashing
         if (!isGrounded)
             rb.AddForce(Vector3.down * gravity, ForceMode.Force);
     }
@@ -464,6 +526,7 @@ public class Player : MonoBehaviour
     private void OnJump(InputAction.CallbackContext context) => isJumping = true;
     private void OnJumpCancel(InputAction.CallbackContext context) => isJumping = false;
 
+    // Draw specialized Gizmos in Editor
     private void OnDrawGizmos()
     {
         if (isGrounded)

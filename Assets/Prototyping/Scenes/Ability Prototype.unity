@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 26685104}
   - component: {fileID: 26685106}
   - component: {fileID: 26685105}
-  - component: {fileID: 26685107}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -178,11 +177,10 @@ MonoBehaviour:
   baseMoveSpeed: 7
   baseSprintSpeed: 10
   baseSlideSpeed: 30
-  baseSpeedChangeFactor: 1.5
-  slopeIncreaseMulti: 3
+  speedIncreaseMulti: 1.5
+  slopeIncreaseMulti: 2.5
   baseAccelMultiplier: 8
   groundDrag: 4
-  keepMomentum: 0
   jumpHeight: 4
   jumpCooldown: 0.25
   airMultiplier: 0.4
@@ -192,9 +190,6 @@ MonoBehaviour:
   maxSlideTime: 0.75
   slideForce: 200
   minSpeedToSlide: 6
-  baseDashSpeed: 30
-  dashSpeedChangeFactor: 25
-  isDashing: 0
   playerHeight: 2
   playerWidth: 0.7
   whatIsGround:
@@ -228,25 +223,6 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &26685107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26685100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb2dfc0d0a38f8499116d5aa92e1293, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WindDash
-  orientation: {fileID: 293677566}
-  playerCam: {fileID: 2119628390}
-  isRightWeapon: 0
-  dashForce: 30
-  dashUpwardForce: 0
-  dashDuration: 0.25
-  dashCD: 1.5
 --- !u!1 &64949932
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +288,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c351b8497d6bdbe419d38eddc4a3b8c3, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -487,7 +463,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c351b8497d6bdbe419d38eddc4a3b8c3, type: 2}
+  - {fileID: 2100000, guid: 761d8e1f988ed2345a28312145c79c6e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1023,7 +999,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c351b8497d6bdbe419d38eddc4a3b8c3, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1135,7 +1111,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c351b8497d6bdbe419d38eddc4a3b8c3, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1322,7 +1298,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c351b8497d6bdbe419d38eddc4a3b8c3, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1434,7 +1410,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c351b8497d6bdbe419d38eddc4a3b8c3, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2182,7 +2158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c351b8497d6bdbe419d38eddc4a3b8c3, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
