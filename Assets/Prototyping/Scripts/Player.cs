@@ -37,8 +37,8 @@ public class Player : MonoBehaviour
     private float lastDesiredMoveSpeed;
     private float speedChangeFactor;
     private bool isSprinting;
-    public bool keepMomentum;
-    private Vector2 rawMoveInput;
+    private bool keepMomentum;
+    public Vector2 rawMoveInput { get; private set; }
     private Vector3 inputDirection;
     private MovementState moveState;
     private MovementState lastMoveState;
@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public bool isDashing;
+    public float maxYSpeed;
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -235,8 +236,6 @@ public class Player : MonoBehaviour
         {
             moveState = MovementState.sliding;
 
-            dashVFX.SetActive(true);
-
             // Apply sliding speed if moving downhill or on flat
             if (OnSlope() && rb.linearVelocity.y < 0.1f)
             {
@@ -254,7 +253,6 @@ public class Player : MonoBehaviour
         {
             moveState = MovementState.crouching;
             desiredMoveSpeed = crouchSpeed;
-            dashVFX.SetActive(false);
         }
         // Sprinting
         else if (isGrounded && isSprinting)
@@ -267,7 +265,6 @@ public class Player : MonoBehaviour
         {
             moveState = MovementState.walking;
             desiredMoveSpeed = baseMoveSpeed;
-            dashVFX.SetActive(false);
         }
 
         // Airborne
@@ -281,19 +278,6 @@ public class Player : MonoBehaviour
             else
                 desiredMoveSpeed = baseSprintSpeed;
         }
-
-        //// Check if desired move speed has changed drastically (and current move speed isn't 0) - if so, run the Lerp coroutine
-        //if (Mathf.Abs(desiredMoveSpeed - lastDesiredMoveSpeed) > 4f && moveSpeed != 0)
-        //{
-        //    //Debug.Log("Drastic Speed Inrease Detected!");
-        //    if (momentumRoutine != null) 
-        //        StopCoroutine(momentumRoutine);
-        //    momentumRoutine = StartCoroutine(SmoothlyLerpMoveSpeed());
-        //}
-        //else
-        //{
-        //    moveSpeed = desiredMoveSpeed;
-        //}
 
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
         if (lastMoveState == MovementState.dashing) keepMomentum = true;
@@ -314,9 +298,14 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (moveState == MovementState.dashing)
+            dashVFX.SetActive(true);
+        else
+            dashVFX.SetActive(false);
+
+
         lastDesiredMoveSpeed = desiredMoveSpeed;
         lastMoveState = moveState;
-
     }
     private void CheckInput()
     {
@@ -457,6 +446,10 @@ public class Player : MonoBehaviour
                 rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
             }
         }
+
+        // Limit Y velocity
+        if (maxYSpeed != 0 && rb.linearVelocity.y > maxYSpeed)
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, maxYSpeed, rb.linearVelocity.z);
     }
     private void Jump()
     {

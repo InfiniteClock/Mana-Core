@@ -182,7 +182,6 @@ MonoBehaviour:
   slopeIncreaseMulti: 3
   baseAccelMultiplier: 8
   groundDrag: 4
-  keepMomentum: 0
   jumpHeight: 4
   jumpCooldown: 0.25
   airMultiplier: 0.4
@@ -195,6 +194,7 @@ MonoBehaviour:
   baseDashSpeed: 30
   dashSpeedChangeFactor: 25
   isDashing: 0
+  maxYSpeed: 0
   playerHeight: 2
   playerWidth: 0.7
   whatIsGround:
@@ -246,7 +246,11 @@ MonoBehaviour:
   dashForce: 30
   dashUpwardForce: 0
   dashDuration: 0.25
+  maxDashYSpeed: 0
   dashCD: 1.5
+  useCameraForward: 1
+  omnidirectionalDash: 1
+  resetVelocity: 1
 --- !u!1 &64949932
 GameObject:
   m_ObjectHideFlags: 0
