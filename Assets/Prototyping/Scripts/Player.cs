@@ -77,9 +77,18 @@ public class Player : MonoBehaviour
     public float baseDashSpeed;
     public float dashSpeedChangeFactor;
 
+    // Following are public so other scripts can access, but not set in inspector
     [HideInInspector]
     public bool isDashing;
+    [HideInInspector]
     public float maxYSpeed;
+    [HideInInspector]
+    public bool isCloaked;
+    [HideInInspector]
+    public float cloakSpeedMulti;
+    [HideInInspector]
+    public float cloakJumpHeight;
+    // --- -- -
 
     [Header("Ground Check")]
     public float playerHeight;
@@ -96,10 +105,8 @@ public class Player : MonoBehaviour
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        // Formula for calculating initial velocity from max height and gravity
-        apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
-        jumpForce = 2f * jumpHeight / apexJumpTime;
-
+        SetJumpStats(jumpHeight);
+        cloakSpeedMulti = 1f;
         speedChangeFactor = baseSpeedChangeFactor;
 
         if (rendererData != null)
@@ -118,10 +125,8 @@ public class Player : MonoBehaviour
 #else
     private void Start()
     {
-        // Formula for calculating initial velocity from max height and gravity
-        apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
-        jumpForce = 2f * jumpHeight / apexJumpTime;
-
+        SetJumpStats(jumpHeight);
+        cloakSpeedMulti = 1f;
         speedChangeFactor = baseSpeedChangeFactor;
 
         if (rendererData != null)
@@ -243,17 +248,17 @@ public class Player : MonoBehaviour
 
             // Initiate with a boost of speed into the dash
             if (lastMoveState != MovementState.sliding)
-                moveSpeed = baseSprintSpeed;
+                moveSpeed = baseSprintSpeed * cloakSpeedMulti;
 
             // Apply sliding speed if moving downhill
             if (OnSlope() && rb.linearVelocity.y < 0.1f)
             {
-                desiredMoveSpeed = baseSlideSpeed;
+                desiredMoveSpeed = baseSlideSpeed * cloakSpeedMulti;
             }
             // Apply crouch speed if moving uphill or on flat
             else
             {
-                desiredMoveSpeed = baseSprintSpeed;
+                desiredMoveSpeed = baseSprintSpeed * cloakSpeedMulti;
             }
         }
 
@@ -261,19 +266,19 @@ public class Player : MonoBehaviour
         else if (isGrounded && CrouchBuffer())
         {
             moveState = MovementState.crouching;
-            desiredMoveSpeed = baseCrouchSpeed;
+            desiredMoveSpeed = baseCrouchSpeed * cloakSpeedMulti;
         }
         // Sprinting
         else if (isGrounded && isSprinting)
         {
             moveState = MovementState.sprinting;
-            desiredMoveSpeed = baseSprintSpeed;
+            desiredMoveSpeed = baseSprintSpeed * cloakSpeedMulti;
         }
         // Walking
         else if (isGrounded)
         {
             moveState = MovementState.walking;
-            desiredMoveSpeed = baseMoveSpeed;
+            desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
         }
 
         // Airborne
@@ -283,9 +288,9 @@ public class Player : MonoBehaviour
 
             // Sets desired air speed to walking speed unless the player was moving at sprint speed already
             if (desiredMoveSpeed < baseSprintSpeed)
-                desiredMoveSpeed = baseMoveSpeed;
+                desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
             else
-                desiredMoveSpeed = baseSprintSpeed;
+                desiredMoveSpeed = baseSprintSpeed * cloakSpeedMulti;
         }
 
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
@@ -367,7 +372,6 @@ public class Player : MonoBehaviour
         while (time < difference)
         {
             moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
-            Debug.Log("Lerping movement...");
             if (OnSlope())
             {
                 float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
@@ -485,6 +489,12 @@ public class Player : MonoBehaviour
         exitingSlope = false;
     }
     
+    public void SetJumpStats(float height)
+    {
+        // Formula for calculating initial velocity from max height and gravity
+        apexJumpTime = Mathf.Sqrt(-2f * height / -gravity);
+        jumpForce = 2f * height / apexJumpTime;
+    }
     private bool OnSlope()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
