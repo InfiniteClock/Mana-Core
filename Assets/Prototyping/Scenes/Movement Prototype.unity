@@ -178,15 +178,16 @@ MonoBehaviour:
   baseMoveSpeed: 7
   baseSprintSpeed: 10
   baseSlideSpeed: 30
-  baseSpeedChangeFactor: 1.5
-  slopeIncreaseMulti: 3
+  baseSpeedChangeFactor: 2.5
+  slopeIncreaseMulti: 2.5
   baseAccelMultiplier: 8
   groundDrag: 4
+  keepMomentum: 0
   jumpHeight: 4
   jumpCooldown: 0.25
   airMultiplier: 0.4
   gravity: 20
-  crouchSpeed: 3.5
+  baseCrouchSpeed: 3.5
   crouchYScale: 0.5
   maxSlideTime: 0.75
   slideForce: 200

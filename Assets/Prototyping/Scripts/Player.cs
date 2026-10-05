@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     private InputAction jumpInput;
 
     [Header("Crouching/Sliding")]
-    public float crouchSpeed;
+    public float baseCrouchSpeed;
     public float crouchYScale;
     public float maxSlideTime;
     public float slideForce;
@@ -100,6 +100,8 @@ public class Player : MonoBehaviour
         apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
         jumpForce = 2f * jumpHeight / apexJumpTime;
 
+        speedChangeFactor = baseSpeedChangeFactor;
+
         if (rendererData != null)
         {
             foreach (var feature in rendererData.rendererFeatures)
@@ -119,6 +121,8 @@ public class Player : MonoBehaviour
         // Formula for calculating initial velocity from max height and gravity
         apexJumpTime = Mathf.Sqrt(-2f * jumpHeight / -gravity);
         jumpForce = 2f * jumpHeight / apexJumpTime;
+
+        speedChangeFactor = baseSpeedChangeFactor;
 
         if (rendererData != null)
         {
@@ -180,7 +184,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        StateHandler();
+        
         Move();
     }
     private void Update()
@@ -201,7 +205,7 @@ public class Player : MonoBehaviour
         // Check for player input changes
         CheckInput();
         SpeedControl();
-
+        StateHandler();
 
         // Apply Drag (when in a grounded state only)
         if (moveState == MovementState.walking ||
@@ -215,6 +219,7 @@ public class Player : MonoBehaviour
         // Debugging Text
         Vector3 hSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         speedText.text = ("True Speed : "+rb.linearVelocity.magnitude.ToString("0.0") +
+            "\nDesired Speed : " + desiredMoveSpeed +
             "\nHorizontal Speed : " + hSpeed.magnitude.ToString("0.0") + 
             "\nVertical Speed : " + rb.linearVelocity.y.ToString("0.0") + 
             "\nCurrent State : " + moveState.ToString() +
@@ -232,16 +237,20 @@ public class Player : MonoBehaviour
         }
 
         // Sliding
-        else if (isSliding)
+        else if (isGrounded && isSliding)
         {
             moveState = MovementState.sliding;
 
-            // Apply sliding speed if moving downhill or on flat
+            // Initiate with a boost of speed into the dash
+            if (lastMoveState != MovementState.sliding)
+                moveSpeed = baseSprintSpeed;
+
+            // Apply sliding speed if moving downhill
             if (OnSlope() && rb.linearVelocity.y < 0.1f)
             {
                 desiredMoveSpeed = baseSlideSpeed;
             }
-            // Apply sprint speed if moving uphill
+            // Apply crouch speed if moving uphill or on flat
             else
             {
                 desiredMoveSpeed = baseSprintSpeed;
@@ -252,7 +261,7 @@ public class Player : MonoBehaviour
         else if (isGrounded && CrouchBuffer())
         {
             moveState = MovementState.crouching;
-            desiredMoveSpeed = crouchSpeed;
+            desiredMoveSpeed = baseCrouchSpeed;
         }
         // Sprinting
         else if (isGrounded && isSprinting)
@@ -280,7 +289,14 @@ public class Player : MonoBehaviour
         }
 
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
-        if (lastMoveState == MovementState.dashing) keepMomentum = true;
+
+        // If the last state was dashing, sliding, or crouching after sliding, use momentum lerp
+        if (lastMoveState == MovementState.dashing || moveState == MovementState.sliding || 
+            (lastMoveState == MovementState.sliding && moveState == MovementState.crouching)) keepMomentum = true;
+
+        // Otherwise, if the current state is walking or crouching, do NOT use momentum lerp
+        else if (moveState == MovementState.walking || moveState == MovementState.crouching) keepMomentum = false;
+
 
         if (desiredMoveSpeedHasChanged)
         {
@@ -348,12 +364,10 @@ public class Player : MonoBehaviour
         float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
         float startValue = moveSpeed;
 
-        float boostFactor = speedChangeFactor;
-
         while (time < difference)
         {
             moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
-
+            Debug.Log("Lerping movement...");
             if (OnSlope())
             {
                 float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
