@@ -250,7 +250,7 @@ MonoBehaviour:
   dashForce: 30
   dashUpwardForce: 0
   dashDuration: 0.25
-  maxDashYSpeed: 0
+  maxDashYSpeed: 15
   dashCD: 1.5
   useCameraForward: 1
   omnidirectionalDash: 1
