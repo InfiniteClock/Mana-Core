@@ -11,9 +11,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Prototyping/Scenes/Shooting Prototype.unity
     guid: 855637ebf96c60948b77d0c1f5277d8c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Prototyping/Scenes/Movement Prototype.unity
     guid: bf74d6cc51c76b04e8f762b2e3089976
+  - enabled: 1
+    path: Assets/Prototyping/Scenes/Ability Prototype.unity
+    guid: e0912374ba4d99c4fb8f3095983fddf4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
