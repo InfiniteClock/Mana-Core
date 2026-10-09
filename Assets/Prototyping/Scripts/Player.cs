@@ -14,8 +14,8 @@ public class Player : MonoBehaviour
 
     [Header("Camera")]
     public Camera playerCam;
-    public Weapon rightWeapon;
-    public Weapon leftWeapon;
+    public FireIceGun rightWeapon;
+    public FireIceGun leftWeapon;
     public TextMeshProUGUI speedText;
 
     private InputAction rightFireInput;
