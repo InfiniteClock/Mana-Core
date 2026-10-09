@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
-public class Player : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public enum MovementState { walking, sprinting, crouching, sliding, airborne, dashing }
 
@@ -14,8 +14,6 @@ public class Player : MonoBehaviour
 
     [Header("Camera")]
     public Camera playerCam;
-    public FireIceGun rightWeapon;
-    public FireIceGun leftWeapon;
     public TextMeshProUGUI speedText;
 
     private InputAction rightFireInput;
@@ -120,6 +118,13 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+
+        startYScale = transform.localScale.y;
+
+        ResetJump();
     }
 
 #else
@@ -140,31 +145,6 @@ public class Player : MonoBehaviour
                 }
             }
         }
-    }
-#endif
-    private void OnEnable()
-    {
-        rightFireInput = InputSystem.actions.FindAction("Right Fire");
-        leftFireInput = InputSystem.actions.FindAction("Left Fire");
-
-        moveInput = InputSystem.actions.FindAction("Move");
-        sprintInput = InputSystem.actions.FindAction("Sprint");
-        crouchInput = InputSystem.actions.FindAction("Crouch");
-        jumpInput = InputSystem.actions.FindAction("Jump");
-
-
-        // Interaction = Press Only
-        rightFireInput.performed += RightCharge;
-        rightFireInput.canceled += RightFire;
-        leftFireInput.performed += LeftCharge;
-        leftFireInput.canceled += LeftFire;
-        sprintInput.performed += OnSprint;
-        sprintInput.canceled += OnSprintCancel;
-        crouchInput.performed += OnCrouch;
-        crouchInput.canceled += OnCrouchCancel;
-        jumpInput.performed += OnJump;
-        jumpInput.canceled += OnJumpCancel;
-
 
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -173,12 +153,25 @@ public class Player : MonoBehaviour
 
         ResetJump();
     }
+#endif
+    private void OnEnable()
+    {
+        moveInput = InputSystem.actions.FindAction("Move");
+        sprintInput = InputSystem.actions.FindAction("Sprint");
+        crouchInput = InputSystem.actions.FindAction("Crouch");
+        jumpInput = InputSystem.actions.FindAction("Jump");
+
+
+        // Interaction = Press Only
+        sprintInput.performed += OnSprint;
+        sprintInput.canceled += OnSprintCancel;
+        crouchInput.performed += OnCrouch;
+        crouchInput.canceled += OnCrouchCancel;
+        jumpInput.performed += OnJump;
+        jumpInput.canceled += OnJumpCancel;
+    }
     private void OnDisable()
     {
-        rightFireInput.performed -= RightCharge;
-        rightFireInput.canceled -= RightFire;
-        leftFireInput.performed -= LeftCharge;
-        leftFireInput.canceled -= LeftFire;
         sprintInput.performed -= OnSprint;
         sprintInput.canceled -= OnSprintCancel;
         crouchInput.performed -= OnCrouch;
@@ -189,7 +182,6 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
         Move();
     }
     private void Update()
@@ -201,10 +193,6 @@ public class Player : MonoBehaviour
         // Ceiling Check
         // Box cast aligned to player orientation and width. Same as ground check but for above instead of below;
         canStand = !Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.up, out RaycastHit upHit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
-
-        // Draw rays from player guns for debugging direciton
-        Debug.DrawRay(rightWeapon.transform.position, playerCam.transform.forward * 20f, Color.cyan);
-        Debug.DrawRay(leftWeapon.transform.position, playerCam.transform.forward * 20f, Color.cyan);
 
 
         // Check for player input changes
@@ -532,10 +520,6 @@ public class Player : MonoBehaviour
     }
 
     // Input Call Functions
-    private void RightCharge(InputAction.CallbackContext context) => rightWeapon.Charge();
-    private void LeftCharge(InputAction.CallbackContext context) => leftWeapon.Charge();
-    private void RightFire(InputAction.CallbackContext context) => rightWeapon.Shoot(); 
-    private void LeftFire(InputAction.CallbackContext context) => leftWeapon.Shoot();
     private void OnSprint(InputAction.CallbackContext context) => isSprinting = true;
     private void OnSprintCancel(InputAction.CallbackContext context) => isSprinting = false;
     private void OnCrouch(InputAction.CallbackContext context) => CrouchStart();

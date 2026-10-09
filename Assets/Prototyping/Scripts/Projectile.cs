@@ -6,11 +6,18 @@ public class Projectile : MonoBehaviour
     public float lifeTime;
     public float damage;
 
+    [HideInInspector]
+    public float fwdMomentum;
     private float lifeTimer;
+    private Rigidbody rb;
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = fwdMomentum * transform.forward;
+        rb.AddForce(transform.forward * travelSpeed, ForceMode.Impulse);
+    }
     public void Update()
     {
-        transform.Translate((travelSpeed * Time.deltaTime) * transform.forward, Space.World);
-
         if (lifeTimer < lifeTime)
             lifeTimer += Time.deltaTime;
         else

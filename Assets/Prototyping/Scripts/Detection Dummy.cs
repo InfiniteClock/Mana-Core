@@ -6,7 +6,7 @@ public class DetectionDummy : MonoBehaviour
 
     [Header("Player Detection")]
     
-    public Player player;
+    public PlayerMovement player;
     public Transform perspectivePoint;
     public float maxDetectionRange;
     public float minDetectionRange;

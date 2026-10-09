@@ -8,7 +8,7 @@ public class ShadowCloak : MonoBehaviour
     public bool isRightWeapon;
     public GameObject cloakFilter;
     public GameObject smokeCloudPrefab;
-    private Player player;
+    private PlayerMovement player;
 
     [Header("Cloak")]
     public float cloakDuration;
@@ -33,7 +33,7 @@ public class ShadowCloak : MonoBehaviour
 
     private void Start()
     {
-        player = GetComponent<Player>();
+        player = GetComponent<PlayerMovement>();
         cloakFilter.SetActive(false);
     }
     private void OnEnable()

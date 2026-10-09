@@ -9,7 +9,7 @@ public class WindDash : MonoBehaviour
     public bool isRightWeapon;
 
     private Rigidbody rb;
-    private Player player;
+    private PlayerMovement player;
 
     [Header("Dashing")]
     public float dashForce;
@@ -32,7 +32,7 @@ public class WindDash : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        player = GetComponent<Player>();
+        player = GetComponent<PlayerMovement>();
     }
     private void OnEnable()
     {
