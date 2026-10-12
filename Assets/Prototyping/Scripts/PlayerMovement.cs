@@ -16,9 +16,6 @@ public class PlayerMovement : MonoBehaviour
     public Camera playerCam;
     public TextMeshProUGUI speedText;
 
-    private InputAction rightFireInput;
-    private InputAction leftFireInput;
-
     [Header("Movement")]
     public Transform orientation;
     public float baseMoveSpeed;
@@ -29,7 +26,9 @@ public class PlayerMovement : MonoBehaviour
     public float baseAccelMultiplier;
     public float groundDrag;
 
-    
+    public static MovementState MoveState { get; private set; }
+    private MovementState lastMoveState;
+
     private float moveSpeed;
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
@@ -38,8 +37,7 @@ public class PlayerMovement : MonoBehaviour
     private bool keepMomentum;
     public Vector2 rawMoveInput { get; private set; }
     private Vector3 inputDirection;
-    private MovementState moveState;
-    private MovementState lastMoveState;
+    
     private InputAction moveInput;
     private InputAction sprintInput;
     private Rigidbody rb;
@@ -201,10 +199,10 @@ public class PlayerMovement : MonoBehaviour
         StateHandler();
 
         // Apply Drag (when in a grounded state only)
-        if (moveState == MovementState.walking ||
-            moveState == MovementState.sprinting ||
-            moveState == MovementState.crouching ||
-            moveState == MovementState.sliding)
+        if (MoveState == MovementState.walking ||
+            MoveState == MovementState.sprinting ||
+            MoveState == MovementState.crouching ||
+            MoveState == MovementState.sliding)
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
@@ -215,7 +213,7 @@ public class PlayerMovement : MonoBehaviour
             "\nDesired Speed : " + desiredMoveSpeed +
             "\nHorizontal Speed : " + hSpeed.magnitude.ToString("0.0") + 
             "\nVertical Speed : " + rb.linearVelocity.y.ToString("0.0") + 
-            "\nCurrent State : " + moveState.ToString() +
+            "\nCurrent State : " + MoveState.ToString() +
             "\nSlope Angle : " + Vector3.Angle(Vector3.up, slopeHit.normal));
     }
     private void StateHandler()
@@ -224,7 +222,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isDashing)
         {
-            moveState = MovementState.dashing;
+            MoveState = MovementState.dashing;
             desiredMoveSpeed = baseDashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
         }
@@ -232,7 +230,7 @@ public class PlayerMovement : MonoBehaviour
         // Sliding
         else if (isGrounded && isSliding)
         {
-            moveState = MovementState.sliding;
+            MoveState = MovementState.sliding;
 
             // Initiate with a boost of speed into the dash
             if (lastMoveState != MovementState.sliding)
@@ -253,26 +251,26 @@ public class PlayerMovement : MonoBehaviour
         // Crouching
         else if (isGrounded && CrouchBuffer())
         {
-            moveState = MovementState.crouching;
+            MoveState = MovementState.crouching;
             desiredMoveSpeed = baseCrouchSpeed * cloakSpeedMulti;
         }
         // Sprinting
         else if (isGrounded && isSprinting)
         {
-            moveState = MovementState.sprinting;
+            MoveState = MovementState.sprinting;
             desiredMoveSpeed = baseSprintSpeed * cloakSpeedMulti;
         }
         // Walking
         else if (isGrounded)
         {
-            moveState = MovementState.walking;
+            MoveState = MovementState.walking;
             desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
         }
 
         // Airborne
         else
         {
-            moveState = MovementState.airborne;
+            MoveState = MovementState.airborne;
 
             // Sets desired air speed to walking speed unless the player was moving at sprint speed already
             if (desiredMoveSpeed < baseSprintSpeed)
@@ -284,11 +282,11 @@ public class PlayerMovement : MonoBehaviour
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
 
         // If the last state was dashing, sliding, or crouching after sliding, use momentum lerp
-        if (lastMoveState == MovementState.dashing || moveState == MovementState.sliding || 
-            (lastMoveState == MovementState.sliding && moveState == MovementState.crouching)) keepMomentum = true;
+        if (lastMoveState == MovementState.dashing || MoveState == MovementState.sliding || 
+            (lastMoveState == MovementState.sliding && MoveState == MovementState.crouching)) keepMomentum = true;
 
         // Otherwise, if the current state is walking or crouching, do NOT use momentum lerp
-        else if (moveState == MovementState.walking || moveState == MovementState.crouching) keepMomentum = false;
+        else if (MoveState == MovementState.walking || MoveState == MovementState.crouching) keepMomentum = false;
 
 
         if (desiredMoveSpeedHasChanged)
@@ -307,14 +305,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (moveState == MovementState.dashing)
+        if (MoveState == MovementState.dashing)
             dashVFX.SetActive(true);
         else
             dashVFX.SetActive(false);
 
 
         lastDesiredMoveSpeed = desiredMoveSpeed;
-        lastMoveState = moveState;
+        lastMoveState = MoveState;
     }
     private void CheckInput()
     {
@@ -379,7 +377,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         // Ignore regular movement control if dashing
-        if (moveState == MovementState.dashing) return;
+        if (MoveState == MovementState.dashing) return;
 
         inputDirection = orientation.forward * rawMoveInput.y + orientation.right * rawMoveInput.x;
 

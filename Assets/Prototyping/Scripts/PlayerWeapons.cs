@@ -54,7 +54,7 @@ public class PlayerWeapons : MonoBehaviour
         rightWeapon.playerVelocity = rb.linearVelocity;
         leftWeapon.playerVelocity = rb.linearVelocity;
 
-        // Determines target based on what camera is looking
+        // Determines target based on what camera is looking at
         Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit);
 
         if (hit.point == Vector3.zero || hit.distance > 200f)
@@ -69,6 +69,8 @@ public class PlayerWeapons : MonoBehaviour
         // Draw rays from player guns for debugging direction
         Debug.DrawRay(rightWeapon.projectileSpawnPoint.position, (camTarget - rightWeapon.projectileSpawnPoint.position).normalized * 20f, Color.cyan);
         Debug.DrawRay(leftWeapon.projectileSpawnPoint.position, (camTarget - leftWeapon.projectileSpawnPoint.position).normalized * 20f, Color.cyan);
+
+        Debug.DrawRay(playerCam.transform.position, playerCam.transform.forward * 100f, Color.coral);
     }
 
 
