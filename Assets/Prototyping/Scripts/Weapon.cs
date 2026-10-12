@@ -7,6 +7,9 @@ public abstract class Weapon : MonoBehaviour
 {
     public enum WeaponType { Shadow, Wind, Fire, Ice, Earth, Lightning, Empty }
 
+    protected PlayerMovement playerMovement;
+    protected Rigidbody rb;
+
     [Header("Shooting")]
     public GameObject projectile;
 
@@ -22,7 +25,6 @@ public abstract class Weapon : MonoBehaviour
     protected float currentAmmo;
 
     [Header("Input & Display")]
-    public bool inRightHand;
     public TextMeshProUGUI ammoCounter;
     public Transform projectileSpawnPoint;
     public List<RectTransform> reticle;
@@ -46,11 +48,12 @@ public abstract class Weapon : MonoBehaviour
     protected float bloom;
 
     [Header("Movement Multipliers")]
+    // Default these values to 1 for normal bloom at those motion values
     public float standingMulti = 1.0f;
-    public float walkingMulti;
-    public float crouchingMulti;
-    public float slidingMulti;
-    public float airbornMulti;
+    public float walkingMulti = 1.0f;
+    public float crouchingMulti = 1.0f;
+    public float slidingMulti = 1.0f;
+    public float airbornMulti = 1.0f;
 
     protected float movement01;
     protected float selectedMulti;
@@ -59,8 +62,11 @@ public abstract class Weapon : MonoBehaviour
     public bool usingCircularDistribution = true;
 
 
-    private void Start()
+    public virtual void EquipWeapon(PlayerMovement p)
     {
+        playerMovement = p;
+        rb = p.gameObject.GetComponent<Rigidbody>();
+
         currentAmmo = maxAmmo;
 
         if (reticleDirection.Count != reticle.Count)
@@ -71,10 +77,6 @@ public abstract class Weapon : MonoBehaviour
         {
             reticlePositions.Add(reticle[i].localPosition);
         }
-    }
-    public void EquipToHand(bool rightHand)
-    {
-        inRightHand = rightHand;
     }
     protected void UpdateAmmo()
     {
@@ -100,6 +102,11 @@ public abstract class Weapon : MonoBehaviour
     }
     protected float GetCurrentSpreadDegrees()
     {
+        // Determines player's speed compared to desired speed for how much bloom movement multi to apply. This helps to 
+        movement01 = playerMovement.moveSpeed / playerMovement.desiredMoveSpeed;
+        // If slowing down, movement01 will cap at 50%
+        if (movement01 > 1f) movement01 = 0.5f;
+
         float moveMulti = Mathf.Lerp(standingMulti, selectedMulti, Mathf.Clamp01(movement01));
 
         float total = (baseSpread + bloom) * moveMulti;

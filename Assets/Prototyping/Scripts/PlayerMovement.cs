@@ -28,10 +28,10 @@ public class PlayerMovement : MonoBehaviour
 
     public static MovementState MoveState { get; private set; }
     private MovementState lastMoveState;
-
-    private float moveSpeed;
-    private float desiredMoveSpeed;
-    private float lastDesiredMoveSpeed;
+    public float moveSpeed { get; private set; }
+    public float desiredMoveSpeed { get; private set; }
+    public float lastDesiredMoveSpeed { get; private set; }
+    
     private float speedChangeFactor;
     private bool isSprinting;
     private bool keepMomentum;

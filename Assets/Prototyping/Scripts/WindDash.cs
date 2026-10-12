@@ -1,12 +1,10 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class WindDash : MonoBehaviour
 {
     [Header("References")]
     public Transform orientation;
     public Transform playerCam;
-    public bool isRightWeapon;
 
     private Rigidbody rb;
     private PlayerMovement player;
@@ -17,7 +15,6 @@ public class WindDash : MonoBehaviour
     public float dashDuration;
     public float maxDashYSpeed;
     private Vector3 delayedForceToApply;
-    private InputAction dashInput;
 
     [Header("Cooldown")]
     public float dashCD;
@@ -29,31 +26,16 @@ public class WindDash : MonoBehaviour
     public bool omnidirectionalDash;
     public bool resetVelocity;
 
-    private void Start()
+    public void Setup(PlayerMovement p)
     {
-        rb = GetComponent<Rigidbody>();
-        player = GetComponent<PlayerMovement>();
+        player = p;
+        rb = player.GetComponent<Rigidbody>();
     }
-    private void OnEnable()
-    {
-        // Checks if weapon is in right or left hand and applies correct input accordingly
-        if (isRightWeapon)
-            dashInput = InputSystem.actions.FindAction("Right Utility");
-        else
-            dashInput = InputSystem.actions.FindAction("Left Utility");
-
-        dashInput.performed += OnDash;
-    }
-    private void OnDisable()
-    {
-        dashInput.performed -= OnDash;
-    }
-
     private void Update()
     {
         if (dashCDTimer > 0) dashCDTimer -= Time.deltaTime;
     }
-    private void Dash()
+    public void Dash()
     {
         // Returns if dash is still on cooldown
         if (dashCDTimer > 0) return;
@@ -111,9 +93,4 @@ public class WindDash : MonoBehaviour
 
         return direction.normalized;
     }
-
-
-    // Input Call Functions
-    private void OnDash(InputAction.CallbackContext context) => Dash();
-
 }

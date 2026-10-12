@@ -8,6 +8,7 @@ public class PlayerWeapons : MonoBehaviour
     public Weapon rightWeapon;
     public Weapon leftWeapon;
 
+    private PlayerMovement playerMovement;
     private Rigidbody rb;
     private Vector3 camTarget;
     private RaycastHit hit;
@@ -18,6 +19,10 @@ public class PlayerWeapons : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerMovement = GetComponent<PlayerMovement>();
+
+        EquipToHand(rightWeapon, true);
+        EquipToHand(leftWeapon, false);
     }
 
     private void OnEnable()
@@ -72,15 +77,23 @@ public class PlayerWeapons : MonoBehaviour
 
         Debug.DrawRay(playerCam.transform.position, playerCam.transform.forward * 100f, Color.coral);
     }
+    public void EquipToHand(Weapon weapon, bool toRightHand)
+    {
+        // Equips a selected weapon to the specified hand
+        if (toRightHand)
+            rightWeapon = weapon;
+        else
+            leftWeapon = weapon;
 
-
-    bool placeholder;
+        // Initializes weapon with important references to player
+        weapon.EquipWeapon(playerMovement);
+    }
     private void OnRightPrimaryStart(InputAction.CallbackContext context) => rightWeapon.PrimaryBegin();
     private void OnRightPrimaryRelease(InputAction.CallbackContext context) => rightWeapon.PrimaryRelease();
-    private void OnRightSecondaryStart(InputAction.CallbackContext context) => placeholder = false;
-    private void OnRightSecondaryRelease(InputAction.CallbackContext context) => placeholder = false;
+    private void OnRightSecondaryStart(InputAction.CallbackContext context) => rightWeapon.SecondaryBegin();
+    private void OnRightSecondaryRelease(InputAction.CallbackContext context) => rightWeapon.SecondaryRelease();
     private void OnLeftPrimaryStart(InputAction.CallbackContext context) => leftWeapon.PrimaryBegin();
     private void OnLeftPrimaryRelease(InputAction.CallbackContext context) => leftWeapon.PrimaryRelease();
-    private void OnLeftSecondaryStart(InputAction.CallbackContext context) => placeholder = false;
-    private void OnLeftSecondaryRelease(InputAction.CallbackContext context) => placeholder = false;
+    private void OnLeftSecondaryStart(InputAction.CallbackContext context) => leftWeapon.SecondaryBegin();
+    private void OnLeftSecondaryRelease(InputAction.CallbackContext context) => leftWeapon.SecondaryRelease();
 }

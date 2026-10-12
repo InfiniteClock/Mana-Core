@@ -7,12 +7,16 @@ public class WindWeapon : Weapon
     [Tooltip("Shots per second")]
     public float fireRate;
 
+    private WindDash windDash;
     private bool isFiring;
     private float fireCD;
     private Coroutine shootRoutine;
 
-    private void OnValidate()
+    public override void EquipWeapon(PlayerMovement p)
     {
+        base.EquipWeapon(p);
+        windDash = GetComponent<WindDash>();
+        windDash.Setup(p);
         fireCD = 1f / fireRate;
     }
     private IEnumerator Fire()
@@ -65,10 +69,10 @@ public class WindWeapon : Weapon
     }
     public override void SecondaryBegin()
     {
-        throw new System.NotImplementedException();
+        windDash.Dash();
     }
     public override void SecondaryRelease()
     {
-        throw new System.NotImplementedException();
+        // No effect triggered
     }
 }
