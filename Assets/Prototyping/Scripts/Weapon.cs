@@ -2,17 +2,19 @@ using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 
-
+public enum WeaponType { Shadow, Wind, Fire, Ice, Earth, Lightning, Empty }
 public abstract class Weapon : MonoBehaviour
 {
-    public enum WeaponType { Shadow, Wind, Fire, Ice, Earth, Lightning, Empty }
-
     protected PlayerMovement playerMovement;
     protected Rigidbody rb;
+    public Ability Ability { get; protected set; }
 
     [Header("Shooting")]
     public GameObject projectile;
+    public WeaponType wType;
 
+    [HideInInspector]
+    public bool isRightWeapon;
     [HideInInspector]
     public Vector3 target;
     [HideInInspector]
@@ -22,10 +24,9 @@ public abstract class Weapon : MonoBehaviour
     public float maxAmmo;
     public float ammoPerShot;
 
-    protected float currentAmmo;
+    public float currentAmmo { get; protected set; }
 
     [Header("Input & Display")]
-    public TextMeshProUGUI ammoCounter;
     public Transform projectileSpawnPoint;
     public List<RectTransform> reticle;
     [Tooltip("Assign a degree direction for the reticle to move during bloom")]
@@ -60,12 +61,16 @@ public abstract class Weapon : MonoBehaviour
 
     [Header("Settings")]
     public bool usingCircularDistribution = true;
+    public int maxAbilityCharges = 1;
 
+    [HideInInspector]
+    public int displayedMaxCharges;
 
     public virtual void EquipWeapon(PlayerMovement p)
     {
         playerMovement = p;
         rb = p.gameObject.GetComponent<Rigidbody>();
+        Ability = GetComponent<Ability>();
 
         currentAmmo = maxAmmo;
 
@@ -77,10 +82,6 @@ public abstract class Weapon : MonoBehaviour
         {
             reticlePositions.Add(reticle[i].localPosition);
         }
-    }
-    protected void UpdateAmmo()
-    {
-        ammoCounter.text = currentAmmo.ToString("0") + "/" + maxAmmo.ToString("0");
     }
     private void Update()
     {
@@ -137,7 +138,7 @@ public abstract class Weapon : MonoBehaviour
     protected bool PlayerCanShoot()
     {
         // Determines how each state affects shooting, applying a set movement modifier or returning false is not allowed to shoot
-        switch (PlayerMovement.MoveState)
+        switch (playerMovement.moveState)
         {
             case PlayerMovement.MovementState.sprinting:
                 return false;

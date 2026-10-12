@@ -1,14 +1,8 @@
+using System.Collections;
 using UnityEngine;
 
-public class WindDash : MonoBehaviour
+public class WindDash : Ability
 {
-    [Header("References")]
-    public Transform orientation;
-    public Transform playerCam;
-
-    private Rigidbody rb;
-    private PlayerMovement player;
-
     [Header("Dashing")]
     public float dashForce;
     public float dashUpwardForce;
@@ -16,33 +10,24 @@ public class WindDash : MonoBehaviour
     public float maxDashYSpeed;
     private Vector3 delayedForceToApply;
 
-    [Header("Cooldown")]
-    public float dashCD;
-
-    private float dashCDTimer;
-
     [Header("Settings")]
     public bool useCameraForward;
     public bool omnidirectionalDash;
     public bool resetVelocity;
-
-    public void Setup(PlayerMovement p)
-    {
-        player = p;
-        rb = player.GetComponent<Rigidbody>();
-    }
-    private void Update()
-    {
-        if (dashCDTimer > 0) dashCDTimer -= Time.deltaTime;
-    }
     public void Dash()
     {
-        // Returns if dash is still on cooldown
-        if (dashCDTimer > 0) return;
-        else dashCDTimer = dashCD;
+        // Returns if dash has no remaining charges or is on internal buffer from other weapon
+        if (playerWeapons.GetAbilityCharges(weapon.isRightWeapon) < 1 || playerWeapons.bufferTimer > 0) return;
+        else
+        {
+            // Reset the cooldown, 
+            cooldownTimer = cooldown;
+            playerWeapons.bufferTimer = playerWeapons.dashBuffer;
+            playerWeapons.UseAbilityCharge(weapon.isRightWeapon);
+        }
 
-        player.isDashing = true;
-        player.maxYSpeed = maxDashYSpeed;
+        playerMovement.isDashing = true;
+        playerMovement.maxYSpeed = maxDashYSpeed;
 
         Transform forwardT;
 
@@ -55,6 +40,7 @@ public class WindDash : MonoBehaviour
 
         // Triggers the dash after a very short delay to account for player script order of operations
         delayedForceToApply = forceToApply;
+
         Invoke(nameof(DelayedDashForce), 0.025f);
 
         Invoke(nameof(ResetDash), dashDuration);
@@ -73,12 +59,12 @@ public class WindDash : MonoBehaviour
 
     private void ResetDash()
     {
-        player.isDashing = false;
-        player.maxYSpeed = 0;
+        playerMovement.isDashing = false;
+        playerMovement.maxYSpeed = 0;
     }
     private Vector3 GetDirection(Transform forwardT)
     {
-        Vector3 input = new Vector3(player.rawMoveInput.x, 0f, player.rawMoveInput.y);
+        Vector3 input = new Vector3(playerMovement.rawMoveInput.x, 0f, playerMovement.rawMoveInput.y);
 
         Vector3 direction = new Vector3();
 

@@ -95,6 +95,16 @@
                     "interactions": "Press",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "Quit Game",
+                    "type": "Button",
+                    "id": "aa738a81-b11e-4cc9-ba65-5d046c651b2a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -381,6 +391,17 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Left Utility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad0d4bd2-8fda-466c-977f-fc78832d33c8",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quit Game",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

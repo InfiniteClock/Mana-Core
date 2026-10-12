@@ -46,7 +46,6 @@ public class WindWeapon : Weapon
 
                 // Adjust ammo and check if there is enough to keep shooting
                 currentAmmo -= ammoPerShot;
-                UpdateAmmo();
                 if (currentAmmo <= 0f)
                     isFiring = false; 
             }

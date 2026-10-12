@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public float baseAccelMultiplier;
     public float groundDrag;
 
-    public static MovementState MoveState { get; private set; }
+    public MovementState moveState { get; private set; }
     private MovementState lastMoveState;
     public float moveSpeed { get; private set; }
     public float desiredMoveSpeed { get; private set; }
@@ -85,12 +86,13 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public float cloakJumpHeight;
     // --- -- -
-
+    
     [Header("Ground Check")]
     public float playerHeight;
     public float playerWidth;
     public LayerMask whatIsGround;
-    private bool isGrounded;
+
+    public bool isGrounded { get; private set; }
 
     [Header("Slopes")]
     public float maxSlopeAngle;
@@ -199,10 +201,10 @@ public class PlayerMovement : MonoBehaviour
         StateHandler();
 
         // Apply Drag (when in a grounded state only)
-        if (MoveState == MovementState.walking ||
-            MoveState == MovementState.sprinting ||
-            MoveState == MovementState.crouching ||
-            MoveState == MovementState.sliding)
+        if (moveState == MovementState.walking ||
+            moveState == MovementState.sprinting ||
+            moveState == MovementState.crouching ||
+            moveState == MovementState.sliding)
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
@@ -213,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
             "\nDesired Speed : " + desiredMoveSpeed +
             "\nHorizontal Speed : " + hSpeed.magnitude.ToString("0.0") + 
             "\nVertical Speed : " + rb.linearVelocity.y.ToString("0.0") + 
-            "\nCurrent State : " + MoveState.ToString() +
+            "\nCurrent State : " + moveState.ToString() +
             "\nSlope Angle : " + Vector3.Angle(Vector3.up, slopeHit.normal));
     }
     private void StateHandler()
@@ -222,7 +224,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isDashing)
         {
-            MoveState = MovementState.dashing;
+            moveState = MovementState.dashing;
             desiredMoveSpeed = baseDashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
         }
@@ -230,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
         // Sliding
         else if (isGrounded && isSliding)
         {
-            MoveState = MovementState.sliding;
+            moveState = MovementState.sliding;
 
             // Initiate with a boost of speed into the dash
             if (lastMoveState != MovementState.sliding)
@@ -251,26 +253,26 @@ public class PlayerMovement : MonoBehaviour
         // Crouching
         else if (isGrounded && CrouchBuffer())
         {
-            MoveState = MovementState.crouching;
+            moveState = MovementState.crouching;
             desiredMoveSpeed = baseCrouchSpeed * cloakSpeedMulti;
         }
         // Sprinting
         else if (isGrounded && isSprinting)
         {
-            MoveState = MovementState.sprinting;
+            moveState = MovementState.sprinting;
             desiredMoveSpeed = baseSprintSpeed * cloakSpeedMulti;
         }
         // Walking
         else if (isGrounded)
         {
-            MoveState = MovementState.walking;
+            moveState = MovementState.walking;
             desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
         }
 
         // Airborne
         else
         {
-            MoveState = MovementState.airborne;
+            moveState = MovementState.airborne;
 
             // Sets desired air speed to walking speed unless the player was moving at sprint speed already
             if (desiredMoveSpeed < baseSprintSpeed)
@@ -282,11 +284,11 @@ public class PlayerMovement : MonoBehaviour
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
 
         // If the last state was dashing, sliding, or crouching after sliding, use momentum lerp
-        if (lastMoveState == MovementState.dashing || MoveState == MovementState.sliding || 
-            (lastMoveState == MovementState.sliding && MoveState == MovementState.crouching)) keepMomentum = true;
+        if (lastMoveState == MovementState.dashing || moveState == MovementState.sliding || 
+            (lastMoveState == MovementState.sliding && moveState == MovementState.crouching)) keepMomentum = true;
 
         // Otherwise, if the current state is walking or crouching, do NOT use momentum lerp
-        else if (MoveState == MovementState.walking || MoveState == MovementState.crouching) keepMomentum = false;
+        else if (moveState == MovementState.walking || moveState == MovementState.crouching) keepMomentum = false;
 
 
         if (desiredMoveSpeedHasChanged)
@@ -305,14 +307,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (MoveState == MovementState.dashing)
+        if (moveState == MovementState.dashing)
             dashVFX.SetActive(true);
         else
             dashVFX.SetActive(false);
 
 
         lastDesiredMoveSpeed = desiredMoveSpeed;
-        lastMoveState = MoveState;
+        lastMoveState = moveState;
     }
     private void CheckInput()
     {
@@ -377,7 +379,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         // Ignore regular movement control if dashing
-        if (MoveState == MovementState.dashing) return;
+        if (moveState == MovementState.dashing) return;
 
         inputDirection = orientation.forward * rawMoveInput.y + orientation.right * rawMoveInput.x;
 

@@ -10,11 +10,19 @@ public class CameraLook : MonoBehaviour
     private InputAction lookInput;
     private float xRotation = 0f;
     private float yRotation = 0f;
+    private InputAction escInput;
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
 
         lookInput = InputSystem.actions.FindAction("Look");
+        escInput = InputSystem.actions.FindAction("Quit Game");
+
+        escInput.performed += OnEscape;
+    }
+    private void OnDisable()
+    {
+        escInput.performed -= OnEscape;
     }
     private void Update()
     {
@@ -38,4 +46,9 @@ public class CameraLook : MonoBehaviour
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
 
     }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    public void OnEscape(InputAction.CallbackContext context) => QuitGame();
 }
