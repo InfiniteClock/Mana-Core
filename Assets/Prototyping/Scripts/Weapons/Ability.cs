@@ -3,8 +3,8 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour
 {
     [Header("References")]
-    public Transform orientation;
-    public Transform playerCam;
+    public Transform orientation {  get; protected set; }
+    public Transform playerCam { get; protected set; }
 
     protected Rigidbody rb;
     protected PlayerMovement playerMovement;
@@ -23,5 +23,7 @@ public abstract class Ability : MonoBehaviour
         playerMovement = p;
         playerWeapons = p.GetComponent<PlayerWeapons>();
         rb = playerMovement.GetComponent<Rigidbody>();
+        orientation = p.orientation;
+        playerCam = p.playerCam.transform;
     }
 }

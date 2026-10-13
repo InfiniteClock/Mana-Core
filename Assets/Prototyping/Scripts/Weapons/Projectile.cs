@@ -12,8 +12,11 @@ public class Projectile : MonoBehaviour
     public float effectiveDistance;
     [Tooltip("Damage to enemies")]
     public float damage;
-    [Tooltip("True if projectile should spawn with random z rotation")]
-    public bool randomRotationSpawn = false;
+    [Tooltip("The random Z rotation that the projectile can spawn with. 0 = no rotation. Ranges from -value to +value")]
+    public float randomZRotation = 0f;
+    [Tooltip("Set to true if this projectile should pierce through multiple colliders")]
+    public bool isPiercing = false;
+
 
     [HideInInspector]
     public Vector3 fwdMomentum;
@@ -33,10 +36,13 @@ public class Projectile : MonoBehaviour
         rb.AddForce(transform.forward * travelSpeed, ForceMode.Impulse);
 
         // Spawns at a random Z rotation
-        if (randomRotationSpawn)
-            rb.rotation = Quaternion.Euler(0f, 0f, Random.Range(-180f, 180f));
+        
+        Vector3 randRot = rb.rotation.eulerAngles;
+        randRot.z = Random.Range(-randomZRotation, randomZRotation);
+        rb.rotation = Quaternion.Euler(randRot);
 
-        // Adds spinning to the projectile
+        // Adds random spinning to the projectile
+        spinSpeed *= Random.Range(-1f, 1f);
         rb.AddRelativeTorque(spinAxis * spinSpeed, ForceMode.Impulse);
     }
     public void Update()
@@ -56,7 +62,7 @@ public class Projectile : MonoBehaviour
         {
             dummy.TakeDamage();
         }
-
-        Destroy(gameObject);
+        if (!isPiercing)
+            Destroy(gameObject);
     }
 }

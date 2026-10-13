@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WindWeapon : Weapon
 { 
-    [Header("Gun Stats")]
+    [Header("Wind Stats")]
     [Tooltip("Shots per second")]
     public float fireRate;
 
@@ -23,7 +23,7 @@ public class WindWeapon : Weapon
     {
         while (isFiring)
         {
-            // If statement prevents shooting while not in shootbale state without ending the routine
+            // If statement prevents shooting while not in shootable state without ending the routine
             // This allows player to continue holding button while sprinting and dashing to begin shooting when entering a shootable state
             if (PlayerCanShoot())
             {
@@ -32,12 +32,9 @@ public class WindWeapon : Weapon
                 float spreadDeg = GetCurrentSpreadDegrees();
                 rotation = GetSpreadRotation(spreadDeg) * rotation;
 
-                //Debug.Log(dir);
-
                 // Instantiate projectile and get it moving
                 GameObject shot = Instantiate(projectile, projectileSpawnPoint.position, rotation);
 
-                //shot.transform.forward = dir;
                 Projectile shotPro = shot.GetComponent<Projectile>();
                 shotPro.fwdMomentum = playerVelocity;
 
@@ -47,10 +44,12 @@ public class WindWeapon : Weapon
                 // Adjust ammo and check if there is enough to keep shooting
                 currentAmmo -= ammoPerShot;
                 if (currentAmmo <= 0f)
-                    isFiring = false; 
-            }
+                    isFiring = false;
 
-            yield return new WaitForSeconds(fireCD);
+                yield return new WaitForSeconds(fireCD);
+            }
+            else 
+                yield return null;
         }
         shootRoutine = null;
     }

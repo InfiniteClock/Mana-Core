@@ -167,11 +167,22 @@ public class PlayerWeapons : MonoBehaviour
         // Initializes weapon with important references to player
         weapon.EquipWeapon(playerMovement);
 
+        // Set the ability charges based on if both weapons are the same, then based on whether it is left or right weapon
         if (hasTwinWeapons)
         {
             rightWeapon.displayedMaxCharges = rightWeapon.maxAbilityCharges + leftWeapon.maxAbilityCharges;
             leftWeapon.displayedMaxCharges = rightWeapon.displayedMaxCharges;
             rightAbilityCharges = 0;
+            leftAbilityCharges = 0;
+        }
+        else if (toRightHand)
+        {
+            rightWeapon.displayedMaxCharges = rightWeapon.maxAbilityCharges;
+            rightAbilityCharges = 0;
+        }
+        else
+        {
+            leftWeapon.displayedMaxCharges = leftWeapon.maxAbilityCharges;
             leftAbilityCharges = 0;
         }
     }

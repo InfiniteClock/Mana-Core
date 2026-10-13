@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3500451152067984225}
   - component: {fileID: 8997833009987160721}
   - component: {fileID: 2655997794472283493}
-  - component: {fileID: 4464504053620320309}
   - component: {fileID: 5407448728379480310}
+  - component: {fileID: 4464504053620320309}
   m_Layer: 0
   m_Name: Projectile Wind
   m_TagString: Untagged
@@ -115,25 +115,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4464504053620320309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5462679850225452715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35ec6a5b99cba5d479020692ccbce563, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  travelSpeed: 30
-  spinSpeed: 5
-  spinAxis: {x: 0, y: 1, z: 0}
-  effectiveDistance: 30
-  damage: 1
-  randomRotationSpawn: 1
-  fwdMomentum: {x: 0, y: 0, z: 0}
 --- !u!54 &5407448728379480310
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -161,6 +142,26 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &4464504053620320309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5462679850225452715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ec6a5b99cba5d479020692ccbce563, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  travelSpeed: 30
+  spinSpeed: 5
+  spinAxis: {x: 0, y: 1, z: 0}
+  effectiveDistance: 30
+  damage: 1
+  randomZRotation: 180
+  isPiercing: 0
+  fwdMomentum: {x: 0, y: 0, z: 0}
 --- !u!1 &6713910599793580270
 GameObject:
   m_ObjectHideFlags: 0

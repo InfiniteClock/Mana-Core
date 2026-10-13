@@ -22,8 +22,10 @@ public class WindDash : Ability
         {
             // Reset the cooldown, 
             cooldownTimer = cooldown;
-            playerWeapons.bufferTimer = playerWeapons.dashBuffer;
             playerWeapons.UseAbilityCharge(weapon.isRightWeapon);
+
+            if (playerWeapons.hasTwinWeapons)
+                playerWeapons.bufferTimer = playerWeapons.dashBuffer;
         }
 
         playerMovement.isDashing = true;
