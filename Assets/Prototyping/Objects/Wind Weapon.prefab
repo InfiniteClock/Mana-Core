@@ -60,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 9060725928081804950}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -0.40000004, z: 0.6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -180,8 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb2dfc0d0a38f8499116d5aa92e1293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WindDash
-  orientation: {fileID: 0}
-  playerCam: {fileID: 0}
   cooldown: 3
   cooldownTimer: 0
   dashForce: 30

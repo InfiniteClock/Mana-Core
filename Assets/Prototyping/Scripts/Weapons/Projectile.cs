@@ -65,6 +65,8 @@ public class Projectile : MonoBehaviour
         {
             dummy.TakeDamage();
         }
+
+        // Destroys projectile on collision with anything UNLESS it has piercing property
         if (!isPiercing)
             Destroy(gameObject);
     }

@@ -6,6 +6,8 @@ public class PlayerWeapons : MonoBehaviour
 {
     [Header("References")]
     public Camera playerCam;
+    public Transform rightHand;
+    public Transform leftHand;
     public Weapon rightWeapon;
     public Weapon leftWeapon;
     public TextMeshProUGUI rightAbilityText;
