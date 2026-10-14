@@ -1,4 +1,7 @@
+using System.Collections;
 using TMPro;
+using Unity.Hierarchy;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +15,10 @@ public class PlayerWeapons : MonoBehaviour
     public Weapon leftWeapon;
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
+    public GameObject emptyHandPrefab;
     public float dashBuffer;
+    public float swapHoldTime;
+    public float consumeHoldTime;
 
     public bool hasTwinWeapons { get; private set; }
 
@@ -22,7 +28,11 @@ public class PlayerWeapons : MonoBehaviour
     public int leftAbilityCharges;
     //[HideInInspector]
     public float bufferTimer;
+    //[HideInInspector]
+    public float swapTimer;
 
+    private bool isSwapping;
+    private bool isConsuming;
     private PlayerMovement playerMovement;
     private Rigidbody rb;
     private WeaponType rWeaponType;
@@ -33,7 +43,11 @@ public class PlayerWeapons : MonoBehaviour
     private InputAction leftFireInput;
     private InputAction rightUtilityInput;
     private InputAction leftUtilityInput;
-    
+    private InputAction swapInput;
+    private InputAction consumeInput;
+    private Coroutine rightConsumeRoutine;
+    private Coroutine leftConsumeRoutine;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -49,6 +63,9 @@ public class PlayerWeapons : MonoBehaviour
         leftFireInput = InputSystem.actions.FindAction("Left Fire");
         rightUtilityInput = InputSystem.actions.FindAction("Right Utility");
         leftUtilityInput = InputSystem.actions.FindAction("Left Utility");
+        swapInput = InputSystem.actions.FindAction("Swap");
+        consumeInput = InputSystem.actions.FindAction("Consume");
+
 
         rightFireInput.performed += OnRightPrimaryStart;
         rightFireInput.canceled += OnRightPrimaryRelease;
@@ -58,6 +75,10 @@ public class PlayerWeapons : MonoBehaviour
         leftFireInput.canceled += OnLeftPrimaryRelease;
         leftUtilityInput.performed += OnLeftSecondaryStart;
         leftUtilityInput.canceled += OnLeftSecondaryRelease;
+        swapInput.performed += OnSwapStart;
+        swapInput.canceled += OnSwapRelease;
+        consumeInput.performed += OnConsumeStart;
+        consumeInput.canceled += OnConsumeRelease;
     }
     private void OnDisable()
     {
@@ -69,7 +90,10 @@ public class PlayerWeapons : MonoBehaviour
         leftFireInput.canceled -= OnLeftPrimaryRelease;
         leftUtilityInput.performed -= OnLeftSecondaryStart;
         leftUtilityInput.canceled -= OnLeftSecondaryRelease;
-
+        swapInput.performed -= OnSwapStart;
+        swapInput.canceled -= OnSwapRelease;
+        consumeInput.performed -= OnConsumeStart;
+        consumeInput.canceled -= OnConsumeRelease;
     }
     private void FixedUpdate()
     {
@@ -97,6 +121,14 @@ public class PlayerWeapons : MonoBehaviour
         Debug.DrawRay(leftWeapon.projectileSpawnPoint.position, (camTarget - leftWeapon.projectileSpawnPoint.position).normalized * 20f, Color.cyan);
 
         Debug.DrawRay(playerCam.transform.position, playerCam.transform.forward * 100f, Color.coral);
+
+        if (isSwapping)
+        {
+            if (swapTimer < swapHoldTime)
+                swapTimer += Time.deltaTime;
+        }
+        else
+            swapTimer = 0f;
     }
     private void ControlTimers()
     {
@@ -155,6 +187,7 @@ public class PlayerWeapons : MonoBehaviour
             rightWeapon = weapon;
             rWeaponType = weapon.wType;
             rightWeapon.isRightWeapon = true;
+
         }
         else
         {
@@ -163,29 +196,32 @@ public class PlayerWeapons : MonoBehaviour
             leftWeapon.isRightWeapon = false;
         }
 
-        // Checks if both weapons are the same
-        hasTwinWeapons = rightWeapon.wType == leftWeapon.wType;
+        // Checks if both weapons are the same, with a delay in case this is a weapon swap
+        Invoke(nameof(CheckTwinWeapons), 0.01f);
 
         // Initializes weapon with important references to player
         weapon.EquipWeapon(playerMovement);
+    }
+    private void CheckTwinWeapons()
+    {
+        hasTwinWeapons = rightWeapon.wType == leftWeapon.wType;
 
         // Set the ability charges based on if both weapons are the same, then based on whether it is left or right weapon
         if (hasTwinWeapons)
         {
             rightWeapon.displayedMaxCharges = rightWeapon.maxAbilityCharges + leftWeapon.maxAbilityCharges;
             leftWeapon.displayedMaxCharges = rightWeapon.displayedMaxCharges;
-            rightAbilityCharges = 0;
-            leftAbilityCharges = 0;
-        }
-        else if (toRightHand)
-        {
-            rightWeapon.displayedMaxCharges = rightWeapon.maxAbilityCharges;
-            rightAbilityCharges = 0;
+            // Ensures we cannot surpass the min of 0 and maximum amount of charges across both weapons
+            rightAbilityCharges = Mathf.Clamp(rightAbilityCharges + leftAbilityCharges, 0, rightWeapon.displayedMaxCharges);
+            leftAbilityCharges = rightAbilityCharges;
         }
         else
         {
+            rightWeapon.displayedMaxCharges = rightWeapon.maxAbilityCharges;
             leftWeapon.displayedMaxCharges = leftWeapon.maxAbilityCharges;
-            leftAbilityCharges = 0;
+            // Ensures we never have more ability charges than able when we swap off of twin weapons
+            rightAbilityCharges = Mathf.Min(rightAbilityCharges, rightWeapon.maxAbilityCharges);
+            leftAbilityCharges = Mathf.Min(leftAbilityCharges, leftWeapon.maxAbilityCharges);
         }
     }
     public void GainAbilityCharge(bool usedRightWeapon)
@@ -221,12 +257,113 @@ public class PlayerWeapons : MonoBehaviour
     {
         return usedRightWeapon ? rightAbilityCharges : leftAbilityCharges;
     }
-    private void OnRightPrimaryStart(InputAction.CallbackContext context) => rightWeapon.PrimaryBegin();
+
+    private void CheckPrimaryStart(bool isRightWeapon)
+    {
+        // Check if player is holding consume input first
+        if (isConsuming)
+        {
+            // Only allows the consume coroutine to start if its not already running for that hand
+            if (isRightWeapon)
+                rightConsumeRoutine ??= StartCoroutine(ConsumeWeapon(isRightWeapon));
+            else
+                leftConsumeRoutine ??= StartCoroutine(ConsumeWeapon(isRightWeapon));
+        }
+
+        // Check if player is holding swap input next
+        else if (isSwapping)
+        {
+            Debug.Log("Here is where I'd swap to a new Mana Core... If I had one!" + isRightWeapon);
+        }
+
+        // Regular shooting otherwise
+        else
+        {
+            if (isRightWeapon)
+                rightWeapon.PrimaryBegin();
+            else
+                leftWeapon.PrimaryBegin();
+        }
+    }
+    private IEnumerator ConsumeWeapon(bool isRightWeapon)
+    {
+        float consumeTimer = 0f;
+        while (isConsuming && consumeTimer < consumeHoldTime)
+        {
+            consumeTimer += Time.deltaTime;
+            yield return null;
+        }
+
+        // Only completes the coroutine if consume button is still being held at end of timer
+        if (isConsuming)
+        {
+            // Destroyes the existing weapon
+            if (isRightWeapon)
+                Destroy(rightWeapon.gameObject);
+            else
+                Destroy(leftWeapon.gameObject);
+            // Equips the empty hand in its place
+            EquipNewWeapon(emptyHandPrefab, isRightWeapon);
+        }
+
+        // Resets the coroutine and allowing it to trigger again
+        if (isRightWeapon)
+            rightConsumeRoutine = null;
+        else
+            leftConsumeRoutine = null;
+    }
+    private void SwapWeapons()
+    {
+        Weapon tempRight = rightWeapon;
+        Weapon tempLeft = leftWeapon;
+
+        rightWeapon.transform.SetParent(leftHand);
+        leftWeapon.transform.SetParent(rightHand);
+
+        rightWeapon.transform.localPosition = Vector3.zero;
+        leftWeapon.transform.localPosition = Vector3.zero;
+
+        int tempRightCharges = rightAbilityCharges;
+        int tempLeftCharges = leftAbilityCharges;
+        rightAbilityCharges = tempLeftCharges;
+        leftAbilityCharges = tempRightCharges;
+
+        EquipToHand(tempRight, false);
+        EquipToHand(tempLeft, true);
+    }
+    /// <summary>
+    /// Instantiates the new weapon and sets its transform position, then equips it
+    /// </summary>
+    /// <param name="newWeapon">The prefab of the weapon to spawn</param>
+    /// <param name="isRightWeapon">Is this going into right hand or left</param>
+    private void EquipNewWeapon(GameObject newWeapon, bool isRightWeapon)
+    {
+        Transform hand;
+        if (isRightWeapon)
+            hand = rightHand;
+
+        else
+            hand = leftHand;
+        GameObject newObj = Instantiate(newWeapon, hand);
+        EquipToHand(newObj.GetComponent<Weapon>(), isRightWeapon);
+    }
+
+
+    private void OnRightPrimaryStart(InputAction.CallbackContext context) => CheckPrimaryStart(true);
     private void OnRightPrimaryRelease(InputAction.CallbackContext context) => rightWeapon.PrimaryRelease();
     private void OnRightSecondaryStart(InputAction.CallbackContext context) => rightWeapon.SecondaryBegin();
     private void OnRightSecondaryRelease(InputAction.CallbackContext context) => rightWeapon.SecondaryRelease();
-    private void OnLeftPrimaryStart(InputAction.CallbackContext context) => leftWeapon.PrimaryBegin();
+    private void OnLeftPrimaryStart(InputAction.CallbackContext context) => CheckPrimaryStart(false);
     private void OnLeftPrimaryRelease(InputAction.CallbackContext context) => leftWeapon.PrimaryRelease();
     private void OnLeftSecondaryStart(InputAction.CallbackContext context) => leftWeapon.SecondaryBegin();
     private void OnLeftSecondaryRelease(InputAction.CallbackContext context) => leftWeapon.SecondaryRelease();
+    private void OnSwapStart(InputAction.CallbackContext context) => isSwapping = true;
+    private void OnSwapRelease(InputAction.CallbackContext context) 
+    {
+        if (swapTimer < swapHoldTime)
+            SwapWeapons();
+        isSwapping = false;
+    }
+    private void OnConsumeStart(InputAction.CallbackContext context) => isConsuming = true;
+    private void OnConsumeRelease(InputAction.CallbackContext context) => isConsuming = false;
 }

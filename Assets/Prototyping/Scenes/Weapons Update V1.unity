@@ -317,14 +317,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeapons
   playerCam: {fileID: 2119628389}
+  rightHand: {fileID: 997901419}
+  leftHand: {fileID: 1138484566}
   rightWeapon: {fileID: 1012520103}
   leftWeapon: {fileID: 7467926392953583741}
   rightAbilityText: {fileID: 1607289715}
   leftAbilityText: {fileID: 394077027}
+  emptyHandPrefab: {fileID: 5994918901084640872, guid: ab4ce3c2f39811446b71279e3b8cc320, type: 3}
   dashBuffer: 0.5
+  swapHoldTime: 0.5
+  consumeHoldTime: 1
   rightAbilityCharges: 0
   leftAbilityCharges: 0
   bufferTimer: 0
+  swapTimer: 0
 --- !u!1 &64949932
 GameObject:
   m_ObjectHideFlags: 0
