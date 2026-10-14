@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [Header("Projectile Stats")]
+    [Tooltip("Seconds before projectile despawns")]
+    public float lifeTime;
     [Tooltip("m/s")]
     public float travelSpeed;
+    [Tooltip("The curve at which the projectile applies travelSpeed over lifetime")]
+    public AnimationCurve speedCurve;
     [Tooltip("deg/s")]
     public float spinSpeed;
     [Tooltip("Vector axis to spin around. Normalized")]
     public Vector3 spinAxis;
-    [Tooltip("Meters projectile will fly before despawning")]
-    public float effectiveDistance;
     [Tooltip("Damage to enemies")]
     public float damage;
     [Tooltip("The random Z rotation that the projectile can spawn with. 0 = no rotation. Ranges from -value to +value")]
@@ -18,32 +21,32 @@ public class Projectile : MonoBehaviour
     public bool isPiercing = false;
 
 
-    [HideInInspector]
-    public Vector3 fwdMomentum;
-
-    private float lifeTime;
+    private Vector3 direction;
+    private float speed;
     private float lifeTimer;
     private Rigidbody rb;
     private void Start()
     {
-        lifeTime = effectiveDistance / travelSpeed;
         spinAxis = spinAxis.normalized;
 
         rb = GetComponent<Rigidbody>();
 
-        // Adds player forward velocity to projectile before applying initial impulse force to the projectiles
-        rb.linearVelocity = fwdMomentum;
-        rb.AddForce(transform.forward * travelSpeed, ForceMode.Impulse);
-
-        // Spawns at a random Z rotation
+        // Set the direction of travel before applying any rotational forces
+        direction = transform.forward;
         
-        Vector3 randRot = rb.rotation.eulerAngles;
-        randRot.z = Random.Range(-randomZRotation, randomZRotation);
-        rb.rotation = Quaternion.Euler(randRot);
-
+        // Spawns at a random Z rotation
+        Vector3 randRot = transform.rotation.eulerAngles;
+        randRot.z += Random.Range(-randomZRotation, randomZRotation);
+        transform.rotation = Quaternion.Euler(randRot);
+        
         // Adds random spinning to the projectile
         spinSpeed *= Random.Range(-1f, 1f);
         rb.AddRelativeTorque(spinAxis * spinSpeed, ForceMode.Impulse);
+    }
+    private void FixedUpdate()
+    {
+        speed = speedCurve.Evaluate(lifeTimer / lifeTime) * travelSpeed;
+        rb.linearVelocity = direction * speed;
     }
     public void Update()
     {

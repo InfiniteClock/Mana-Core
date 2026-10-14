@@ -206,7 +206,6 @@ GameObject:
   - component: {fileID: 26685106}
   - component: {fileID: 26685109}
   - component: {fileID: 26685105}
-  - component: {fileID: 26685108}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -305,33 +304,6 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &26685108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26685100}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3212ee9bd7641cc4fb7e6c7c1d596270, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ShadowCloak
-  isRightWeapon: 1
-  cloakFilter: {fileID: 818576957}
-  smokeCloudPrefab: {fileID: 4140268644539983049, guid: 029187640ee3b9741a12474ef3aac294, type: 3}
-  cloakDuration: 5
-  speedMulti: 0.4
-  shadowJumpHeight: 5.6
-  cloakCD: 5
-  smokeDuration: 8
-  smokeDiameterStart: 10
-  smokeDiameterEnd: 15
-  smokeTransparencyStart: 0.5
-  smokeTransparencyEnd: 0.1
-  smokeGrows: 1
-  boostsAirControl: 0
-  boostsOtherAbilities: 0
 --- !u!114 &26685109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5568,6 +5540,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2119628390}
     m_Modifications:
+    - target: {fileID: 4203458807484583524, guid: e051ea60848e5cd43b62cc2145080ed2, type: 3}
+      propertyPath: cloakFilter
+      value: 
+      objectReference: {fileID: 818576957}
     - target: {fileID: 5486319530069041988, guid: e051ea60848e5cd43b62cc2145080ed2, type: 3}
       propertyPath: m_Name
       value: Shadow Blade

@@ -2,22 +2,18 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ShadowCloak : MonoBehaviour
+public class ShadowCloak : Ability
 {
     [Header("References")]
     public bool isRightWeapon;
     public GameObject cloakFilter;
     public GameObject smokeCloudPrefab;
-    private PlayerMovement player;
 
     [Header("Cloak")]
     public float cloakDuration;
     public float speedMulti;
     public float shadowJumpHeight;
-    public float cloakCD;
     
-    private float cloakCDTimer;
-    private InputAction cloakInput;
 
     [Header("Smoke")]
     public float smokeDuration;
@@ -33,44 +29,31 @@ public class ShadowCloak : MonoBehaviour
 
     private void Start()
     {
-        player = GetComponent<PlayerMovement>();
         cloakFilter.SetActive(false);
     }
-    private void OnEnable()
+
+    public void Cloak()
     {
-        if (isRightWeapon)
-            cloakInput = InputSystem.actions.FindAction("Right Utility");
+        // Returns if dash has no remaining charges or is on internal buffer from other weapon
+        if (playerWeapons.GetAbilityCharges(weapon.isRightWeapon) < 1 || playerWeapons.bufferTimer > 0) return;
         else
-            cloakInput = InputSystem.actions.FindAction("Left Utility");
+        {
+            // Reset the cooldown, 
+            cooldownTimer = cooldown;
+            playerWeapons.UseAbilityCharge(weapon.isRightWeapon);
 
-        cloakInput.performed += OnCloak;
-    }
-
-    private void OnDisable()
-    {
-        cloakInput.performed -= OnCloak;
-    }
-
-    private void Update()
-    {
-        // Cloak cooldown begins when cloak stops being active
-        if (cloakCDTimer > 0 && !player.isCloaked) cloakCDTimer -= Time.deltaTime;
-    }
-
-    private void Cloak()
-    {
-        // Returns if still on cooldown
-        if (cloakCDTimer > 0) return;
-        else cloakCDTimer = cloakDuration;
+            if (playerWeapons.hasTwinWeapons)
+                playerWeapons.bufferTimer = playerWeapons.dashBuffer;
+        }
 
         // Start the smoke bomb
         StartCoroutine(Smoke());
 
         // Applies visual effects and sets stats of player for being cloaked
         cloakFilter.SetActive(true);
-        player.isCloaked = true;
-        player.cloakSpeedMulti = speedMulti + 1f;
-        player.SetJumpStats(shadowJumpHeight);
+        playerMovement.isCloaked = true;
+        playerMovement.cloakSpeedMulti = speedMulti + 1f;
+        playerMovement.SetJumpStats(shadowJumpHeight);
 
         // When cloak has run out, reset the ability
         Invoke(nameof(ResetCloak), cloakDuration);
@@ -79,7 +62,7 @@ public class ShadowCloak : MonoBehaviour
     {
         // Spawn the smoke bomb and set its scale
         GameObject smokeBomb = Instantiate(smokeCloudPrefab);
-        smokeBomb.transform.position = player.transform.position;
+        smokeBomb.transform.position = playerMovement.transform.position;
         if (!smokeGrows)
             smokeBomb.transform.localScale = Vector3.one * smokeDiameterStart;
         else
@@ -111,9 +94,9 @@ public class ShadowCloak : MonoBehaviour
     {
         // Resets the visual effects and stats of player back to normal
         cloakFilter.SetActive(false);
-        player.isCloaked = false;
-        player.cloakSpeedMulti = 1f;
-        player.SetJumpStats(player.jumpHeight);
+        playerMovement.isCloaked = false;
+        playerMovement.cloakSpeedMulti = 1f;
+        playerMovement.SetJumpStats(playerMovement.jumpHeight);
     }
 
     private void OnCloak(InputAction.CallbackContext context) => Cloak();

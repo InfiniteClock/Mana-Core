@@ -36,7 +36,6 @@ public class WindWeapon : Weapon
                 GameObject shot = Instantiate(projectile, projectileSpawnPoint.position, rotation);
 
                 Projectile shotPro = shot.GetComponent<Projectile>();
-                shotPro.fwdMomentum = playerVelocity;
 
                 // Adjust weapon bloom
                 BloomOnShotFired();
