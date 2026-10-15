@@ -1,9 +1,15 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
 public class ShadowCloak : Ability
 {
+    [Header("VFX Controller")]
+    [SerializeField] private UniversalRendererData rendererData;
+    [SerializeField] private string invisibilityFeatureName = "Invisibility VFX";
+    private ScriptableRendererFeature invisibilityVFX;
+    
     [Header("References")]
     public bool isRightWeapon;
     public GameObject cloakFilter;
@@ -29,7 +35,18 @@ public class ShadowCloak : Ability
 
     private void Start()
     {
-        cloakFilter.SetActive(false);
+
+        if (rendererData != null)
+            {
+               foreach (var feature in rendererData.rendererFeatures)
+               {
+                   if (feature.name == invisibilityFeatureName)
+                   {
+                       invisibilityVFX = feature;
+                       break;
+                    }
+                }
+             }
     }
 
     public void Cloak()
@@ -50,7 +67,7 @@ public class ShadowCloak : Ability
         StartCoroutine(Smoke());
 
         // Applies visual effects and sets stats of player for being cloaked
-        cloakFilter.SetActive(true);
+        invisibilityVFX.SetActive(true);
         playerMovement.isCloaked = true;
         playerMovement.cloakSpeedMulti = speedMulti + 1f;
         playerMovement.SetJumpStats(shadowJumpHeight);
@@ -93,7 +110,7 @@ public class ShadowCloak : Ability
     private void ResetCloak()
     {
         // Resets the visual effects and stats of player back to normal
-        cloakFilter.SetActive(false);
+        invisibilityVFX.SetActive(false);
         playerMovement.isCloaked = false;
         playerMovement.cloakSpeedMulti = 1f;
         playerMovement.SetJumpStats(playerMovement.jumpHeight);
