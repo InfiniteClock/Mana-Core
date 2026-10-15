@@ -183,10 +183,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
-    }
-    private void Update()
-    {
         // Ground Check
         // Box cast aligned to player orientation and width. Ideally should be ratio of 0.7 : 1 so box falls within capsule radius
         isGrounded = Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.down, out RaycastHit hit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
@@ -194,12 +190,6 @@ public class PlayerMovement : MonoBehaviour
         // Ceiling Check
         // Box cast aligned to player orientation and width. Same as ground check but for above instead of below;
         canStand = !Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.up, out RaycastHit upHit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
-
-
-        // Check for player input changes
-        CheckInput();
-        SpeedControl();
-        StateHandler();
 
         // Apply Drag (when in a grounded state only)
         if (moveState == MovementState.walking ||
@@ -209,6 +199,15 @@ public class PlayerMovement : MonoBehaviour
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
+
+        Move();
+        SpeedControl();
+    }
+    private void Update()
+    {
+        // Check for player input changes
+        CheckInput();
+        StateHandler();
 
         // Debugging Text
         Vector3 hSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);

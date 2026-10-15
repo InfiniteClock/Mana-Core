@@ -144,16 +144,8 @@ MonoBehaviour:
   maxAmmo: 240
   ammoPerShot: 1
   projectileSpawnPoint: {fileID: 5108551783996909161}
-  reticle:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  reticleDirection:
-  - 90
-  - 0
-  - 270
-  - 180
+  reticle: []
+  reticleDirection: []
   baseSpread: 1
   bloomPerShot: 0.5
   maxBloom: 5
