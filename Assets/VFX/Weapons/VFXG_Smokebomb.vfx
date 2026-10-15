@@ -30,24 +30,6 @@ MonoBehaviour:
     - model: {fileID: 8926484042661615337}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661615567}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615749}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615588}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615538}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615532}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615303}
-      id: 0
-      isStickyNote: 0
   - title: TRAILS
     position:
       serializedVersion: 2
@@ -86,9 +68,6 @@ MonoBehaviour:
     - model: {fileID: 8926484042661615368}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661615370}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661615410}
       id: 0
       isStickyNote: 0
@@ -98,25 +77,7 @@ MonoBehaviour:
     - model: {fileID: 8926484042661615468}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661615471}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615501}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615492}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661615373}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615416}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615428}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661615447}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661615752}
@@ -254,22 +215,6 @@ MonoBehaviour:
     max: Infinity
     enumValues: []
     descendantCount: 0
-  - name: TrailsLifetime
-    path: TrailsLifetime
-    tooltip: 
-    space: -1
-    spaceable: 0
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
   - name: Color
     path: Color
     tooltip: 
@@ -298,6 +243,22 @@ MonoBehaviour:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
       m_SerializableObject: 2
+    min: -Infinity
+    max: Infinity
+    enumValues: []
+    descendantCount: 0
+  - name: TrailsLifetime
+    path: TrailsLifetime
+    tooltip: 
+    space: -1
+    spaceable: 0
+    sheetType: m_Float
+    realType: Single
+    defaultValue:
+      m_Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      m_SerializableObject: 1
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -1174,7 +1135,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615423}
   m_ExposedName: Color
   m_Exposed: 1
-  m_Order: 2
+  m_Order: 1
   m_Category: 
   m_Min:
     m_Type:
@@ -1600,7 +1561,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615453}
   m_ExposedName: Size
   m_Exposed: 1
-  m_Order: 3
+  m_Order: 2
   m_Category: 
   m_Min:
     m_Type:
@@ -1865,7 +1826,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615459}
   m_ExposedName: TrailsLifetime
   m_Exposed: 1
-  m_Order: 1
+  m_Order: 3
   m_Category: 
   m_Min:
     m_Type:
