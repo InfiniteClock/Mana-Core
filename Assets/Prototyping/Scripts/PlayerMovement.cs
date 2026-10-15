@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public enum MovementState { walking, sprinting, crouching, sliding, airborne, dashing }
 
+    [Header("VFX Controller")]
     [SerializeField] private UniversalRendererData rendererData;
     [SerializeField] private string dashingFeatureName = "Dash VFX";
     private ScriptableRendererFeature dashVFX;
