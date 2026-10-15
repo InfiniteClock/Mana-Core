@@ -1,6 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
-using Unity.Hierarchy;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +16,16 @@ public class PlayerWeapons : MonoBehaviour
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
     public GameObject emptyHandPrefab;
+
+    [Header("Pickup Settings")]
+    public float pickupRadius;
+    public LayerMask whatIsPickupable;
+    public TextMeshProUGUI pickupText;
+
+    private List<ManaCorePickup> nearbyCores;
+    private ManaCorePickup nearestCore;
+
+    [Header("Weapon Control")]
     public float dashBuffer;
     public float swapHoldTime;
     public float consumeHoldTime;
@@ -97,6 +107,8 @@ public class PlayerWeapons : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        CheckForNearbyCores();
+
         // Gets the velocity of the player to add to the gun's firing
         rightWeapon.playerVelocity = rb.linearVelocity;
         leftWeapon.playerVelocity = rb.linearVelocity;
@@ -273,7 +285,27 @@ public class PlayerWeapons : MonoBehaviour
         // Check if player is holding swap input next
         else if (isSwapping)
         {
-            Debug.Log("Here is where I'd swap to a new Mana Core... If I had one!" + isRightWeapon);
+            // Ensure that there is a core to pickup
+            if (nearestCore != null)
+            {
+                // Check which hand we want to equip it to, but only equip if the hand is empty
+                if (isRightWeapon)
+                {
+                    if (rightWeapon.wType == WeaponType.Empty)
+                    {
+                        EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
+                        nearestCore.PickThisUp();
+                    }
+                }
+                else
+                {
+                    if (leftWeapon.wType == WeaponType.Empty)
+                    {
+                        EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
+                        nearestCore.PickThisUp();
+                    }
+                }
+            }
         }
 
         // Regular shooting otherwise
@@ -340,14 +372,57 @@ public class PlayerWeapons : MonoBehaviour
     {
         Transform hand;
         if (isRightWeapon)
+        {
             hand = rightHand;
+            // Removes the empty hand object
+            Destroy(rightWeapon.gameObject);
+        }
 
         else
+        {
             hand = leftHand;
+            // Removes the empty hand object
+            Destroy(leftWeapon.gameObject);
+
+        }
+        // Creates the new weapon and then equips it to hand
         GameObject newObj = Instantiate(newWeapon, hand);
         EquipToHand(newObj.GetComponent<Weapon>(), isRightWeapon);
     }
+    private void CheckForNearbyCores()
+    {
+        // Collects an array of all nearby colliders with the pickupable layermask and stores them in a list
+        Collider[] colliders = Physics.OverlapSphere(transform.position, pickupRadius, whatIsPickupable);
+        nearbyCores = new List<ManaCorePickup>();
+        foreach (Collider collider in colliders)
+        {
+            nearbyCores.Add(collider.gameObject.GetComponentInParent<ManaCorePickup>());
+        }
 
+        // Checks for which core in range is the closest
+        foreach (ManaCorePickup c in nearbyCores)
+        {
+            if (nearestCore != null)
+            {
+                if (Vector3.Distance(transform.position, c.transform.position) < Vector3.Distance(transform.position, nearestCore.transform.position))
+                    nearestCore = c;
+            }
+            else
+                nearestCore = c;
+        }
+
+        // Ensures that if there are no cores in range, we are not storing a core that left range
+        if (nearbyCores.Count < 1)
+        {
+            nearestCore = null;
+            pickupText.text = "";
+        }
+        //Otherwise, display a prompt to pickup the item
+        else
+        {
+            pickupText.text = "Hold 'R' and Right or Left Mouse Click to pickup " + nearestCore.element.ToString() + " weapon.";
+        }
+    }
 
     private void OnRightPrimaryStart(InputAction.CallbackContext context) => CheckPrimaryStart(true);
     private void OnRightPrimaryRelease(InputAction.CallbackContext context) => rightWeapon.PrimaryRelease();
@@ -366,4 +441,13 @@ public class PlayerWeapons : MonoBehaviour
     }
     private void OnConsumeStart(InputAction.CallbackContext context) => isConsuming = true;
     private void OnConsumeRelease(InputAction.CallbackContext context) => isConsuming = false;
+
+    private void OnDrawGizmos()
+    {
+        if (nearestCore != null)
+            Gizmos.color = Color.aquamarine;
+        else
+            Gizmos.color = Color.rebeccaPurple;
+        Gizmos.DrawWireSphere(transform.position, pickupRadius);
+    }
 }
