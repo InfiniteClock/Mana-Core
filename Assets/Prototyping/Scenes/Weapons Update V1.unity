@@ -5466,6 +5466,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1138484566}
     m_Modifications:
     - target: {fileID: 4203458807484583524, guid: e051ea60848e5cd43b62cc2145080ed2, type: 3}
+      propertyPath: smokeGrows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203458807484583524, guid: e051ea60848e5cd43b62cc2145080ed2, type: 3}
       propertyPath: cloakFilter
       value: 
       objectReference: {fileID: 818576957}
