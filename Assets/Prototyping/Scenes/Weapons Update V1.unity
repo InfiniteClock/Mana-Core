@@ -2922,6 +2922,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892341fb0e9f53943ba62663bcad539d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManagement
+  playerWalk: {fileID: 981868879}
+  playerSprint: {fileID: 981868878}
+  playerCrouchWalk: {fileID: 981868877}
+  playerSlide: {fileID: 981868876}
+  playerJump: {fileID: 981868875}
 --- !u!4 &981868881
 Transform:
   m_ObjectHideFlags: 0
