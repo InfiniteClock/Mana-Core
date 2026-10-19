@@ -74,6 +74,10 @@ public class Enemy : MonoBehaviour
                 break;
         }
     }
+    private void ShowDetectionArea()
+    {
+        
+    }
     private bool CanDetectPlayer()
     {
         // If the player is cloaked, must still be searching
