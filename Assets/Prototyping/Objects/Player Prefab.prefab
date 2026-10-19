@@ -2081,7 +2081,7 @@ MonoBehaviour:
   baseMoveSpeed: 10
   baseSlideSpeed: 30
   baseSpeedChangeFactor: 1.5
-  slopeIncreaseMulti: 2.5
+  slopeIncreaseMulti: 5
   baseAccelMultiplier: 8
   groundDrag: 4
   jumpHeight: 3
