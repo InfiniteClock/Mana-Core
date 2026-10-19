@@ -12,14 +12,13 @@ public class ShadowCloak : Ability
     
     [Header("References")]
     public bool isRightWeapon;
-    public GameObject cloakFilter;
     public GameObject smokeCloudPrefab;
 
     [Header("Cloak")]
     public float cloakDuration;
     public float speedMulti;
-    public float shadowJumpHeight;
-    
+    public float cloakGravMod;
+    public float cloakAirMod;
 
     [Header("Smoke")]
     public float smokeDuration;
@@ -69,8 +68,11 @@ public class ShadowCloak : Ability
         // Applies visual effects and sets stats of player for being cloaked
         invisibilityVFX.SetActive(true);
         playerMovement.isCloaked = true;
-        playerMovement.cloakSpeedMulti = speedMulti + 1f;
-        playerMovement.SetJumpStats(shadowJumpHeight);
+        playerMovement.cloakSpeedMulti = speedMulti;
+        playerMovement.cloakGravMod = cloakGravMod;
+
+        if (boostsAirControl)
+            playerMovement.cloakAirMod = cloakAirMod;
 
         // When cloak has run out, reset the ability
         Invoke(nameof(ResetCloak), cloakDuration);
@@ -113,7 +115,8 @@ public class ShadowCloak : Ability
         invisibilityVFX.SetActive(false);
         playerMovement.isCloaked = false;
         playerMovement.cloakSpeedMulti = 1f;
-        playerMovement.SetJumpStats(playerMovement.jumpHeight);
+        playerMovement.cloakGravMod = 1f;
+        playerMovement.cloakAirMod = 1f;
     }
 
     private void OnCloak(InputAction.CallbackContext context) => Cloak();

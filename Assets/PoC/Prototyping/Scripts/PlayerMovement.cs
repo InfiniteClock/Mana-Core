@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public enum MovementState { walking, sprinting, crouching, sliding, airborne, dashing }
+    public enum MovementState { walking, crouching, sliding, airborne, dashing }
 
     [Header("VFX Controller")]
     [SerializeField] private UniversalRendererData rendererData;
@@ -21,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     public Transform orientation;
     public float baseMoveSpeed;
-    public float baseSprintSpeed;
     public float baseSlideSpeed;
     public float baseSpeedChangeFactor;
     public float slopeIncreaseMulti;
@@ -35,13 +33,11 @@ public class PlayerMovement : MonoBehaviour
     public float lastDesiredMoveSpeed { get; private set; }
     
     private float speedChangeFactor;
-    private bool isSprinting;
     private bool keepMomentum;
     public Vector2 rawMoveInput { get; private set; }
     private Vector3 inputDirection;
     
     private InputAction moveInput;
-    private InputAction sprintInput;
     private Rigidbody rb;
     private Coroutine momentumRoutine;
 
@@ -51,8 +47,8 @@ public class PlayerMovement : MonoBehaviour
     public float airMultiplier;
     public float gravity;
 
-    private float jumpForce;
-    private float apexJumpTime;
+    public float jumpForce;
+    public float apexJumpTime;
     private bool isJumping;
     private bool canJump;
     private InputAction jumpInput;
@@ -85,7 +81,9 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public float cloakSpeedMulti;
     [HideInInspector]
-    public float cloakJumpHeight;
+    public float cloakGravMod;
+    [HideInInspector]
+    public float cloakAirMod;
     // --- -- -
     
     [Header("Ground Check")]
@@ -106,6 +104,8 @@ public class PlayerMovement : MonoBehaviour
     {
         SetJumpStats(jumpHeight);
         cloakSpeedMulti = 1f;
+        cloakGravMod = 1f;
+        cloakAirMod = 1f;
         speedChangeFactor = baseSpeedChangeFactor;
 
         if (rendererData != null)
@@ -133,6 +133,8 @@ public class PlayerMovement : MonoBehaviour
     {
         SetJumpStats(jumpHeight);
         cloakSpeedMulti = 1f;
+        cloakGravMod = 1f;
+        cloakAirMod = 1f;
         speedChangeFactor = baseSpeedChangeFactor;
 
         if (rendererData != null)
@@ -158,14 +160,11 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         moveInput = InputSystem.actions.FindAction("Move");
-        sprintInput = InputSystem.actions.FindAction("Sprint");
         crouchInput = InputSystem.actions.FindAction("Crouch");
         jumpInput = InputSystem.actions.FindAction("Jump");
 
 
         // Interaction = Press Only
-        sprintInput.performed += OnSprint;
-        sprintInput.canceled += OnSprintCancel;
         crouchInput.performed += OnCrouch;
         crouchInput.canceled += OnCrouchCancel;
         jumpInput.performed += OnJump;
@@ -173,8 +172,6 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnDisable()
     {
-        sprintInput.performed -= OnSprint;
-        sprintInput.canceled -= OnSprintCancel;
         crouchInput.performed -= OnCrouch;
         crouchInput.canceled -= OnCrouchCancel;
         jumpInput.performed -= OnJump;
@@ -191,23 +188,24 @@ public class PlayerMovement : MonoBehaviour
         // Box cast aligned to player orientation and width. Same as ground check but for above instead of below;
         canStand = !Physics.BoxCast(transform.position, new Vector3(0.5f, 0f, 0.5f) * playerWidth, Vector3.up, out RaycastHit upHit, transform.rotation, playerHeight * 0.5f + 0.05f, whatIsGround);
 
-        // Apply Drag (when in a grounded state only)
-        if (moveState == MovementState.walking ||
-            moveState == MovementState.sprinting ||
+        // Apply Drag when in a grounded state only (except in initial stages of jumping)
+        if ( canJump && 
+            (moveState == MovementState.walking ||
             moveState == MovementState.crouching ||
-            moveState == MovementState.sliding)
+            moveState == MovementState.sliding))
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
 
         Move();
-        SpeedControl();
+        
     }
     private void Update()
     {
         // Check for player input changes
         CheckInput();
         StateHandler();
+        SpeedControl();
 
         // Debugging Text
         Vector3 hSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
@@ -236,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
 
             // Initiate with a boost of speed into the dash
             if (lastMoveState != MovementState.sliding)
-                moveSpeed = baseSprintSpeed * cloakSpeedMulti;
+                moveSpeed = baseMoveSpeed * cloakSpeedMulti;
 
             // Apply sliding speed if moving downhill
             if (OnSlope() && rb.linearVelocity.y < 0.1f)
@@ -246,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
             // Apply crouch speed if moving uphill or on flat
             else
             {
-                desiredMoveSpeed = baseSprintSpeed * cloakSpeedMulti;
+                desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
             }
         }
 
@@ -255,12 +253,6 @@ public class PlayerMovement : MonoBehaviour
         {
             moveState = MovementState.crouching;
             desiredMoveSpeed = baseCrouchSpeed * cloakSpeedMulti;
-        }
-        // Sprinting
-        else if (isGrounded && isSprinting)
-        {
-            moveState = MovementState.sprinting;
-            desiredMoveSpeed = baseSprintSpeed * cloakSpeedMulti;
         }
         // Walking
         else if (isGrounded)
@@ -273,12 +265,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             moveState = MovementState.airborne;
-
-            // Sets desired air speed to walking speed unless the player was moving at sprint speed already
-            if (desiredMoveSpeed < baseSprintSpeed)
-                desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
-            else
-                desiredMoveSpeed = baseSprintSpeed * cloakSpeedMulti;
+            desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
         }
 
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
@@ -423,12 +410,12 @@ public class PlayerMovement : MonoBehaviour
         // In Air
         else if (!isGrounded)
         {
-            rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * airMultiplier, ForceMode.Force);
+            rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * airMultiplier * cloakAirMod, ForceMode.Force);
         }
 
         // Applies gravity to the player while airborne and not dashing
         if (!isGrounded)
-            rb.AddForce(Vector3.down * gravity, ForceMode.Force);
+            rb.AddForce(Vector3.down * gravity * cloakGravMod, ForceMode.Force);
     }
     private void SpeedControl()
     {
@@ -459,6 +446,9 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump()
     {
+        // Don't jump if the ceiling is too low
+        if (!canStand) return;
+
         exitingSlope = true;
 
         // Reset vertical velocity
@@ -520,8 +510,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Input Call Functions
-    private void OnSprint(InputAction.CallbackContext context) => isSprinting = true;
-    private void OnSprintCancel(InputAction.CallbackContext context) => isSprinting = false;
     private void OnCrouch(InputAction.CallbackContext context) => CrouchStart();
     private void OnCrouchCancel(InputAction.CallbackContext context) => isCrouching = false;
     private void OnJump(InputAction.CallbackContext context) => isJumping = true;
