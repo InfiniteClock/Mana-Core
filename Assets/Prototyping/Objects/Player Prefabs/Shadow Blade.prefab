@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1653385774721381237
+--- !u!1 &3890020577913021337
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,30 +8,30 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5108551783996909161}
-  m_Layer: 0
+  - component: {fileID: 9186704060849732737}
+  m_Layer: 6
   m_Name: Spawnpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5108551783996909161
+--- !u!4 &9186704060849732737
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653385774721381237}
+  m_GameObject: {fileID: 3890020577913021337}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7365273638683096375}
+  m_Father: {fileID: 8778419038640744400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &9060725928081804950
+--- !u!1 &5486319530069041988
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,49 +39,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7365273638683096375}
-  - component: {fileID: 8620496088379576216}
-  - component: {fileID: 886564041803678079}
-  - component: {fileID: 1742707471683433764}
-  - component: {fileID: 3754327663821881051}
-  m_Layer: 0
-  m_Name: Wind Weapon
+  - component: {fileID: 8778419038640744400}
+  - component: {fileID: 5860479058345985098}
+  - component: {fileID: 2795502773262526040}
+  - component: {fileID: 9050691812020894189}
+  - component: {fileID: 4203458807484583524}
+  m_Layer: 6
+  m_Name: Shadow Blade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7365273638683096375
+--- !u!4 &8778419038640744400
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9060725928081804950}
+  m_GameObject: {fileID: 5486319530069041988}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5108551783996909161}
+  - {fileID: 9186704060849732737}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8620496088379576216
+--- !u!33 &5860479058345985098
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9060725928081804950}
+  m_GameObject: {fileID: 5486319530069041988}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &886564041803678079
+--- !u!23 &2795502773262526040
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9060725928081804950}
+  m_GameObject: {fileID: 5486319530069041988}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -100,7 +100,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 45a0a4e9b2b624348839dad239229466, type: 2}
+  - {fileID: 2100000, guid: fd3a3ed208ca49041a38df5c1e2612df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,60 +124,74 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1742707471683433764
+--- !u!114 &9050691812020894189
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9060725928081804950}
+  m_GameObject: {fileID: 5486319530069041988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6545620fd8c4c214c91d9cf38a38b319, type: 3}
+  m_Script: {fileID: 11500000, guid: 530ad3f6db734dc48a8adc73a387d74d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WindWeapon
-  projectile: {fileID: 5462679850225452715, guid: 031c8e23a29b85e49862f71f0064099b, type: 3}
-  wType: 1
+  m_EditorClassIdentifier: Assembly-CSharp::ShadowWeapon
+  projectile: {fileID: 4072508291409859131, guid: 08e07a5af9c753642a88e3ff0bacb93b, type: 3}
+  wType: 0
   isRightWeapon: 0
   target: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
-  maxAmmo: 240
+  maxAmmo: 50
   ammoPerShot: 1
-  projectileSpawnPoint: {fileID: 5108551783996909161}
+  projectileSpawnPoint: {fileID: 9186704060849732737}
   reticle: []
   reticleDirection: []
-  baseSpread: 1
-  bloomPerShot: 0.5
-  maxBloom: 5
-  maxBloomReticleOffset: 50
-  bloomDecayPerSec: 3.5
+  baseSpread: 0
+  bloomPerShot: 0
+  maxBloom: 0
+  maxBloomReticleOffset: 0
+  bloomDecayPerSec: 0
   standingMulti: 1
-  walkingMulti: 1.2
-  crouchingMulti: 0.6
-  slidingMulti: 1.5
-  airbornMulti: 2
+  walkingMulti: 1
+  crouchingMulti: 1
+  slidingMulti: 1
+  airbornMulti: 1
   usingCircularDistribution: 1
   maxAbilityCharges: 1
   displayedMaxCharges: 0
-  fireRate: 15
---- !u!114 &3754327663821881051
+  slashRate: 2
+  cloakSlashScaleMulti: 2
+  delayPerSlashStage: 0.1
+  stageOffset: {x: 0, y: 0.75, z: -0.5}
+  midProjectile: {fileID: 4072508291409859131, guid: 43a218ae07dd918459d9bb0753a51366, type: 3}
+  trailProjectile: {fileID: 4072508291409859131, guid: 86db1755c16981a4f870b2cc0f5e4dea, type: 3}
+--- !u!114 &4203458807484583524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9060725928081804950}
+  m_GameObject: {fileID: 5486319530069041988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb2dfc0d0a38f8499116d5aa92e1293, type: 3}
+  m_Script: {fileID: 11500000, guid: 3212ee9bd7641cc4fb7e6c7c1d596270, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WindDash
-  cooldown: 3
+  m_EditorClassIdentifier: Assembly-CSharp::ShadowCloak
+  cooldown: 5
   cooldownTimer: 0
-  dashForce: 30
-  dashUpwardForce: 0
-  dashDuration: 0.25
-  maxDashYSpeed: 15
-  useCameraForward: 1
-  omnidirectionalDash: 1
-  resetVelocity: 1
+  rendererData: {fileID: 11400000, guid: f288ae1f4751b564a96ac7587541f7a2, type: 2}
+  invisibilityFeatureName: Invisibility VFX
+  isRightWeapon: 1
+  smokeCloudPrefab: {fileID: 4140268644539983049, guid: 029187640ee3b9741a12474ef3aac294, type: 3}
+  cloakDuration: 5
+  speedMulti: 1.4
+  cloakGravMod: 0.7
+  cloakAirMod: 1.4
+  smokeDuration: 8
+  smokeDiameterStart: 10
+  smokeDiameterEnd: 15
+  smokeTransparencyStart: 0.5
+  smokeTransparencyEnd: 0.1
+  smokeGrows: 1
+  boostsAirControl: 1
+  boostsOtherAbilities: 0

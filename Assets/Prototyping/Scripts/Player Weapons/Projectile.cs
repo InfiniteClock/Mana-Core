@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
     [Header("Projectile Stats")]
+    [Tooltip("The layermasks to not collide with or damage")]
+    public LayerMask ignoreTheseLayers;
     [Tooltip("Seconds before projectile despawns")]
     public float lifeTime;
     [Tooltip("m/s")]
@@ -27,9 +30,17 @@ public class Projectile : MonoBehaviour
     private float lifeTimer;
     private Rigidbody rb;
     private List<Collider> hitColliders;
+    private List<Collider> selfColliders;
 
     private void Start()
     {
+        // Set the excluded layers for every collider in the projectile
+        selfColliders = new List<Collider>();
+        selfColliders = GetComponentsInChildren<Collider>().ToList<Collider>();        
+        foreach (Collider c in selfColliders)
+            c.excludeLayers = ignoreTheseLayers;
+        
+
         spinAxis = spinAxis.normalized;
         rb = GetComponent<Rigidbody>();
         hitColliders = new List<Collider>();

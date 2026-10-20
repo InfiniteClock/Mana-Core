@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2655997794472283493}
   - component: {fileID: 5407448728379480310}
   - component: {fileID: 4464504053620320309}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Projectile Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,6 +154,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35ec6a5b99cba5d479020692ccbce563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  ignoreTheseLayers:
+    serializedVersion: 2
+    m_Bits: 0
   lifeTime: 1
   travelSpeed: 50
   speedCurve:
@@ -162,20 +165,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      inSlope: 0.0011319413
+      outSlope: 0.0011319413
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.39218938
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      value: 0.5
+      inSlope: -1.5992008
+      outSlope: -1.5992008
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.11134583
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -196,7 +199,7 @@ GameObject:
   - component: {fileID: 8844169756248347027}
   - component: {fileID: 6280861399581905481}
   - component: {fileID: 4703593086540277327}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Inner Ellipse
   m_TagString: Untagged
   m_Icon: {fileID: 0}

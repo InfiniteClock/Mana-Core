@@ -24,7 +24,7 @@ public class Health : MonoBehaviour
     private Coroutine flashRoutine;
     private Coroutine deathRoutine;
 
-    private void Start()
+    private void Awake()
     {
         // Collects EVERY MeshRenderer and associated starting Material and stores for later
         MeshRenderer[] tempMR = GetComponentsInChildren<MeshRenderer>();
