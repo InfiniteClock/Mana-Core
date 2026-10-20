@@ -182,16 +182,16 @@ MonoBehaviour:
   rendererData: {fileID: 11400000, guid: f288ae1f4751b564a96ac7587541f7a2, type: 2}
   invisibilityFeatureName: Invisibility VFX
   isRightWeapon: 1
-  cloakFilter: {fileID: 0}
   smokeCloudPrefab: {fileID: 4140268644539983049, guid: 029187640ee3b9741a12474ef3aac294, type: 3}
   cloakDuration: 5
-  speedMulti: 0.4
-  shadowJumpHeight: 5.6
+  speedMulti: 1.4
+  cloakGravMod: 0.7
+  cloakAirMod: 1.4
   smokeDuration: 8
   smokeDiameterStart: 10
   smokeDiameterEnd: 15
   smokeTransparencyStart: 0.5
   smokeTransparencyEnd: 0.1
   smokeGrows: 1
-  boostsAirControl: 0
+  boostsAirControl: 1
   boostsOtherAbilities: 0

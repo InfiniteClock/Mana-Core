@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -20,16 +21,18 @@ public class Projectile : MonoBehaviour
     [Tooltip("Set to true if this projectile should pierce through multiple colliders")]
     public bool isPiercing = false;
 
-
+    
     private Vector3 direction;
     private float speed;
     private float lifeTimer;
     private Rigidbody rb;
+    private List<Collider> hitColliders;
+
     private void Start()
     {
         spinAxis = spinAxis.normalized;
-
         rb = GetComponent<Rigidbody>();
+        hitColliders = new List<Collider>();
 
         // Set the direction of travel before applying any rotational forces
         direction = transform.forward;
@@ -60,10 +63,18 @@ public class Projectile : MonoBehaviour
         // Return if colliding with another projectile
         if (other.gameObject.TryGetComponent(out Projectile pro)) return;
 
-        // Damage enemies
-        if (other.gameObject.TryGetComponent(out TargetDummy dummy))
+        // If this is a collider we have already hit, ignore it
+        for (int i = 0; i < hitColliders.Count; i++)
         {
-            dummy.TakeDamage();
+            if (other == hitColliders[i]) return;
+        }
+
+        // Damage objects with a health script
+        if (other.gameObject.TryGetComponent(out Health health))
+        {
+            // Adds collider to list of colliders projectile has already hit
+            hitColliders.Add(other);
+            health.TakeDamage(damage);
         }
 
         // Destroys projectile on collision with anything UNLESS it has piercing property
