@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6961191080836811667}
   - component: {fileID: 9214567353354584900}
   - component: {fileID: 7479589434274193487}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Center Slash (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalScale: {x: 3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2419596185283712981}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 1052533467873493732}
   - component: {fileID: 372148929757984409}
   - component: {fileID: 992977215596488890}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Center Slash (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,8 +140,8 @@ Transform:
   m_GameObject: {fileID: 2947155128035414705}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.08715578, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 0.75, y: 0, z: -0.074}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: 2.25, y: 0, z: -0.244}
+  m_LocalScale: {x: 3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2419596185283712981}
@@ -233,8 +233,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2419596185283712981}
-  m_Layer: 0
-  m_Name: Shadow Small Projectile
+  - component: {fileID: 8632958065806976543}
+  - component: {fileID: 7374992719650601131}
+  m_Layer: 6
+  m_Name: Shadow Large Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,6 +262,79 @@ Transform:
   - {fileID: 2215476275503149324}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &8632958065806976543
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072508291409859131}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 1
+--- !u!114 &7374992719650601131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072508291409859131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ec6a5b99cba5d479020692ccbce563, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  ignoreTheseLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  lifeTime: 0.5
+  travelSpeed: 30
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.0011319413
+      outSlope: 0.0011319413
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.39218938
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -1.5992008
+      outSlope: -1.5992008
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11134583
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spinSpeed: 2
+  spinAxis: {x: 0, y: 0, z: 1}
+  damage: 1
+  randomZRotation: 60
+  isPiercing: 1
 --- !u!1 &5313936948345899245
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,7 +347,7 @@ GameObject:
   - component: {fileID: 2697937471266629622}
   - component: {fileID: 3564472059101338565}
   - component: {fileID: 7829116071128936035}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Center Slash (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,8 +363,8 @@ Transform:
   m_GameObject: {fileID: 5313936948345899245}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.258819, z: 0, w: 0.9659259}
-  m_LocalPosition: {x: -1.5, y: 0, z: -0.336}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: -4.5, y: 0, z: -1.14}
+  m_LocalScale: {x: 3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2419596185283712981}
@@ -384,7 +459,7 @@ GameObject:
   - component: {fileID: 2802726498902292731}
   - component: {fileID: 4434053848037837677}
   - component: {fileID: 7174546557686223485}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Center Slash (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,8 +475,8 @@ Transform:
   m_GameObject: {fileID: 5606409848951733098}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.08715578, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: -0.75, y: 0, z: -0.074}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: -2.25, y: 0, z: -0.244}
+  m_LocalScale: {x: 3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2419596185283712981}
@@ -496,7 +571,7 @@ GameObject:
   - component: {fileID: 5538887185009527187}
   - component: {fileID: 53039177750252563}
   - component: {fileID: 6394441267380153505}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Center Slash (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,8 +587,8 @@ Transform:
   m_GameObject: {fileID: 5860478988590625615}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.2588191, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 1.5, y: 0, z: -0.336}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: 4.5, y: 0, z: -1.14}
+  m_LocalScale: {x: 3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2419596185283712981}

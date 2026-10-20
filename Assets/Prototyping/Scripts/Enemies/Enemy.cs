@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent (typeof(Health))]
 public class Enemy : MonoBehaviour
 {
-    public enum DetectionState { spotted, searching, confused }
+    public enum DetectionState { searching, spotted, confused }
 
     [Header("Player Detection")]
     public PlayerMovement player;
@@ -16,12 +16,11 @@ public class Enemy : MonoBehaviour
     public float detectionAngle;
     public LayerMask sightBlockingMask;
 
-    private DetectionState dState = DetectionState.searching;
+    public DetectionState dState { get; protected set; }
 
     [Header("Feedback")]
     public Light spotLight;
     public Light pointLight;
-    public Material searchMat;
     public Color searchingCol;
     public Color spottedCol;
     public Color confusedCol;
@@ -30,6 +29,7 @@ public class Enemy : MonoBehaviour
 
     private Health healthScript;
     private MeshRenderer headMR;
+    private Material personalMat;
     private int headMRIndex = -1;
     private float confusionTimer;
 
@@ -41,7 +41,12 @@ public class Enemy : MonoBehaviour
         {
             headMR = perspectivePoint.GetComponent<MeshRenderer>();
             headMRIndex = healthScript.GetMeshRendererIndex(headMR);
+            personalMat = headMR.material;
         }
+        spotLight.range = maxDetectionRange;
+        spotLight.spotAngle = detectionAngle;
+        spotLight.innerSpotAngle = detectionAngle;
+        pointLight.range = minDetectionRange;
     }
     private void OnValidate()
     {
@@ -50,7 +55,7 @@ public class Enemy : MonoBehaviour
         spotLight.innerSpotAngle = detectionAngle;
         pointLight.range = minDetectionRange;
     }
-    private void Update()
+    protected void Update()
     {
         Detection();
     }
@@ -68,28 +73,27 @@ public class Enemy : MonoBehaviour
         // Being smoked overrides other two states with confusion
         if (isInSmoke)
             dState = DetectionState.confused;
-
         // Set the material to reflect the current state
         switch (dState)
         {
             case DetectionState.spotted:
                 spotLight.color = spottedCol;
                 pointLight.color = spottedCol;
-                searchMat.color = spottedCol;
-                healthScript.SetBaseMat(searchMat, headMRIndex);
+                personalMat.color = spottedCol;
+                healthScript.SetBaseMat(personalMat, headMRIndex);
                 perspectivePoint.transform.LookAt(player.transform.position);
                 break;
             case DetectionState.searching:
                 spotLight.color = searchingCol;
                 pointLight.color = searchingCol;
-                searchMat.color = searchingCol;
-                healthScript.SetBaseMat(searchMat, headMRIndex);
+                personalMat.color = searchingCol;
+                healthScript.SetBaseMat(personalMat, headMRIndex);
                 break;
             case DetectionState.confused:
                 spotLight.color = confusedCol;
                 pointLight.color = confusedCol;
-                searchMat.color = confusedCol;
-                healthScript.SetBaseMat(searchMat, headMRIndex);
+                personalMat.color = confusedCol;
+                healthScript.SetBaseMat(personalMat, headMRIndex);
                 break;
             default:
                 break;

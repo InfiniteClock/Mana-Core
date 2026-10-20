@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4626664413626616083
+--- !u!1 &1653385774721381237
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,30 +8,30 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1533052254069005491}
-  m_Layer: 0
+  - component: {fileID: 5108551783996909161}
+  m_Layer: 6
   m_Name: Spawnpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1533052254069005491
+--- !u!4 &5108551783996909161
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4626664413626616083}
+  m_GameObject: {fileID: 1653385774721381237}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8452034792697100791}
+  m_Father: {fileID: 7365273638683096375}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5994918901084640872
+--- !u!1 &9060725928081804950
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,49 +39,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8452034792697100791}
-  - component: {fileID: 3878980374068045661}
-  - component: {fileID: 2246421176605252219}
-  - component: {fileID: 7313318774968893456}
-  - component: {fileID: 7440784937677623211}
-  m_Layer: 0
-  m_Name: Empty Hand
+  - component: {fileID: 7365273638683096375}
+  - component: {fileID: 8620496088379576216}
+  - component: {fileID: 886564041803678079}
+  - component: {fileID: 1742707471683433764}
+  - component: {fileID: 3754327663821881051}
+  m_Layer: 6
+  m_Name: Wind Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8452034792697100791
+--- !u!4 &7365273638683096375
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994918901084640872}
+  m_GameObject: {fileID: 9060725928081804950}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1533052254069005491}
+  - {fileID: 5108551783996909161}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3878980374068045661
+--- !u!33 &8620496088379576216
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994918901084640872}
+  m_GameObject: {fileID: 9060725928081804950}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &2246421176605252219
+--- !u!23 &886564041803678079
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994918901084640872}
+  m_GameObject: {fileID: 9060725928081804950}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -100,7 +100,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d25bac2b41e6371459824e6d7a4fa960, type: 2}
+  - {fileID: 2100000, guid: 45a0a4e9b2b624348839dad239229466, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,52 +124,60 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7313318774968893456
+--- !u!114 &1742707471683433764
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994918901084640872}
+  m_GameObject: {fileID: 9060725928081804950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4e7d1175e881d40adf9b7e1ffa1c17, type: 3}
+  m_Script: {fileID: 11500000, guid: 6545620fd8c4c214c91d9cf38a38b319, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EmptyHand
-  projectile: {fileID: 0}
-  wType: 6
+  m_EditorClassIdentifier: Assembly-CSharp::WindWeapon
+  projectile: {fileID: 5462679850225452715, guid: 031c8e23a29b85e49862f71f0064099b, type: 3}
+  wType: 1
   isRightWeapon: 0
   target: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
-  maxAmmo: 0
-  ammoPerShot: 0
-  projectileSpawnPoint: {fileID: 1533052254069005491}
+  maxAmmo: 240
+  ammoPerShot: 1
+  projectileSpawnPoint: {fileID: 5108551783996909161}
   reticle: []
   reticleDirection: []
-  baseSpread: 0
-  bloomPerShot: 0
-  maxBloom: 0
-  maxBloomReticleOffset: 0
-  bloomDecayPerSec: 0
+  baseSpread: 1
+  bloomPerShot: 0.5
+  maxBloom: 5
+  maxBloomReticleOffset: 50
+  bloomDecayPerSec: 3.5
   standingMulti: 1
-  walkingMulti: 1
-  crouchingMulti: 1
-  slidingMulti: 1
-  airbornMulti: 1
+  walkingMulti: 1.2
+  crouchingMulti: 0.6
+  slidingMulti: 1.5
+  airbornMulti: 2
   usingCircularDistribution: 1
-  maxAbilityCharges: 0
+  maxAbilityCharges: 1
   displayedMaxCharges: 0
---- !u!114 &7440784937677623211
+  fireRate: 15
+--- !u!114 &3754327663821881051
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994918901084640872}
+  m_GameObject: {fileID: 9060725928081804950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 450f3f806affd444ea6b87564c1f76f4, type: 3}
+  m_Script: {fileID: 11500000, guid: ddb2dfc0d0a38f8499116d5aa92e1293, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NoAbility
-  cooldown: 0
+  m_EditorClassIdentifier: Assembly-CSharp::WindDash
+  cooldown: 3
   cooldownTimer: 0
+  dashForce: 30
+  dashUpwardForce: 0
+  dashDuration: 0.25
+  maxDashYSpeed: 15
+  useCameraForward: 1
+  omnidirectionalDash: 1
+  resetVelocity: 1

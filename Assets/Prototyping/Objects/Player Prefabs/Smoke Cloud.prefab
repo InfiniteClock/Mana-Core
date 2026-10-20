@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3992164008966070728}
   - component: {fileID: 1212894913011739134}
   - component: {fileID: 7656598865428961214}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Smoke Cloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 1339395179942561891}
   - component: {fileID: 2882295805356916873}
   - component: {fileID: 3329379827461626661}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VFXG_Smokebomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
