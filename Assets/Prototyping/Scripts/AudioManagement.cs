@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class AudioManagement : MonoBehaviour
 {
+    public static AudioManagement Instance;
+
     [Space(10), Header("Player")]
     public AudioSource playerWalk;
     public AudioSource playerSprint;
@@ -23,68 +25,79 @@ public class AudioManagement : MonoBehaviour
     public AudioSource weaponWindAttack;
     public AudioSource weaponWindUtility;
 
+    private void Start()
+    {
+        if (Instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+        
+        Instance = this;
+    }
+
     //Player
-    void PlayerWalk()
+    public void PlayerWalk()
     {
         playerWalk.Play();
     }
-    void PlayerSprint()
+    public void PlayerSprint()
     {
         playerSprint.Play();
     }
-    void PlayerCrouchWalk()
+    public void PlayerCrouchWalk()
     {
         playerCrouchWalk.Play();
     }
-    void PlayerSlide()
+    public void PlayerSlide()
     {
         playerSlide.Play();
     }
-    void PlayerJump()
+    public void PlayerJump()
     {
         playerJump.Play();
     }
-    void PlayerDeath()
+    public void PlayerDeath()
     {
         playerDeath.Play();
     }
-    void PlayerRespawn()
+    public void PlayerRespawn()
     {
         playerRespawn.Play();
     }
 
     //ManaCore
-    void ManaCoreSpawn()
+    public void ManaCoreSpawn()
     {
         manacoreSpawn.Play();
     }
-    void ManaCoreGrab()
+    public void ManaCoreGrab()
     {
         manacoreGrab.Play();
     }
-    void ManaCoreCrush()
+    public void ManaCoreCrush()
     {
         manacoreCrush.Play();
     }
 
     //Weapons
-    void WeaponHitmarker()
+    public void WeaponHitmarker()
     {
         weaponHitmarker.Play();
     }
-    void WeaponShadowAttack()
+    public void WeaponShadowAttack()
     {
         weaponShadowAttack.Play();
     }
-    void WeaponShadowUtility()
+    public void WeaponShadowUtility()
     {
         weaponShadowUtility.Play();
     }
-    void WeaponWindAttack()
+    public void WeaponWindAttack()
     {
         weaponWindAttack.Play();
     }
-    void WeaponWindUtility()
+    public void WeaponWindUtility()
     {
         weaponWindUtility.Play();
     }
