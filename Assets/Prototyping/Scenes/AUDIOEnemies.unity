@@ -3216,7 +3216,6 @@ MonoBehaviour:
     m_Bits: 1024
   spotLight: {fileID: 1532997145}
   pointLight: {fileID: 200205708}
-  searchMat: {fileID: 2100000, guid: a023432aed4943e4eb45351257ca8efd, type: 2}
   searchingCol: {r: 0, g: 0.7176471, b: 0.039215688, a: 1}
   spottedCol: {r: 0.7176471, g: 0.011764706, b: 0, a: 1}
   confusedCol: {r: 0.45882353, g: 0, b: 0.7176471, a: 1}
@@ -4664,6 +4663,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4206860994337999667, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206860994337999667, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6101955150775061395, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4702,6 +4709,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6101955150775061395, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6862896425267769029, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6862896425267769029, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7425649019385301865, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
