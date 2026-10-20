@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c1099811d7fc98846a3d8c810bdfd076
+guid: e398adc5a70ca184b8fb09ce8c95c0c0
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
@@ -7,33 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Armor_Bracer
-    second: {fileID: 2100000, guid: b23b916dc198d474db22f4d0d6eb7a5a, type: 2}
+      name: MAT_Crystal_Big
+    second: {fileID: 2100000, guid: bd2ba3ba6e79a9b4cb32eae4952d3229, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Armor_Forearm
-    second: {fileID: 2100000, guid: 907d0f7df4ab132488ebee57c9a26dd8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Armor_Upperarm
-    second: {fileID: 2100000, guid: 1495b096325c12247823fa932f5a991f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Chainmail
-    second: {fileID: 2100000, guid: 0015abd4c93415249acbffa790db2801, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Gloves
-    second: {fileID: 2100000, guid: 15efa401295ee4744be3fae95ec4245f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Mana core Crystal
-    second: {fileID: 2100000, guid: 46c8674d35ab281478f5a10c69c002a0, type: 2}
+      name: MAT_Crystal_Small
+    second: {fileID: 2100000, guid: 4f136edbf19a2a748bbcc5b14ae98143, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -123,7 +103,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: ROOT
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
@@ -131,7 +111,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
