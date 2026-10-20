@@ -60,6 +60,7 @@ public class Health : MonoBehaviour
     public int GetMeshRendererIndex(MeshRenderer targetMR)
     {
         int targetIndex = -1;
+        if (meshRenderers.Count < 1) return -1;
         foreach(MeshRenderer mr in meshRenderers)
         {
             if (targetMR == mr) {
