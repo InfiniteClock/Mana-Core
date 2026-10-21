@@ -4218,8 +4218,10 @@ MonoBehaviour:
   rightAbilityText: {fileID: 3655030662804145918}
   leftAbilityText: {fileID: 2598613240084267459}
   emptyHandPrefab: {fileID: 5994918901084640872, guid: ab4ce3c2f39811446b71279e3b8cc320, type: 3}
-  leftAmmoSlider: {fileID: 3328412886848745068}
   rightAmmoSlider: {fileID: 7887610187795632453}
+  rightUtilitySlider: {fileID: 8780068504884946346}
+  leftAmmoSlider: {fileID: 3328412886848745068}
+  leftUtilitySlider: {fileID: 4352626365955475920}
   pickupRadius: 2
   whatIsPickupable:
     serializedVersion: 2
@@ -4534,10 +4536,6 @@ PrefabInstance:
     - target: {fileID: 1742707471683433764, guid: b8a5a4ace46774142833c0436c4f9597, type: 3}
       propertyPath: ammoCounter
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1742707471683433764, guid: b8a5a4ace46774142833c0436c4f9597, type: 3}
-      propertyPath: maxAbilityCharges
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1742707471683433764, guid: b8a5a4ace46774142833c0436c4f9597, type: 3}
       propertyPath: 'reticle.Array.data[0]'

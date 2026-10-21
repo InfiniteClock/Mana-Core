@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -16,9 +17,11 @@ public class PlayerWeapons : MonoBehaviour
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
     public GameObject emptyHandPrefab;
-    public Slider leftAmmoSlider;
     public Slider rightAmmoSlider;
-
+    public Slider rightUtilitySlider;
+    public Slider leftAmmoSlider;
+    public Slider leftUtilitySlider;
+    
 
     [Header("Pickup Settings")]
     public float pickupRadius;
@@ -150,34 +153,34 @@ public class PlayerWeapons : MonoBehaviour
         // Run the right weapon's cooldown timer
         if (rightAbilityCharges < rightWeapon.displayedMaxCharges)
         {
-            if (rightWeapon.Ability.cooldownTimer > 0)
-                rightWeapon.Ability.cooldownTimer -= Time.deltaTime;
+            if (rightWeapon.Ability.cooldownTimer < rightWeapon.Ability.cooldown)
+                rightWeapon.Ability.cooldownTimer += Time.deltaTime;
             else
             {
                 GainAbilityCharge(true);
                 // If there are still charges to restore, reset the timer
                 if (rightAbilityCharges < rightWeapon.displayedMaxCharges)
-                    rightWeapon.Ability.cooldownTimer = rightWeapon.Ability.cooldown;
+                    rightWeapon.Ability.cooldownTimer = 0f;
             }
         }
         else
-            rightWeapon.Ability.cooldownTimer = rightWeapon.Ability.cooldown;
+            rightWeapon.Ability.cooldownTimer = 0f;
 
         // Run the left weapon's cooldown timer
         if (leftAbilityCharges < leftWeapon.displayedMaxCharges)
         {
-            if (leftWeapon.Ability.cooldownTimer > 0)
-                leftWeapon.Ability.cooldownTimer -= Time.deltaTime;
+            if (leftWeapon.Ability.cooldownTimer < leftWeapon.Ability.cooldown)
+                leftWeapon.Ability.cooldownTimer += Time.deltaTime;
             else
             {
                 GainAbilityCharge(false);
                 // If there are still charges to restore, reset the timer
                 if (leftAbilityCharges < leftWeapon.displayedMaxCharges)
-                    leftWeapon.Ability.cooldownTimer = leftWeapon.Ability.cooldown;
+                    leftWeapon.Ability.cooldownTimer = 0f;
             }
         }
         else
-            leftWeapon.Ability.cooldownTimer = leftWeapon.Ability.cooldown;
+            leftWeapon.Ability.cooldownTimer = 0f;
 
         // If both weapons are same, countdown buffer timer
         if (hasTwinWeapons)
@@ -188,9 +191,10 @@ public class PlayerWeapons : MonoBehaviour
     }
     private void DisplayUIChanges()
     {
-        leftAmmoSlider.value = leftWeapon.currentAmmo;
         rightAmmoSlider.value = rightWeapon.currentAmmo;
-
+        rightUtilitySlider.value = rightWeapon.Ability.cooldownTimer / rightWeapon.Ability.cooldown + rightAbilityCharges;
+        leftAmmoSlider.value = leftWeapon.currentAmmo;
+        leftUtilitySlider.value = leftWeapon.Ability.cooldownTimer / leftWeapon.Ability.cooldown + leftAbilityCharges;
 
         //rightAbilityText.text = "Ability: " + rightWeapon.wType + " : " + rightAbilityCharges.ToString("0") + "/" + rightWeapon.displayedMaxCharges.ToString("0")
         //    + "\nAmmo : " + rightWeapon.currentAmmo+"/"+rightWeapon.maxAmmo;
@@ -203,6 +207,7 @@ public class PlayerWeapons : MonoBehaviour
         // Equips a selected weapon to the specified hand
         if (toRightHand)
         {
+            // Get and set the weapon stats
             rightWeapon = weapon;
             rWeaponType = weapon.wType;
             rightWeapon.isRightWeapon = true;
@@ -212,6 +217,7 @@ public class PlayerWeapons : MonoBehaviour
         }
         else
         {
+            // Get and set the weapon stats
             leftWeapon = weapon;
             lWeaponType = weapon.wType;
             leftWeapon.isRightWeapon = false;
@@ -220,11 +226,11 @@ public class PlayerWeapons : MonoBehaviour
             leftAmmoSlider.fillRect.GetComponent<Image>().color= weapon.uiColor;
         }
 
-        // Checks if both weapons are the same, with a delay in case this is a weapon swap
-        Invoke(nameof(CheckTwinWeapons), 0.01f);
-
         // Initializes weapon with important references to player
         weapon.EquipWeapon(playerMovement);
+
+        // Checks if both weapons are the same, with a delay in case this is a weapon swap
+        Invoke(nameof(CheckTwinWeapons), 0.01f);
     }
     private void CheckTwinWeapons()
     {
@@ -247,6 +253,15 @@ public class PlayerWeapons : MonoBehaviour
             rightAbilityCharges = Mathf.Min(rightAbilityCharges, rightWeapon.maxAbilityCharges);
             leftAbilityCharges = Mathf.Min(leftAbilityCharges, leftWeapon.maxAbilityCharges);
         }
+
+        // Have to set both side's abilities again on each weapon switch to ensure neither gets missed when swapping from twin to untwinned or vice versa
+        rightUtilitySlider.maxValue = rightWeapon.displayedMaxCharges;
+        rightUtilitySlider.value = rightWeapon.Ability.cooldownTimer / rightWeapon.Ability.cooldown + rightAbilityCharges;
+        rightUtilitySlider.fillRect.GetComponent<Image>().color = rightWeapon.uiColor;
+        leftUtilitySlider.maxValue = leftWeapon.displayedMaxCharges;
+        leftUtilitySlider.value = leftWeapon.Ability.cooldownTimer / leftWeapon.Ability.cooldown + leftAbilityCharges;
+        leftUtilitySlider.fillRect.GetComponent<Image>().color = leftWeapon.uiColor;
+        
     }
     public void GainAbilityCharge(bool usedRightWeapon)
     {
