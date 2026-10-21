@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerWeapons : MonoBehaviour
 {
@@ -16,6 +16,12 @@ public class PlayerWeapons : MonoBehaviour
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
     public GameObject emptyHandPrefab;
+    public Slider leftAmmoSlider;
+    public Slider rightAmmoSlider;
+
+    public Slider LeftConsumeTimerSlider;
+    public Slider rightConsumeTimerSlider;
+
 
     [Header("Pickup Settings")]
     public float pickupRadius;
@@ -126,7 +132,7 @@ public class PlayerWeapons : MonoBehaviour
     private void Update()
     {
         ControlTimers();
-        DisplayAbilityCooldowns();
+        DisplayUIChanges();
 
         // Draw rays from player guns for debugging direction
         Debug.DrawRay(rightWeapon.projectileSpawnPoint.position, (camTarget - rightWeapon.projectileSpawnPoint.position).normalized * 20f, Color.cyan);
@@ -183,13 +189,18 @@ public class PlayerWeapons : MonoBehaviour
                 bufferTimer -= Time.deltaTime;
         }
     }
-    private void DisplayAbilityCooldowns()
+    private void DisplayUIChanges()
     {
-        rightAbilityText.text = "Ability: " + rightWeapon.wType + " : " + rightAbilityCharges.ToString("0") + "/" + rightWeapon.displayedMaxCharges.ToString("0")
-            + "\nAmmo : " + rightWeapon.currentAmmo+"/"+rightWeapon.maxAmmo;
+        leftAmmoSlider.value = leftWeapon.currentAmmo;
+        rightAmmoSlider.value = rightWeapon.currentAmmo;
+       
 
-        leftAbilityText.text = "Ability: " + leftWeapon.wType + " : " + leftAbilityCharges.ToString("0") + "/" + leftWeapon.displayedMaxCharges.ToString("0")
-            + "\nAmmo : " + leftWeapon.currentAmmo.ToString("0") + "/" + leftWeapon.maxAmmo.ToString("0");
+
+        //rightAbilityText.text = "Ability: " + rightWeapon.wType + " : " + rightAbilityCharges.ToString("0") + "/" + rightWeapon.displayedMaxCharges.ToString("0")
+        //    + "\nAmmo : " + rightWeapon.currentAmmo+"/"+rightWeapon.maxAmmo;
+
+        //leftAbilityText.text = "Ability: " + leftWeapon.wType + " : " + leftAbilityCharges.ToString("0") + "/" + leftWeapon.displayedMaxCharges.ToString("0")
+        //    + "\nAmmo : " + leftWeapon.currentAmmo.ToString("0") + "/" + leftWeapon.maxAmmo.ToString("0");
     }
     public void EquipToHand(Weapon weapon, bool toRightHand)
     {
@@ -199,13 +210,18 @@ public class PlayerWeapons : MonoBehaviour
             rightWeapon = weapon;
             rWeaponType = weapon.wType;
             rightWeapon.isRightWeapon = true;
-
+            rightAmmoSlider.maxValue = weapon.maxAmmo;
+            rightAmmoSlider.value = weapon.currentAmmo;
+            rightAmmoSlider.fillRect.GetComponent<Image>().color = weapon.uiColor;
         }
         else
         {
             leftWeapon = weapon;
             lWeaponType = weapon.wType;
             leftWeapon.isRightWeapon = false;
+            leftAmmoSlider.maxValue = weapon.maxAmmo;
+            leftAmmoSlider.value = weapon.currentAmmo;
+            leftAmmoSlider.fillRect.GetComponent<Image>().color= weapon.uiColor;
         }
 
         // Checks if both weapons are the same, with a delay in case this is a weapon swap
@@ -295,6 +311,7 @@ public class PlayerWeapons : MonoBehaviour
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
+                        isSwapping = false;
                     }
                 }
                 else
@@ -303,6 +320,7 @@ public class PlayerWeapons : MonoBehaviour
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
+                        isSwapping = false;
                     }
                 }
             }
@@ -319,10 +337,26 @@ public class PlayerWeapons : MonoBehaviour
     }
     private IEnumerator ConsumeWeapon(bool isRightWeapon)
     {
+        if (isRightWeapon)
+        {
+            rightConsumeTimerSlider.gameObject.SetActive(true);
+        } else
+        {
+            LeftConsumeTimerSlider.gameObject.SetActive(true);
+        }
+
         float consumeTimer = 0f;
         while (isConsuming && consumeTimer < consumeHoldTime)
         {
             consumeTimer += Time.deltaTime;
+            if (isRightWeapon)
+            {
+                rightConsumeTimerSlider.value = consumeTimer;
+            }
+            else
+            {
+                LeftConsumeTimerSlider.value = consumeTimer;
+            }
             yield return null;
         }
 
@@ -336,6 +370,10 @@ public class PlayerWeapons : MonoBehaviour
                 Destroy(leftWeapon.gameObject);
             // Equips the empty hand in its place
             EquipNewWeapon(emptyHandPrefab, isRightWeapon);
+        } else
+        {
+            rightConsumeTimerSlider.gameObject.SetActive(false);
+            LeftConsumeTimerSlider.gameObject.SetActive(false);
         }
 
         // Resets the coroutine and allowing it to trigger again
@@ -343,6 +381,9 @@ public class PlayerWeapons : MonoBehaviour
             rightConsumeRoutine = null;
         else
             leftConsumeRoutine = null;
+
+        rightConsumeTimerSlider.gameObject.SetActive(false);
+        LeftConsumeTimerSlider.gameObject.SetActive(false);
     }
     private void SwapWeapons()
     {
@@ -435,7 +476,7 @@ public class PlayerWeapons : MonoBehaviour
     private void OnSwapStart(InputAction.CallbackContext context) => isSwapping = true;
     private void OnSwapRelease(InputAction.CallbackContext context) 
     {
-        if (swapTimer < swapHoldTime)
+        if (swapTimer < swapHoldTime && isSwapping)
             SwapWeapons();
         isSwapping = false;
     }

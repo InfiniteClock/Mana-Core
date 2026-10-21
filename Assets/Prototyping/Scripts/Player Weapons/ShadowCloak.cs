@@ -24,8 +24,6 @@ public class ShadowCloak : Ability
     public float smokeDuration;
     public float smokeDiameterStart;
     public float smokeDiameterEnd;
-    public float smokeTransparencyStart;
-    public float smokeTransparencyEnd;
 
     [Header("Settings")]
     public bool smokeGrows;
@@ -63,7 +61,7 @@ public class ShadowCloak : Ability
         }
 
         // Start the smoke bomb
-        StartCoroutine(Smoke());
+        SpawnSmoke();
 
         // Applies visual effects and sets stats of player for being cloaked
         invisibilityVFX.SetActive(true);
@@ -77,37 +75,23 @@ public class ShadowCloak : Ability
         // When cloak has run out, reset the ability
         Invoke(nameof(ResetCloak), cloakDuration);
     }
-    private IEnumerator Smoke()
+    private void SpawnSmoke()
     {
         // Spawn the smoke bomb and set its scale
         GameObject smokeBomb = Instantiate(smokeCloudPrefab);
         smokeBomb.transform.position = playerMovement.transform.position;
+        SmokeBomb smokeP = smokeBomb.GetComponent<SmokeBomb>();
+        smokeP.lifeTime = smokeDuration;
+        smokeP.diameterStart = smokeDiameterStart;
+        smokeP.diameterEnd = smokeDiameterEnd;
+        smokeP.smokeGrows = smokeGrows;
+
         if (!smokeGrows)
             smokeBomb.transform.localScale = Vector3.one * smokeDiameterStart;
         else
             smokeBomb.transform.localScale = Vector3.one * smokeDiameterEnd;
         Material mat = smokeBomb.GetComponent<MeshRenderer>().material;
         Color col = mat.color;
-
-        float timer = 0f;
-
-        while (timer < smokeDuration)
-        {
-            // Grow the smoke bomb over its duration
-            if (smokeGrows)
-                smokeBomb.transform.localScale = Vector3.one * Mathf.Lerp(smokeDiameterStart, smokeDiameterEnd, timer / smokeDuration);
-
-            // Smoke fades over its duration
-            col = new Color(col.r, col.g, col.b, Mathf.Lerp(smokeTransparencyStart, smokeTransparencyEnd, timer/smokeDuration));
-            mat.color = col;
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        smokeBomb.transform.localScale = Vector3.one * smokeDiameterEnd;
-
-        // Despawn the smoke bomb at the end of its life
-        Destroy(smokeBomb);
     }
     private void ResetCloak()
     {
