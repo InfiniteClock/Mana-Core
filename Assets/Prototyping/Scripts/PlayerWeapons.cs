@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -17,14 +16,12 @@ public class PlayerWeapons : MonoBehaviour
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
     public GameObject emptyHandPrefab;
-    public Slider rightAmmoSlider;
-
-    public Slider rightUtilitySlider;
+    public Slider rightAmmoSlider;    
     public Slider leftAmmoSlider;
+    public Slider rightUtilitySlider;
     public Slider leftUtilitySlider;
-    
-    public Slider LeftConsumeTimerSlider;
     public Slider rightConsumeTimerSlider;
+    public Slider LeftConsumeTimerSlider;
 
 
     [Header("Pickup Settings")]
@@ -196,7 +193,6 @@ public class PlayerWeapons : MonoBehaviour
     private void DisplayUIChanges()
     {
         rightAmmoSlider.value = rightWeapon.currentAmmo;
-
         rightUtilitySlider.value = rightWeapon.Ability.cooldownTimer / rightWeapon.Ability.cooldown + rightAbilityCharges;
         leftAmmoSlider.value = leftWeapon.currentAmmo;
         leftUtilitySlider.value = leftWeapon.Ability.cooldownTimer / leftWeapon.Ability.cooldown + leftAbilityCharges;
@@ -353,10 +349,11 @@ public class PlayerWeapons : MonoBehaviour
     }
     private IEnumerator ConsumeWeapon(bool isRightWeapon)
     {
-        if (isRightWeapon)
+        if (isRightWeapon && rightWeapon.wType != WeaponType.Empty)
         {
             rightConsumeTimerSlider.gameObject.SetActive(true);
-        } else
+        } 
+        else if (!isRightWeapon && leftWeapon.wType != WeaponType.Empty)
         {
             LeftConsumeTimerSlider.gameObject.SetActive(true);
         }
@@ -386,20 +383,19 @@ public class PlayerWeapons : MonoBehaviour
                 Destroy(leftWeapon.gameObject);
             // Equips the empty hand in its place
             EquipNewWeapon(emptyHandPrefab, isRightWeapon);
-        } else
-        {
-            rightConsumeTimerSlider.gameObject.SetActive(false);
-            LeftConsumeTimerSlider.gameObject.SetActive(false);
         }
 
         // Resets the coroutine and allowing it to trigger again
         if (isRightWeapon)
+        {
+            rightConsumeTimerSlider.gameObject.SetActive(false);
             rightConsumeRoutine = null;
-        else
+        }
+        else 
+        {
+            LeftConsumeTimerSlider.gameObject.SetActive(false);
             leftConsumeRoutine = null;
-
-        rightConsumeTimerSlider.gameObject.SetActive(false);
-        LeftConsumeTimerSlider.gameObject.SetActive(false);
+        }            
     }
     private void SwapWeapons()
     {
@@ -492,7 +488,7 @@ public class PlayerWeapons : MonoBehaviour
     private void OnSwapStart(InputAction.CallbackContext context) => isSwapping = true;
     private void OnSwapRelease(InputAction.CallbackContext context) 
     {
-        if (swapTimer < swapHoldTime && isSwapping)
+        if (swapTimer < swapHoldTime && isSwapping && !isConsuming)
             SwapWeapons();
         isSwapping = false;
     }
