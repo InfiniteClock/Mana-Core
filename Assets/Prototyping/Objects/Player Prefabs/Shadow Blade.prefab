@@ -146,6 +146,7 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 9186704060849732737}
   reticle: []
   reticleDirection: []
+  uiColor: {r: 0.5254902, g: 0.45490196, b: 0.8862745, a: 1}
   baseSpread: 0
   bloomPerShot: 0
   maxBloom: 0
@@ -188,10 +189,8 @@ MonoBehaviour:
   cloakGravMod: 0.7
   cloakAirMod: 1.4
   smokeDuration: 8
-  smokeDiameterStart: 10
-  smokeDiameterEnd: 15
-  smokeTransparencyStart: 0.5
-  smokeTransparencyEnd: 0.1
+  smokeDiameterStart: 5
+  smokeDiameterEnd: 20
   smokeGrows: 1
   boostsAirControl: 1
   boostsOtherAbilities: 0

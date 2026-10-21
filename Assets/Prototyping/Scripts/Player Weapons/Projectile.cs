@@ -32,13 +32,15 @@ public class Projectile : MonoBehaviour
     private List<Collider> hitColliders;
     private List<Collider> selfColliders;
 
-    private void Start()
+    protected virtual void Start()
     {
         // Set the excluded layers for every collider in the projectile
         selfColliders = new List<Collider>();
         selfColliders = GetComponentsInChildren<Collider>().ToList<Collider>();        
-        foreach (Collider c in selfColliders)
-            c.excludeLayers = ignoreTheseLayers;
+        for (int i = 0; i < selfColliders.Count; i++)
+        {
+            selfColliders[i].excludeLayers = ignoreTheseLayers;
+        }
         
 
         spinAxis = spinAxis.normalized;
@@ -69,7 +71,7 @@ public class Projectile : MonoBehaviour
         else
             Destroy(gameObject);
     }
-    private void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
         // Return if colliding with another projectile
         if (other.gameObject.TryGetComponent(out Projectile pro)) return;

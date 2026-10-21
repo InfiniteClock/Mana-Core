@@ -1,9 +1,12 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent (typeof(Health))]
 public class Enemy : MonoBehaviour
 {
     public enum DetectionState { searching, spotted, confused }
+
+    private Rigidbody rb;
 
     [Header("Player Detection")]
     public PlayerMovement player;
@@ -33,8 +36,17 @@ public class Enemy : MonoBehaviour
     private int headMRIndex = -1;
     private float confusionTimer;
 
+    [Header("Death")]
+    public GameObject manaCorePrefab;
+    public bool willDropCore = true;
+    public float deathDelay = 1f;
+
+    public bool hasTriggeredDeath { get; private set; }
+
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
+
         if (!TryGetComponent<Health>(out healthScript))
             Debug.Log("No Health script attached to " + gameObject.name);
         else
@@ -42,6 +54,7 @@ public class Enemy : MonoBehaviour
             headMR = perspectivePoint.GetComponent<MeshRenderer>();
             headMRIndex = healthScript.GetMeshRendererIndex(headMR);
             personalMat = headMR.material;
+            healthScript.corpseDuration = deathDelay;
         }
         spotLight.range = maxDetectionRange;
         spotLight.spotAngle = detectionAngle;
@@ -58,6 +71,8 @@ public class Enemy : MonoBehaviour
     protected void Update()
     {
         Detection();
+        if (!hasTriggeredDeath && healthScript.isDead)
+            Die();
     }
     private void Detection()
     {
@@ -99,10 +114,6 @@ public class Enemy : MonoBehaviour
                 break;
         }
     }
-    private void ShowDetectionArea()
-    {
-        
-    }
     private bool CanDetectPlayer()
     {
         // If the player is cloaked, must still be searching
@@ -127,6 +138,25 @@ public class Enemy : MonoBehaviour
     {
         if (!isInSmoke) isInSmoke = true;
         if (confusionTimer <= 0) confusionTimer = confusionDuration;
+    }
+    private void Die()
+    {
+        hasTriggeredDeath = true;
+        spotLight.enabled = false;
+        pointLight.enabled = false;
+
+        rb.freezeRotation = false;
+        // Gets the direction away from the player
+        Vector3 randLaunchDir = (transform.position - player.transform.position).normalized;
+
+        // Applies a one time force to "ragdoll" the enemy
+        rb.AddForce(randLaunchDir * 100f, ForceMode.Impulse);
+        Invoke(nameof(OnDeath), deathDelay);
+    }
+    private void OnDeath()
+    {
+        if (willDropCore && manaCorePrefab != null)
+            Instantiate(manaCorePrefab, transform.position, Quaternion.identity);
     }
 
     private void OnDrawGizmos()
