@@ -26,4 +26,14 @@ public abstract class Ability : MonoBehaviour
         orientation = p.orientation;
         playerCam = p.playerCam.transform;
     }
+
+    protected void InitiateAbility()
+    {
+        
+        //cooldownTimer = Mathf.Max(0f, cooldownTimer - cooldown);
+        playerWeapons.UseAbilityCharge(weapon.isRightWeapon);
+
+        if (playerWeapons.hasTwinWeapons)
+            playerWeapons.bufferTimer = playerWeapons.dashBuffer;
+    } 
 }

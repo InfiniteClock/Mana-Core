@@ -63,7 +63,7 @@ public abstract class Weapon : MonoBehaviour
     public bool usingCircularDistribution = true;
     public int maxAbilityCharges = 1;
 
-    [HideInInspector]
+    //[HideInInspector]
     public int displayedMaxCharges;
 
     public virtual void EquipWeapon(PlayerMovement p)

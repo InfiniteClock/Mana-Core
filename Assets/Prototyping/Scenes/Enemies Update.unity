@@ -2454,6 +2454,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1495040229108770364, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1495040229108770364, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4206860994337999667, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2525,6 +2533,14 @@ PrefabInstance:
     - target: {fileID: 7425649019385301865, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_Name
       value: Player Prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 8954457393362462239, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8954457393362462239, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -50,15 +50,8 @@ public class ShadowCloak : Ability
     {
         // Returns if dash has no remaining charges or is on internal buffer from other weapon
         if (playerWeapons.GetAbilityCharges(weapon.isRightWeapon) < 1 || playerWeapons.bufferTimer > 0) return;
-        else
-        {
-            // Reset the cooldown, 
-            cooldownTimer = cooldown;
-            playerWeapons.UseAbilityCharge(weapon.isRightWeapon);
 
-            if (playerWeapons.hasTwinWeapons)
-                playerWeapons.bufferTimer = playerWeapons.dashBuffer;
-        }
+        InitiateAbility();
 
         // Start the smoke bomb
         SpawnSmoke();
