@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     public float slopeIncreaseMulti;
     public float baseAccelMultiplier;
     public float groundDrag;
+    public string jumpSound;
 
     public MovementState moveState { get; private set; }
     private MovementState lastMoveState;
@@ -450,6 +451,8 @@ public class PlayerMovement : MonoBehaviour
         if (!canStand) return;
 
         exitingSlope = true;
+
+        AudioManager.Instance.PlayOneShot(jumpSound, gameObject);
 
         // Reset vertical velocity
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
