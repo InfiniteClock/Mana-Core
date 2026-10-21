@@ -332,7 +332,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   spinSpeed: 2
   spinAxis: {x: 0, y: 0, z: 1}
-  damage: 1
+  damage: 10
   randomZRotation: 60
   isPiercing: 1
 --- !u!1 &5313936948345899245

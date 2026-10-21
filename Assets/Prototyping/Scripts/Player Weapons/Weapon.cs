@@ -30,6 +30,7 @@ public abstract class Weapon : MonoBehaviour
     public List<RectTransform> reticle;
     [Tooltip("Assign a degree direction for the reticle to move during bloom")]
     public List<float> reticleDirection;
+    public Color uiColor;
 
     protected List<Vector3> reticlePositions;
 

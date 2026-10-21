@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3992164008966070728}
   - component: {fileID: 1212894913011739134}
   - component: {fileID: 7656598865428961214}
+  - component: {fileID: -1874714713750171553}
   m_Layer: 6
   m_Name: Smoke Cloud
   m_TagString: Untagged
@@ -126,6 +127,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef90a9a4cefbd0b4eba76f0e72a28758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  ignoreTheseLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  lifeTime: 1
+  travelSpeed: 0
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spinSpeed: 0
+  spinAxis: {x: 0, y: 0, z: 0}
+  damage: 0
+  randomZRotation: 0
+  isPiercing: 1
+  diameterStart: 10
+  diameterEnd: 10
+  smokeGrows: 0
+--- !u!54 &-1874714713750171553
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140268644539983049}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &5212531304511526459
 GameObject:
   m_ObjectHideFlags: 0

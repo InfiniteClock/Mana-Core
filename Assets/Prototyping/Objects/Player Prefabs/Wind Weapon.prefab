@@ -146,6 +146,7 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 5108551783996909161}
   reticle: []
   reticleDirection: []
+  uiColor: {r: 0.70980394, g: 0.8666667, b: 0.78039217, a: 1}
   baseSpread: 1
   bloomPerShot: 0.5
   maxBloom: 5

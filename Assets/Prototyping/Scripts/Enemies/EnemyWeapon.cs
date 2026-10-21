@@ -43,11 +43,16 @@ public class EnemyWeapon : MonoBehaviour
     private void Update()
     {
         BloomTick(Time.deltaTime);
-        
-        // If player is spotted, shoot at them
-        if (enemy.dState == Enemy.DetectionState.spotted) PrimaryFire();
-        // Otherwise, don't shoot
-        else PrimaryEnd(); 
+
+        // Check if the enemy is still alive first
+        if (enemy.hasTriggeredDeath) canShoot = false;
+        else
+        {
+            // If player is spotted, shoot at them
+            if (enemy.dState == Enemy.DetectionState.spotted) PrimaryFire();
+            // Otherwise, don't shoot
+            else PrimaryEnd();
+        }
     }
     private void BloomTick(float deltaTime)
     {

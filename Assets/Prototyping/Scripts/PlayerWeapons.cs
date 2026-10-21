@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerWeapons : MonoBehaviour
 {
@@ -16,6 +16,9 @@ public class PlayerWeapons : MonoBehaviour
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
     public GameObject emptyHandPrefab;
+    public Slider leftAmmoSlider;
+    public Slider rightAmmoSlider;
+
 
     [Header("Pickup Settings")]
     public float pickupRadius;
@@ -126,7 +129,7 @@ public class PlayerWeapons : MonoBehaviour
     private void Update()
     {
         ControlTimers();
-        DisplayAbilityCooldowns();
+        DisplayUIChanges();
 
         // Draw rays from player guns for debugging direction
         Debug.DrawRay(rightWeapon.projectileSpawnPoint.position, (camTarget - rightWeapon.projectileSpawnPoint.position).normalized * 20f, Color.cyan);
@@ -183,13 +186,17 @@ public class PlayerWeapons : MonoBehaviour
                 bufferTimer -= Time.deltaTime;
         }
     }
-    private void DisplayAbilityCooldowns()
+    private void DisplayUIChanges()
     {
-        rightAbilityText.text = "Ability: " + rightWeapon.wType + " : " + rightAbilityCharges.ToString("0") + "/" + rightWeapon.displayedMaxCharges.ToString("0")
-            + "\nAmmo : " + rightWeapon.currentAmmo+"/"+rightWeapon.maxAmmo;
+        leftAmmoSlider.value = leftWeapon.currentAmmo;
+        rightAmmoSlider.value = rightWeapon.currentAmmo;
 
-        leftAbilityText.text = "Ability: " + leftWeapon.wType + " : " + leftAbilityCharges.ToString("0") + "/" + leftWeapon.displayedMaxCharges.ToString("0")
-            + "\nAmmo : " + leftWeapon.currentAmmo.ToString("0") + "/" + leftWeapon.maxAmmo.ToString("0");
+
+        //rightAbilityText.text = "Ability: " + rightWeapon.wType + " : " + rightAbilityCharges.ToString("0") + "/" + rightWeapon.displayedMaxCharges.ToString("0")
+        //    + "\nAmmo : " + rightWeapon.currentAmmo+"/"+rightWeapon.maxAmmo;
+
+        //leftAbilityText.text = "Ability: " + leftWeapon.wType + " : " + leftAbilityCharges.ToString("0") + "/" + leftWeapon.displayedMaxCharges.ToString("0")
+        //    + "\nAmmo : " + leftWeapon.currentAmmo.ToString("0") + "/" + leftWeapon.maxAmmo.ToString("0");
     }
     public void EquipToHand(Weapon weapon, bool toRightHand)
     {
@@ -199,13 +206,18 @@ public class PlayerWeapons : MonoBehaviour
             rightWeapon = weapon;
             rWeaponType = weapon.wType;
             rightWeapon.isRightWeapon = true;
-
+            rightAmmoSlider.maxValue = weapon.maxAmmo;
+            rightAmmoSlider.value = weapon.currentAmmo;
+            rightAmmoSlider.fillRect.GetComponent<Image>().color = weapon.uiColor;
         }
         else
         {
             leftWeapon = weapon;
             lWeaponType = weapon.wType;
             leftWeapon.isRightWeapon = false;
+            leftAmmoSlider.maxValue = weapon.maxAmmo;
+            leftAmmoSlider.value = weapon.currentAmmo;
+            leftAmmoSlider.fillRect.GetComponent<Image>().color= weapon.uiColor;
         }
 
         // Checks if both weapons are the same, with a delay in case this is a weapon swap

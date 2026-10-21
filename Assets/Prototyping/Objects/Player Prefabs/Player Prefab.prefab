@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -100, y: 0}
+  m_AnchoredPosition: {x: -100.00049, y: 0}
   m_SizeDelta: {x: 800, y: 200}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &3657373768873327030
@@ -3669,6 +3669,8 @@ MonoBehaviour:
   rightAbilityText: {fileID: 3655030662804145918}
   leftAbilityText: {fileID: 2598613240084267459}
   emptyHandPrefab: {fileID: 5994918901084640872, guid: ab4ce3c2f39811446b71279e3b8cc320, type: 3}
+  leftAmmoSlider: {fileID: 3328412886848745068}
+  rightAmmoSlider: {fileID: 7887610187795632453}
   pickupRadius: 2
   whatIsPickupable:
     serializedVersion: 2
@@ -3763,7 +3765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 100, y: 0}
+  m_AnchoredPosition: {x: 100.00049, y: 0}
   m_SizeDelta: {x: 800, y: 200}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &9157421651674854067

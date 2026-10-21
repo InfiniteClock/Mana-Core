@@ -1,9 +1,12 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent (typeof(Health))]
 public class Enemy : MonoBehaviour
 {
     public enum DetectionState { searching, spotted, confused }
+
+    private Rigidbody rb;
 
     [Header("Player Detection")]
     public PlayerMovement player;
@@ -38,8 +41,12 @@ public class Enemy : MonoBehaviour
     public bool willDropCore = true;
     public float deathDelay = 1f;
 
+    public bool hasTriggeredDeath { get; private set; }
+
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
+
         if (!TryGetComponent<Health>(out healthScript))
             Debug.Log("No Health script attached to " + gameObject.name);
         else
@@ -64,6 +71,8 @@ public class Enemy : MonoBehaviour
     protected void Update()
     {
         Detection();
+        if (!hasTriggeredDeath && healthScript.isDead)
+            Die();
     }
     private void Detection()
     {
@@ -130,8 +139,21 @@ public class Enemy : MonoBehaviour
         if (!isInSmoke) isInSmoke = true;
         if (confusionTimer <= 0) confusionTimer = confusionDuration;
     }
+    private void Die()
+    {
+        hasTriggeredDeath = true;
+        spotLight.enabled = false;
+        pointLight.enabled = false;
 
-    private void OnDestroy()
+        rb.freezeRotation = false;
+        // Gets the direction away from the player
+        Vector3 randLaunchDir = (transform.position - player.transform.position).normalized;
+
+        // Applies a one time force to "ragdoll" the enemy
+        rb.AddForce(randLaunchDir * 100f, ForceMode.Impulse);
+        Invoke(nameof(OnDeath), deathDelay);
+    }
+    private void OnDeath()
     {
         if (willDropCore && manaCorePrefab != null)
             Instantiate(manaCorePrefab, transform.position, Quaternion.identity);
