@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 2561794496023537045}
   - component: {fileID: 7466350506009402857}
   - component: {fileID: 5075556717373546148}
-  - component: {fileID: 7025652306337278080}
+  - component: {fileID: 1850858653439509379}
   - component: {fileID: 3101534641645725289}
   - component: {fileID: 950389396997974033}
   m_Layer: 15
@@ -250,7 +250,7 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 126
   m_CollisionDetection: 1
---- !u!114 &7025652306337278080
+--- !u!114 &1850858653439509379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,9 +259,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3144910783438335269}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d7603450118eb045b66384557f02246, type: 3}
+  m_Script: {fileID: 11500000, guid: ea4f335e50e8c71478216c846825682a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  m_EditorClassIdentifier: Assembly-CSharp::FodderEnemy
   player: {fileID: 0}
   perspectivePoint: {fileID: 9018471238012971099}
   maxDetectionRange: 20
@@ -272,11 +272,14 @@ MonoBehaviour:
     m_Bits: 1024
   spotLight: {fileID: 6924905790804610593}
   pointLight: {fileID: 7989545226504122835}
-  searchingCol: {r: 0.6608964, g: 1, b: 0, a: 1}
-  spottedCol: {r: 0.7176471, g: 0.011764706, b: 0, a: 1}
-  confusedCol: {r: 0.6393442, g: 0, b: 1, a: 1}
+  searchingCol: {r: 0.6627451, g: 1, b: 0, a: 1}
+  spottedCol: {r: 0.7176471, g: 0.011764707, b: 0, a: 1}
+  confusedCol: {r: 0.6392157, g: 0, b: 1, a: 1}
   isInSmoke: 0
   confusionDuration: 3
+  manaCorePrefab: {fileID: 6195750443292183592, guid: dae9755b75a316446aed82a5fed49122, type: 3}
+  willDropCore: 1
+  deathDelay: 3
 --- !u!114 &3101534641645725289
 MonoBehaviour:
   m_ObjectHideFlags: 0

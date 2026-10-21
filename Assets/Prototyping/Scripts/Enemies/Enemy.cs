@@ -33,6 +33,11 @@ public class Enemy : MonoBehaviour
     private int headMRIndex = -1;
     private float confusionTimer;
 
+    [Header("Death")]
+    public GameObject manaCorePrefab;
+    public bool willDropCore = true;
+    public float deathDelay = 1f;
+
     private void Start()
     {
         if (!TryGetComponent<Health>(out healthScript))
@@ -42,6 +47,7 @@ public class Enemy : MonoBehaviour
             headMR = perspectivePoint.GetComponent<MeshRenderer>();
             headMRIndex = healthScript.GetMeshRendererIndex(headMR);
             personalMat = headMR.material;
+            healthScript.corpseDuration = deathDelay;
         }
         spotLight.range = maxDetectionRange;
         spotLight.spotAngle = detectionAngle;
@@ -99,10 +105,6 @@ public class Enemy : MonoBehaviour
                 break;
         }
     }
-    private void ShowDetectionArea()
-    {
-        
-    }
     private bool CanDetectPlayer()
     {
         // If the player is cloaked, must still be searching
@@ -127,6 +129,12 @@ public class Enemy : MonoBehaviour
     {
         if (!isInSmoke) isInSmoke = true;
         if (confusionTimer <= 0) confusionTimer = confusionDuration;
+    }
+
+    private void OnDestroy()
+    {
+        if (willDropCore && manaCorePrefab != null)
+            Instantiate(manaCorePrefab, transform.position, Quaternion.identity);
     }
 
     private void OnDrawGizmos()

@@ -295,6 +295,7 @@ public class PlayerWeapons : MonoBehaviour
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
+                        isSwapping = false;
                     }
                 }
                 else
@@ -303,6 +304,7 @@ public class PlayerWeapons : MonoBehaviour
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
+                        isSwapping = false;
                     }
                 }
             }
@@ -435,7 +437,7 @@ public class PlayerWeapons : MonoBehaviour
     private void OnSwapStart(InputAction.CallbackContext context) => isSwapping = true;
     private void OnSwapRelease(InputAction.CallbackContext context) 
     {
-        if (swapTimer < swapHoldTime)
+        if (swapTimer < swapHoldTime && isSwapping)
             SwapWeapons();
         isSwapping = false;
     }

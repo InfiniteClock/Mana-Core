@@ -3675,7 +3675,7 @@ MonoBehaviour:
     m_Bits: 65536
   pickupText: {fileID: 8071756219252751210}
   dashBuffer: 0.5
-  swapHoldTime: 0.5
+  swapHoldTime: 0.1
   consumeHoldTime: 1
   rightAbilityCharges: 0
   leftAbilityCharges: 0

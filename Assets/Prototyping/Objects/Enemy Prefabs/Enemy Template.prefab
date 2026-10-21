@@ -333,6 +333,9 @@ MonoBehaviour:
   confusedCol: {r: 0.6393442, g: 0, b: 1, a: 1}
   isInSmoke: 0
   confusionDuration: 3
+  manaCorePrefab: {fileID: 0}
+  willDropCore: 1
+  deathDelay: 1
 --- !u!114 &9003784249240822399
 MonoBehaviour:
   m_ObjectHideFlags: 0
