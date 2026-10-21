@@ -19,6 +19,9 @@ public class PlayerWeapons : MonoBehaviour
     public Slider leftAmmoSlider;
     public Slider rightAmmoSlider;
 
+    public Slider LeftConsumeTimerSlider;
+    public Slider rightConsumeTimerSlider;
+
 
     [Header("Pickup Settings")]
     public float pickupRadius;
@@ -190,6 +193,7 @@ public class PlayerWeapons : MonoBehaviour
     {
         leftAmmoSlider.value = leftWeapon.currentAmmo;
         rightAmmoSlider.value = rightWeapon.currentAmmo;
+       
 
 
         //rightAbilityText.text = "Ability: " + rightWeapon.wType + " : " + rightAbilityCharges.ToString("0") + "/" + rightWeapon.displayedMaxCharges.ToString("0")
@@ -333,10 +337,26 @@ public class PlayerWeapons : MonoBehaviour
     }
     private IEnumerator ConsumeWeapon(bool isRightWeapon)
     {
+        if (isRightWeapon)
+        {
+            rightConsumeTimerSlider.gameObject.SetActive(true);
+        } else
+        {
+            LeftConsumeTimerSlider.gameObject.SetActive(true);
+        }
+
         float consumeTimer = 0f;
         while (isConsuming && consumeTimer < consumeHoldTime)
         {
             consumeTimer += Time.deltaTime;
+            if (isRightWeapon)
+            {
+                rightConsumeTimerSlider.value = consumeTimer;
+            }
+            else
+            {
+                LeftConsumeTimerSlider.value = consumeTimer;
+            }
             yield return null;
         }
 
@@ -350,6 +370,10 @@ public class PlayerWeapons : MonoBehaviour
                 Destroy(leftWeapon.gameObject);
             // Equips the empty hand in its place
             EquipNewWeapon(emptyHandPrefab, isRightWeapon);
+        } else
+        {
+            rightConsumeTimerSlider.gameObject.SetActive(false);
+            LeftConsumeTimerSlider.gameObject.SetActive(false);
         }
 
         // Resets the coroutine and allowing it to trigger again
@@ -357,6 +381,9 @@ public class PlayerWeapons : MonoBehaviour
             rightConsumeRoutine = null;
         else
             leftConsumeRoutine = null;
+
+        rightConsumeTimerSlider.gameObject.SetActive(false);
+        LeftConsumeTimerSlider.gameObject.SetActive(false);
     }
     private void SwapWeapons()
     {
