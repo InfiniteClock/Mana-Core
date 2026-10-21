@@ -1,57 +1,109 @@
 using UnityEngine;
-using UnityEngine.Audio;
-using System;
 using System.Collections.Generic;
+using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    public static AudioManager Instance { get; private set; }
 
-    public Sound[] sounds;
+    public GameObject sfxPrefab;
+    public Sound[] soundEffects;
+    public Sound[] musicTracks;
 
-    public List<Sound> activeSounds;
+    private AudioSource musicSource;
+    private AudioSource musicSourceFadeOut;
+    private Dictionary<string, Sound> sfxDict = new();
+    private Dictionary<string, Sound> musicDict = new();
+    private Coroutine fadeRoutine;
 
     private void Awake()
     {
-        if (AudioManager.Instance == null)
+        if (Instance == null)
             Instance = this;
         else
-            Destroy(this);
-    }
+            Destroy(gameObject);
 
-    public void PlayOneShot(string name, GameObject obj)
+        musicSource = gameObject.AddComponent<AudioSource>();
+        musicSourceFadeOut = gameObject.AddComponent<AudioSource>();
+
+        InitializeSounds();
+    }
+    private void InitializeSounds()
     {
-        Sound s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
-            return;
+        foreach (Sound clip in soundEffects) 
+            if (clip != null) sfxDict[clip.name] = clip;
 
-        AudioSource source = obj.AddComponent<AudioSource>();
-        source.clip = s.clip;
-        source.volume = s.volume;
-        source.pitch = s.pitch;
-        source.loop = s.loop;
-        
-        source.Play();
+        foreach (Sound clip in musicTracks)
+            if (clip != null) musicDict[clip.name] = clip;
     }
 
-    //public int PlayInstance(string name, GameObject obj)
-    //{
-    //    Sound s = Array.Find(sounds, sound => sound.name == name);
-    //    if (s == null)
-    //        return -1;
+    public void PlaySFX(string name, Transform parent = null)
+    {
+        // If no parent is provided, use Audio Manager as the parent
+        if (parent == null) parent = transform;
 
-    //    activeSounds.Add(s);
+        if (sfxDict.TryGetValue(name, out Sound sound))
+        {
+            GameObject newSource = Instantiate(sfxPrefab, parent);
+            AudioSource source = newSource.GetComponent<AudioSource>();
+            AudioRecycler rec = newSource.GetComponent<AudioRecycler>();
 
-    //    s.source.Play();
+            newSource.name = name;
+            rec.delay = sound.clip.length;
+            source.clip = sound.clip;
+            source.volume = sound.volume;
+            source.pitch = sound.pitch;
+            source.loop = sound.loop;
+            source.Play();
+        }
+            
+    }
+    public void PlayMusic(string name)
+    {
+        if (musicDict.TryGetValue(name, out Sound sound))
+        {
+            musicSource.clip = sound.clip;
+            musicSource.volume = sound.volume;
+            musicSource.pitch = sound.pitch;
+            musicSource.loop = sound.loop;
+            musicSource.Play();
+        }
+    }
+    public void StopMusic()
+    {
+        musicSource.Stop();
+    }
+    public void FadeInNewMusic(string name, float fadeTime)
+    {
+        if (musicDict.TryGetValue(name, out Sound sound))
+        {
+            musicSourceFadeOut.clip = sound.clip;
+            musicSourceFadeOut.volume = sound.volume;
+            musicSourceFadeOut.pitch = sound.pitch;
+            musicSourceFadeOut.loop = sound.loop;
 
-    //    return activeSounds.IndexOf(s);
+            // Stop the fade routine early, and start it up again with the new track
+            if (fadeRoutine != null) StopCoroutine(fadeRoutine);
+            StartCoroutine(FadeMusic(fadeTime));
+        }
+    }
 
-    //}
+    private IEnumerator FadeMusic(float fadeTime)
+    {
+        float timer = 0f;
+        float musicVolume = musicSource.volume;
+        float musicVolume2 = musicSourceFadeOut.volume;
 
-    //public void StopInstance(int index, GameObject obj)
-    //{
-    //    Sound s = activeSounds[index];
-    //    s.source.Stop();
-    //    activeSounds.RemoveAt(index);
-    //}
+        while (timer < fadeTime)
+        {
+            musicSource.volume = musicVolume * (1f - timer / fadeTime);
+            musicSourceFadeOut.volume = musicVolume2 * timer / fadeTime;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        musicSource = musicSourceFadeOut;
+        musicSourceFadeOut.clip = null;
+    }
 }

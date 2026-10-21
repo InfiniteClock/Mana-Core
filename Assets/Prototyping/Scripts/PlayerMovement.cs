@@ -452,7 +452,7 @@ public class PlayerMovement : MonoBehaviour
 
         exitingSlope = true;
 
-        AudioManager.Instance.PlayOneShot(jumpSound, gameObject);
+        AudioManager.Instance.PlaySFX(jumpSound);
 
         // Reset vertical velocity
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
