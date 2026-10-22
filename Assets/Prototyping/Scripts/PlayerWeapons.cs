@@ -18,6 +18,11 @@ public class PlayerWeapons : MonoBehaviour
     public GameObject emptyHandPrefab;
     public Transform reticleParent;
 
+    [Header("Animation Controllers")]
+    public Animator characterAnimController;
+    public Animator lManaCoreAnimController;
+    public Animator rManaCoreAnimController;
+
     [Header("HUD Sliders")]
     public Slider rightAmmoSlider;    
     public Slider leftAmmoSlider;
@@ -488,6 +493,7 @@ public class PlayerWeapons : MonoBehaviour
         Weapon weapon = newObj.GetComponent<Weapon>();
         EquipToHand(weapon, isRightWeapon);
         weapon.currentAmmo = weapon.maxAmmo;
+        
     }
     private void CheckForNearbyCores()
     {

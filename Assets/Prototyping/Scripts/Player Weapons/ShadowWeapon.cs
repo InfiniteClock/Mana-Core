@@ -21,12 +21,33 @@ public class ShadowWeapon : Weapon
     private float slashCD;
     private Coroutine slashRoutine;
 
+    [Header("Shadow Stats")]
+    public GameObject characterPrefab;
+    public GameObject lShadowSwordPrefab;
+    public GameObject rShadowSwordPrefab;
+
+    public Animator characterAnimationController;
+    public Animator lSwordAnimationController;
+    public Animator rSwordAnimationController;
+
+
     public override void EquipWeapon(PlayerMovement p)
     {
         base.EquipWeapon(p);
         shadowCloak = GetComponent<ShadowCloak>();
         shadowCloak.Setup(p);
         slashCD = 1f / slashRate;
+
+        characterAnimationController = characterPrefab.GetComponent<Animator>();
+        lSwordAnimationController = lShadowSwordPrefab.GetComponent<Animator>();
+        rSwordAnimationController = rShadowSwordPrefab.GetComponent<Animator>();
+
+        if (characterAnimationController != null)
+        {
+            characterAnimationController.SetBool("Shadow",true);
+            lSwordAnimationController.SetTrigger("Equip");
+            rSwordAnimationController.SetTrigger("Equip");
+        }
     }
 
     private IEnumerator Slash()
