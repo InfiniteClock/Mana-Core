@@ -17,9 +17,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Prototyping/Scenes/Ability Prototype.unity
     guid: e0912374ba4d99c4fb8f3095983fddf4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Prototyping/Scenes/Weapons Update V1.unity
     guid: e9f6f4e63bd9c56498719516304d9b08
+  - enabled: 1
+    path: Assets/Scenes/PoCLevel.unity
+    guid: 0febd3589bdcd7641a9a66ddb7701934
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
