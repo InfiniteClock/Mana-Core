@@ -62,25 +62,17 @@ public class AudioManager : MonoBehaviour
     }
     public AudioSource PlayReplaceableSFX(string name, GameObject obj, Transform parent = null)
     {
-        // If no parent is provided, use Audio Manager as the parent
-        if (parent == null) parent = transform;
-        GameObject targetSource;
+        if (name  == null) name = "";
 
-        if (obj == null)
-        {
-            targetSource = Instantiate(sfxPrefab, parent);
-            targetSource.name = "Replaceable Audio: " + name;
-        }
-        else
-        {
-            targetSource = obj;
-            targetSource.transform.SetParent(parent);
-        }
+        // If no parent is provided, assume to keep the original parent
+        if (parent != null) 
+            obj.transform.SetParent(parent);
+        
 
         if (sfxDict.TryGetValue(name, out Sound sound))
         {
-            AudioSource source = targetSource.GetComponent<AudioSource>();
-            AudioRecycler rec = targetSource.GetComponent<AudioRecycler>();
+            AudioSource source = obj.GetComponent<AudioSource>();
+            AudioRecycler rec = obj.GetComponent<AudioRecycler>();
 
             source.Stop();
             rec.enabled = false;
@@ -92,7 +84,7 @@ public class AudioManager : MonoBehaviour
 
             return source;
         }
-        else if (targetSource.TryGetComponent(out AudioSource source))
+        else if (obj.TryGetComponent(out AudioSource source))
             return source;
         else 
             return null;

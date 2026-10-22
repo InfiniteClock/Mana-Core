@@ -606,37 +606,82 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   sfxPrefab: {fileID: 1285791830669611184, guid: d8b880c195e70c74c94d8c61161a7e35, type: 3}
   soundEffects:
-  - clip: {fileID: 8300000, guid: 8903adae433a0e146b6be48ec5773a42, type: 3}
-    name: manaCoreCrush
+  - clip: {fileID: 8300000, guid: 621c4bf0dd18c9f428899abdca02a451, type: 3}
+    name: PlayerSprint
     volume: 1
-    pitch: 0
-    loop: 0
-  - clip: {fileID: 8300000, guid: 9605232bacdf30248a857e1ee9c6b3af, type: 3}
-    name: manaCoreGrab
-    volume: 1
-    pitch: 0
-    loop: 0
-  - clip: {fileID: 8300000, guid: f2698698347877a4eb65ab67cc56b390, type: 3}
-    name: manaCoreSpawn
-    volume: 1
-    pitch: 0
-    loop: 0
+    pitch: 1
+    loop: 1
   - clip: {fileID: 8300000, guid: 1a434c8ff2896104d9f9c740dd8b5142, type: 3}
-    name: playerCrouchWalk
+    name: PlayerCrouchWalk
     volume: 1
-    pitch: 0
-    loop: 0
-  - clip: {fileID: 8300000, guid: 436c9644530c64541b8e7f59627cd717, type: 3}
-    name: playerDeath
+    pitch: 1
+    loop: 1
+  - clip: {fileID: 8300000, guid: 2b1baf7e0c6484447b8b849fe1ad7423, type: 3}
+    name: PlayerSlide
     volume: 1
-    pitch: 0
-    loop: 0
+    pitch: 1
+    loop: 1
   - clip: {fileID: 8300000, guid: c8ef3085d9d647b49afd4edbaecafd89, type: 3}
-    name: playerJump
+    name: PlayerJump
     volume: 1
     pitch: 1
     loop: 0
-  musicTracks: []
+  - clip: {fileID: 8300000, guid: 436c9644530c64541b8e7f59627cd717, type: 3}
+    name: PlayerDeath
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 3d5582a69c96d1740b2a4f98bc19ab7f, type: 3}
+    name: PlayerRespawn
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: d0a30a9d717cab348853872a62f7f4c6, type: 3}
+    name: WeaponHitmarker
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 8cabb7530d87f3f409ddfc389a5d1423, type: 3}
+    name: WeaponShadowAttack
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 37e4bbdcfc998424ebeb46d0efc7fab5, type: 3}
+    name: WeaponShadowUtility
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 88569afb11c4183449e285026588f63c, type: 3}
+    name: WeaponWindAttack
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 61e4c0296850c0f4fb508e502e5ff921, type: 3}
+    name: WeaponWindUtility
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: f2698698347877a4eb65ab67cc56b390, type: 3}
+    name: ManaCoreSpawn
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 9605232bacdf30248a857e1ee9c6b3af, type: 3}
+    name: ManaCoreGrab
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 8903adae433a0e146b6be48ec5773a42, type: 3}
+    name: ManaCoreCrush
+    volume: 1
+    pitch: 1
+    loop: 0
+  musicTracks:
+  - clip: {fileID: 8300000, guid: bccf99e4eb635dd44a9d1d2f9b54e486, type: 3}
+    name: PoC BGM
+    volume: 1
+    pitch: 1
+    loop: 1
 --- !u!1 &458610773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2531,6 +2576,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 432125785516354235, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_Name
+      value: Reticle Left
+      objectReference: {fileID: 0}
     - target: {fileID: 1495040229108770364, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2538,6 +2587,18 @@ PrefabInstance:
     - target: {fileID: 1495040229108770364, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377452220693261211, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_Name
+      value: 'Reticle Top '
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113091673620289109, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_Name
+      value: Wind Reticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113091673620289109, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4206860994337999667, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2550,6 +2611,14 @@ PrefabInstance:
     - target: {fileID: 4415431053074830048, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: jumpSound
       value: playerJump
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753553787239019670, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_Name
+      value: Reticle Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920251881556815633, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_Name
+      value: Shadow Reticle
       objectReference: {fileID: 0}
     - target: {fileID: 5958985989787543498, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2610,6 +2679,10 @@ PrefabInstance:
     - target: {fileID: 6862896425267769029, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969331801042865766, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_Name
+      value: Reticle Bot
       objectReference: {fileID: 0}
     - target: {fileID: 7425649019385301865, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_Name

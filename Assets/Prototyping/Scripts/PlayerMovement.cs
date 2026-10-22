@@ -108,11 +108,39 @@ public class PlayerMovement : MonoBehaviour
     public string respawnSFX;
 
     private string currentMoveSFX;
+    private string previousMoveSFX;
     private AudioSource movementSource;
     private float audioTimer;
 
-#if UNITY_EDITOR
     private void OnValidate()
+    {
+        SetJumpStats(jumpHeight);
+        cloakSpeedMulti = 1f;
+        cloakGravMod = 1f;
+        cloakAirMod = 1f;
+        speedChangeFactor = baseSpeedChangeFactor;
+
+        if (rendererData != null)
+        {
+            foreach (var feature in rendererData.rendererFeatures)
+            {
+                if (feature.name == dashingFeatureName)
+                {
+                    dashVFX = feature;
+                    break;
+                }
+            }
+        }
+
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+
+        startYScale = transform.localScale.y;
+
+        ResetJump();
+    }
+
+    private void Start()
     {
         SetJumpStats(jumpHeight);
         cloakSpeedMulti = 1f;
@@ -140,38 +168,12 @@ public class PlayerMovement : MonoBehaviour
         ResetJump();
 
         if (AudioManager.Instance != null)
-            AudioManager.Instance.PlayReplaceableSFX(currentMoveSFX, null, transform);
-    }
-
-#else
-    private void Start()
-    {
-        SetJumpStats(jumpHeight);
-        cloakSpeedMulti = 1f;
-        cloakGravMod = 1f;
-        cloakAirMod = 1f;
-        speedChangeFactor = baseSpeedChangeFactor;
-
-        if (rendererData != null)
         {
-            foreach (var feature in rendererData.rendererFeatures)
-            {
-                if (feature.name == dashingFeatureName)
-                {
-                    dashVFX = feature;
-                    break;
-                }
-            }
+            GameObject moveAudio = Instantiate(AudioManager.Instance.sfxPrefab, transform);
+            movementSource = AudioManager.Instance.PlayReplaceableSFX(respawnSFX, moveAudio, transform);
+            Debug.Log("movementSource = " + movementSource.name);
         }
-
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
-
-        startYScale = transform.localScale.y;
-
-        ResetJump();
     }
-#endif
     private void OnEnable()
     {
         moveInput = InputSystem.actions.FindAction("Move");
@@ -468,7 +470,17 @@ public class PlayerMovement : MonoBehaviour
     }
     private void SoundControl()
     {
-        if (audioTimer < movementSource.clip.length)
+        if (movementSource == null) return;
+
+        if (currentMoveSFX != previousMoveSFX)
+        {
+            previousMoveSFX = currentMoveSFX;
+            Debug.Log("Playing new sound: " + currentMoveSFX);
+            audioTimer = 0f;
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayReplaceableSFX(currentMoveSFX, movementSource.gameObject, transform);
+        }
+        else if (audioTimer < movementSource.clip.length)
         {
             audioTimer += Time.deltaTime;
         }
@@ -478,6 +490,26 @@ public class PlayerMovement : MonoBehaviour
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlayReplaceableSFX(currentMoveSFX, movementSource.gameObject, transform);
         }
+
+        // Interpolate volume based on move speed, so that slow movement is really quiet
+        float i;
+        float speed = rb.linearVelocity.magnitude;
+        switch (moveState)
+        {
+            case MovementState.walking:
+                i = speed / baseMoveSpeed;
+                break;
+            case MovementState.crouching:
+                i = speed / baseSlideSpeed;
+                break;
+            case MovementState.sliding:
+                i = speed / baseSlideSpeed;
+                break;
+            default:
+                i = 0f;
+                break;
+        }
+        movementSource.volume = i;
     }
     private void Jump()
     {
