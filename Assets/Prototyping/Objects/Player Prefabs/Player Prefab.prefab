@@ -1298,7 +1298,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6490959909450055522
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3992,7 +3992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5858774186836278444
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5891,6 +5891,10 @@ MonoBehaviour:
   leftUtilitySlider: {fileID: 4352626365955475920}
   rightConsumeTimerSlider: {fileID: 7053314958974547230}
   LeftConsumeTimerSlider: {fileID: 5196935430766790503}
+  RightAbility: {fileID: 8858619190621987759}
+  LeftAbility: {fileID: 2352172217144995541}
+  RightAbilityIcon: {fileID: 5350631527482772547}
+  LeftAbilityIcon: {fileID: 2463103305584546909}
   coreCrushSFX: ManaCoreCrush
   coreEquipSFX: ManCoreGrab
   pickupRadius: 2

@@ -145,18 +145,20 @@ public class Enemy : MonoBehaviour
         spotLight.enabled = false;
         pointLight.enabled = false;
 
+        if (willDropCore && manaCorePrefab != null)
+            Instantiate(manaCorePrefab, transform.position, Quaternion.identity);
+
         rb.freezeRotation = false;
         // Gets the direction away from the player
         Vector3 randLaunchDir = (transform.position - player.transform.position).normalized;
 
         // Applies a one time force to "ragdoll" the enemy
-        rb.AddForce(randLaunchDir * 100f, ForceMode.Impulse);
+        rb.AddForce(randLaunchDir * 50f, ForceMode.Impulse);
         Invoke(nameof(OnDeath), deathDelay);
     }
     private void OnDeath()
     {
-        if (willDropCore && manaCorePrefab != null)
-            Instantiate(manaCorePrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()
