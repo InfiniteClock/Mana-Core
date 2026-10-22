@@ -18,21 +18,22 @@ public abstract class Weapon : MonoBehaviour
     public Vector3 target;
     [HideInInspector]
     public Vector3 playerVelocity;
+    public bool isFiring { get; protected set; }
 
     [Header("Energy")]
     public float maxAmmo;
     public float ammoPerShot;
 
-    public float currentAmmo { get; protected set; }
+    [HideInInspector]
+    public float currentAmmo;
 
     [Header("Input & Display")]
     public Transform projectileSpawnPoint;
-    public List<RectTransform> reticle;
-    [Tooltip("Assign a degree direction for the reticle to move during bloom")]
-    public List<float> reticleDirection;
     public Color uiColor;
+    public GameObject reticlePrefab;
 
-    protected List<Vector3> reticlePositions;
+    [HideInInspector]
+    public Reticle reticle;
 
     [Header("Bloom")]
     [Tooltip("Base spread in degrees")]
@@ -45,6 +46,7 @@ public abstract class Weapon : MonoBehaviour
     public float maxBloomReticleOffset;
     [Tooltip("Speed at which bloom returns to minimum in degrees per second")]
     public float bloomDecayPerSec;
+
 
     protected float bloom;
 
@@ -65,23 +67,25 @@ public abstract class Weapon : MonoBehaviour
 
     //[HideInInspector]
     public int displayedMaxCharges;
+    public virtual Reticle InitiateReticle(Transform canvasParent, float reticleRotation = 0f)
+    {
+        if (reticle == null)
+        {
+            GameObject newRet = Instantiate(reticlePrefab, canvasParent);
+            reticle = newRet.GetComponent<Reticle>();
+        }
 
+        reticle.SetZRotation(reticleRotation);
+        return reticle;
+    }
     public virtual void EquipWeapon(PlayerMovement p)
     {
         playerMovement = p;
         rb = p.gameObject.GetComponent<Rigidbody>();
         Ability = GetComponent<Ability>();
 
-        currentAmmo = maxAmmo;
-
-        if (reticleDirection.Count != reticle.Count)
+        if (reticle.reticleDirections.Count != reticle.reticlePieces.Count)
             Debug.LogError("Improper reticle setup on: " + gameObject.name);
-
-        reticlePositions = new List<Vector3>();
-        for(int i = 0; i < reticle.Count; i++)
-        {
-            reticlePositions.Add(reticle[i].localPosition);
-        }
     }
     private void Update()
     {
@@ -90,11 +94,21 @@ public abstract class Weapon : MonoBehaviour
     private void BloomTick(float deltaTime)
     {
         bloom = Mathf.MoveTowards(bloom, 0f, bloomDecayPerSec * deltaTime);
-        for (int i = 0; i < reticle.Count; i++)
-        {
-            Vector3 retDirection = new Vector3(Mathf.Cos(reticleDirection[i] * Mathf.Deg2Rad), Mathf.Sin(reticleDirection[i] * Mathf.Deg2Rad), 0f);
 
-            reticle[i].localPosition = Vector3.Lerp(reticlePositions[i], reticlePositions[i] + retDirection * maxBloomReticleOffset, bloom / maxBloom);
+        // Account for some weapons not having bloom, but still needing the code to run
+        float interpolation;
+        if (maxBloom <= 0f) interpolation = 1f;
+        else interpolation = bloom / maxBloom;
+
+
+        if (reticle != null) 
+        { 
+            for (int i = 0; i < reticle.reticlePieces.Count; i++)
+            {
+                Vector3 retDirection = new Vector3(Mathf.Cos(reticle.reticleDirections[i] * Mathf.Deg2Rad), Mathf.Sin(reticle.reticleDirections[i] * Mathf.Deg2Rad), 0f);
+
+                reticle.reticlePieces[i].localPosition = Vector3.Lerp(reticle.reticlePositions[i], reticle.reticlePositions[i] + retDirection * maxBloomReticleOffset, interpolation);
+            }
         }
     }
     protected void BloomOnShotFired(float bloomMulti = 1.0f)

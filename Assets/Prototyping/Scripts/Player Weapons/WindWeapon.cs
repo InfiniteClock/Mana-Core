@@ -8,7 +8,6 @@ public class WindWeapon : Weapon
     public float fireRate;
 
     private WindDash windDash;
-    private bool isFiring;
     private float fireCD;
     private Coroutine shootRoutine;
 

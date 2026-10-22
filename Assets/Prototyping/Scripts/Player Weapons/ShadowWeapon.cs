@@ -7,8 +7,9 @@ public class ShadowWeapon : Weapon
 {
     [Header("Shadow Stats")]
     [Tooltip("Slashes per second")]
-    public float slashRate;
+    public float slashRate = 2f;
     public float cloakSlashScaleMulti = 1f;
+    public float cloakSlashRate = 2f;
     public float delayPerSlashStage;
     [Tooltip("The distance in meters for offset from the preceding projectile. Based on (right, up, fwd) direction of (1,1,1)")]
     public Vector3 stageOffset;
@@ -17,7 +18,6 @@ public class ShadowWeapon : Weapon
 
 
     private ShadowCloak shadowCloak;
-    private bool isSlashing;
     private float slashCD;
     private Coroutine slashRoutine;
 
@@ -31,7 +31,7 @@ public class ShadowWeapon : Weapon
 
     private IEnumerator Slash()
     {
-        while (isSlashing)
+        while (isFiring)
         {
             // If statement prevents slashing while not in slashable state, without ending the routine
             // This allows player to continue holding button while sprinting and dashing to begin slashing when entering a slashable state
@@ -46,17 +46,25 @@ public class ShadowWeapon : Weapon
 
                 Projectile cutPro = cut.GetComponent<Projectile>();
 
+                // Run bloom even though it may not have any
+                BloomOnShotFired();
+
                 // Initiate the follow up projectiles
                 StartCoroutine(SlashDelay(cutPro));
 
                 // Check if cloaked and adjust slash stats as necessary
                 if (playerMovement.isCloaked)
+                {
+                    slashCD = 1f / cloakSlashRate;
                     cut.transform.localScale = cut.transform.localScale * cloakSlashScaleMulti;
+                }
+                else
+                    slashCD = 1f / slashRate;
                 
                 // Adjust ammo and check if there is enough to keep shooting
                 currentAmmo -= ammoPerShot;
                 if (currentAmmo <= 0f)
-                    isSlashing = false;
+                    isFiring = false;
 
                 yield return new WaitForSeconds(slashCD);
             }
@@ -91,13 +99,13 @@ public class ShadowWeapon : Weapon
     public override void PrimaryBegin()
     {
         if (currentAmmo > 0f && PlayerCanShoot())
-            isSlashing = true;
+            isFiring = true;
 
         slashRoutine ??= StartCoroutine(Slash());
     }
     public override void PrimaryRelease()
     {
-        isSlashing = false;
+        isFiring = false;
     }
     public override void SecondaryBegin()
     {

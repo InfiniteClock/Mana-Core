@@ -144,9 +144,9 @@ MonoBehaviour:
   maxAmmo: 0
   ammoPerShot: 0
   projectileSpawnPoint: {fileID: 1533052254069005491}
-  reticle: []
-  reticleDirection: []
   uiColor: {r: 1, g: 1, b: 1, a: 0.5882353}
+  reticlePrefab: {fileID: 6301688751641128443, guid: 68ac2e96357c3ee4f9c2bbfb7bdff2ff, type: 3}
+  reticle: {fileID: 0}
   baseSpread: 0
   bloomPerShot: 0
   maxBloom: 0
@@ -172,5 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 450f3f806affd444ea6b87564c1f76f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NoAbility
+  abilitySFX: 
   cooldown: 0
   cooldownTimer: 0
