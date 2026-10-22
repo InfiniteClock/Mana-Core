@@ -143,6 +143,7 @@ MonoBehaviour:
   playerVelocity: {x: 0, y: 0, z: 0}
   maxAmmo: 240
   ammoPerShot: 1
+  currentAmmo: 0
   projectileSpawnPoint: {fileID: 5108551783996909161}
   uiColor: {r: 0.70980394, g: 0.8666667, b: 0.78039217, a: 1}
   reticlePrefab: {fileID: 4732925191331083816, guid: 22d5b12d8e2f9c04bb90d788b144c09d, type: 3}
@@ -173,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb2dfc0d0a38f8499116d5aa92e1293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WindDash
-  abilitySFX: 
+  abilitySFX: WeaponWindUtility
   cooldown: 3
   cooldownTimer: 0
   dashForce: 30

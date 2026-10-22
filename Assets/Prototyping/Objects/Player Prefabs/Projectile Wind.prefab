@@ -188,6 +188,8 @@ MonoBehaviour:
   damage: 1
   randomZRotation: 180
   isPiercing: 0
+  launchSFX: WeaponWindAttack
+  hitSFX: WeaponHitmarker
 --- !u!1 &6713910599793580270
 GameObject:
   m_ObjectHideFlags: 0

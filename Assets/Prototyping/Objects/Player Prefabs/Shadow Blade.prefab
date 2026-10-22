@@ -143,6 +143,7 @@ MonoBehaviour:
   playerVelocity: {x: 0, y: 0, z: 0}
   maxAmmo: 50
   ammoPerShot: 1
+  currentAmmo: 0
   projectileSpawnPoint: {fileID: 9186704060849732737}
   uiColor: {r: 0.5254902, g: 0.45490196, b: 0.8862745, a: 1}
   reticlePrefab: {fileID: 4104753497011188310, guid: b87c998dd7fe77e4194c54df8f2bfd36, type: 3}
@@ -179,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3212ee9bd7641cc4fb7e6c7c1d596270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShadowCloak
-  abilitySFX: 
+  abilitySFX: WeaponShadowUtility
   cooldown: 5
   cooldownTimer: 0
   rendererData: {fileID: 11400000, guid: f288ae1f4751b564a96ac7587541f7a2, type: 2}

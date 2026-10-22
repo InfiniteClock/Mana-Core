@@ -163,6 +163,7 @@ MonoBehaviour:
   spinSpeed: 1
   gravity: -10
   objectHeight: 0.63
+  spawnInSFX: ManaCoreSpawn
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024

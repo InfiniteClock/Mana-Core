@@ -645,17 +645,17 @@ MonoBehaviour:
     name: WeaponShadowAttack
     volume: 1
     pitch: 1
-    loop: 1
+    loop: 0
   - clip: {fileID: 8300000, guid: 37e4bbdcfc998424ebeb46d0efc7fab5, type: 3}
     name: WeaponShadowUtility
     volume: 1
     pitch: 1
     loop: 0
-  - clip: {fileID: 8300000, guid: 127cfcdeebb6c9a498b4ded37a88bcb7, type: 3}
+  - clip: {fileID: 8300000, guid: 88569afb11c4183449e285026588f63c, type: 3}
     name: WeaponWindAttack
     volume: 1
     pitch: 1
-    loop: 1
+    loop: 0
   - clip: {fileID: 8300000, guid: 61e4c0296850c0f4fb508e502e5ff921, type: 3}
     name: WeaponWindUtility
     volume: 1
