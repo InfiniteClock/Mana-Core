@@ -16,12 +16,18 @@ public class PlayerWeapons : MonoBehaviour
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
     public GameObject emptyHandPrefab;
+
+    [Header("HUD Sliders")]
     public Slider rightAmmoSlider;    
     public Slider leftAmmoSlider;
     public Slider rightUtilitySlider;
     public Slider leftUtilitySlider;
     public Slider rightConsumeTimerSlider;
     public Slider LeftConsumeTimerSlider;
+
+    [Header("SFX")]
+    public string coreCrushSFX;
+    public string coreEquipSFX;
 
 
     [Header("Pickup Settings")]
@@ -196,12 +202,6 @@ public class PlayerWeapons : MonoBehaviour
         rightUtilitySlider.value = rightWeapon.Ability.cooldownTimer / rightWeapon.Ability.cooldown + rightAbilityCharges;
         leftAmmoSlider.value = leftWeapon.currentAmmo;
         leftUtilitySlider.value = leftWeapon.Ability.cooldownTimer / leftWeapon.Ability.cooldown + leftAbilityCharges;
-
-        //rightAbilityText.text = "Ability: " + rightWeapon.wType + " : " + rightAbilityCharges.ToString("0") + "/" + rightWeapon.displayedMaxCharges.ToString("0")
-        //    + "\nAmmo : " + rightWeapon.currentAmmo+"/"+rightWeapon.maxAmmo;
-
-        //leftAbilityText.text = "Ability: " + leftWeapon.wType + " : " + leftAbilityCharges.ToString("0") + "/" + leftWeapon.displayedMaxCharges.ToString("0")
-        //    + "\nAmmo : " + leftWeapon.currentAmmo.ToString("0") + "/" + leftWeapon.maxAmmo.ToString("0");
     }
     public void EquipToHand(Weapon weapon, bool toRightHand)
     {
@@ -376,6 +376,9 @@ public class PlayerWeapons : MonoBehaviour
         // Only completes the coroutine if consume button is still being held at end of timer
         if (isConsuming)
         {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(coreCrushSFX);
+
             // Destroyes the existing weapon
             if (isRightWeapon)
                 Destroy(rightWeapon.gameObject);
@@ -438,6 +441,8 @@ public class PlayerWeapons : MonoBehaviour
             Destroy(leftWeapon.gameObject);
 
         }
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(coreEquipSFX);
         // Creates the new weapon and then equips it to hand
         GameObject newObj = Instantiate(newWeapon, hand);
         EquipToHand(newObj.GetComponent<Weapon>(), isRightWeapon);

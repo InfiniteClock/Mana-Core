@@ -1,6 +1,7 @@
-using UnityEngine;
-using System.Collections.Generic;
+using Mono.Cecil;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class AudioManager : MonoBehaviour
     private Dictionary<string, Sound> sfxDict = new();
     private Dictionary<string, Sound> musicDict = new();
     private Coroutine fadeRoutine;
-
+    private List<AudioSource> savedSources;
     private void Awake()
     {
         if (Instance == null)
@@ -23,6 +24,7 @@ public class AudioManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        savedSources = new List<AudioSource>();
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSourceFadeOut = gameObject.AddComponent<AudioSource>();
 
@@ -57,6 +59,43 @@ public class AudioManager : MonoBehaviour
             source.Play();
         }
             
+    }
+    public AudioSource PlayReplaceableSFX(string name, GameObject obj, Transform parent = null)
+    {
+        // If no parent is provided, use Audio Manager as the parent
+        if (parent == null) parent = transform;
+        GameObject targetSource;
+
+        if (obj == null)
+        {
+            targetSource = Instantiate(sfxPrefab, parent);
+            targetSource.name = "Replaceable Audio: " + name;
+        }
+        else
+        {
+            targetSource = obj;
+            targetSource.transform.SetParent(parent);
+        }
+
+        if (sfxDict.TryGetValue(name, out Sound sound))
+        {
+            AudioSource source = targetSource.GetComponent<AudioSource>();
+            AudioRecycler rec = targetSource.GetComponent<AudioRecycler>();
+
+            source.Stop();
+            rec.enabled = false;
+            source.clip = sound.clip;
+            source.volume = sound.volume;
+            source.pitch = sound.pitch;
+            source.loop = sound.loop;
+            source.Play();
+
+            return source;
+        }
+        else if (targetSource.TryGetComponent(out AudioSource source))
+            return source;
+        else 
+            return null;
     }
     public void PlayMusic(string name)
     {

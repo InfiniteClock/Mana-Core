@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     public float slopeIncreaseMulti;
     public float baseAccelMultiplier;
     public float groundDrag;
-    public string jumpSound;
 
     public MovementState moveState { get; private set; }
     private MovementState lastMoveState;
@@ -100,6 +99,18 @@ public class PlayerMovement : MonoBehaviour
     private bool exitingSlope;
     private RaycastHit slopeHit;
 
+    [Header("SFX")]
+    public string jumpSFX;
+    public string walkSFX;
+    public string crouchWalkSFX;
+    public string slideSFX;
+    public string deathSFX;
+    public string respawnSFX;
+
+    private string currentMoveSFX;
+    private AudioSource movementSource;
+    private float audioTimer;
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
@@ -127,6 +138,9 @@ public class PlayerMovement : MonoBehaviour
         startYScale = transform.localScale.y;
 
         ResetJump();
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayReplaceableSFX(currentMoveSFX, null, transform);
     }
 
 #else
@@ -199,7 +213,6 @@ public class PlayerMovement : MonoBehaviour
             rb.linearDamping = 0;
 
         Move();
-        
     }
     private void Update()
     {
@@ -207,6 +220,7 @@ public class PlayerMovement : MonoBehaviour
         CheckInput();
         StateHandler();
         SpeedControl();
+        SoundControl();
 
         // Debugging Text
         Vector3 hSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
@@ -226,6 +240,7 @@ public class PlayerMovement : MonoBehaviour
             moveState = MovementState.dashing;
             desiredMoveSpeed = baseDashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
+            currentMoveSFX = "";
         }
 
         // Sliding
@@ -239,14 +254,13 @@ public class PlayerMovement : MonoBehaviour
 
             // Apply sliding speed if moving downhill
             if (OnSlope() && rb.linearVelocity.y < 0.1f)
-            {
                 desiredMoveSpeed = baseSlideSpeed * cloakSpeedMulti;
-            }
+            
             // Apply crouch speed if moving uphill or on flat
             else
-            {
                 desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
-            }
+            
+            currentMoveSFX = slideSFX;
         }
 
         // Crouching
@@ -254,12 +268,18 @@ public class PlayerMovement : MonoBehaviour
         {
             moveState = MovementState.crouching;
             desiredMoveSpeed = baseCrouchSpeed * cloakSpeedMulti;
+
+            if (moveSpeed <= baseCrouchSpeed)
+                currentMoveSFX = crouchWalkSFX;
+            else
+                currentMoveSFX = slideSFX;
         }
         // Walking
         else if (isGrounded)
         {
             moveState = MovementState.walking;
             desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
+            currentMoveSFX = walkSFX;
         }
 
         // Airborne
@@ -267,6 +287,7 @@ public class PlayerMovement : MonoBehaviour
         {
             moveState = MovementState.airborne;
             desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
+            currentMoveSFX = "";
         }
 
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
@@ -445,6 +466,19 @@ public class PlayerMovement : MonoBehaviour
         if (maxYSpeed != 0 && rb.linearVelocity.y > maxYSpeed)
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, maxYSpeed, rb.linearVelocity.z);
     }
+    private void SoundControl()
+    {
+        if (audioTimer < movementSource.clip.length)
+        {
+            audioTimer += Time.deltaTime;
+        }
+        else
+        {
+            audioTimer = 0f;
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayReplaceableSFX(currentMoveSFX, movementSource.gameObject, transform);
+        }
+    }
     private void Jump()
     {
         // Don't jump if the ceiling is too low
@@ -452,7 +486,8 @@ public class PlayerMovement : MonoBehaviour
 
         exitingSlope = true;
 
-        //AudioManager.Instance.PlaySFX(jumpSound);
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(jumpSFX);
 
         // Reset vertical velocity
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);

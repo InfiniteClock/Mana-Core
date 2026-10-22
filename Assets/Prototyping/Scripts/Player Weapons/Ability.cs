@@ -11,6 +11,9 @@ public abstract class Ability : MonoBehaviour
     protected PlayerWeapons playerWeapons;
     protected Weapon weapon;
 
+    [Header("SFX")]
+    public string abilitySFX;
+
     [Header("Cooldown")]
     public float cooldown;
     //[HideInInspector]
@@ -32,6 +35,9 @@ public abstract class Ability : MonoBehaviour
         
         //cooldownTimer = Mathf.Max(0f, cooldownTimer - cooldown);
         playerWeapons.UseAbilityCharge(weapon.isRightWeapon);
+
+        if (AudioManager.Instance != null) 
+            AudioManager.Instance.PlaySFX(abilitySFX);
 
         if (playerWeapons.hasTwinWeapons)
             playerWeapons.bufferTimer = playerWeapons.dashBuffer;
