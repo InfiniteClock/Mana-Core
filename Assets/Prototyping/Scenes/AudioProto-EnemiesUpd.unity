@@ -606,33 +606,73 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   sfxPrefab: {fileID: 1285791830669611184, guid: d8b880c195e70c74c94d8c61161a7e35, type: 3}
   soundEffects:
-  - clip: {fileID: 8300000, guid: 8903adae433a0e146b6be48ec5773a42, type: 3}
-    name: manaCoreCrush
+  - clip: {fileID: 8300000, guid: 621c4bf0dd18c9f428899abdca02a451, type: 3}
+    name: PlayerSprint
     volume: 1
-    pitch: 0
-    loop: 0
-  - clip: {fileID: 8300000, guid: 9605232bacdf30248a857e1ee9c6b3af, type: 3}
-    name: manaCoreGrab
-    volume: 1
-    pitch: 0
-    loop: 0
-  - clip: {fileID: 8300000, guid: f2698698347877a4eb65ab67cc56b390, type: 3}
-    name: manaCoreSpawn
-    volume: 1
-    pitch: 0
-    loop: 0
+    pitch: 1
+    loop: 1
   - clip: {fileID: 8300000, guid: 1a434c8ff2896104d9f9c740dd8b5142, type: 3}
-    name: playerCrouchWalk
+    name: PlayerCrouchWalk
     volume: 1
-    pitch: 0
+    pitch: 1
+    loop: 1
+  - clip: {fileID: 8300000, guid: 2b1baf7e0c6484447b8b849fe1ad7423, type: 3}
+    name: PlayerSlide
+    volume: 1
+    pitch: 1
+    loop: 1
+  - clip: {fileID: 8300000, guid: c8ef3085d9d647b49afd4edbaecafd89, type: 3}
+    name: PlayerJump
+    volume: 1
+    pitch: 1
     loop: 0
   - clip: {fileID: 8300000, guid: 436c9644530c64541b8e7f59627cd717, type: 3}
-    name: playerDeath
+    name: PlayerDeath
     volume: 1
-    pitch: 0
+    pitch: 1
     loop: 0
-  - clip: {fileID: 8300000, guid: c8ef3085d9d647b49afd4edbaecafd89, type: 3}
-    name: playerJump
+  - clip: {fileID: 8300000, guid: 3d5582a69c96d1740b2a4f98bc19ab7f, type: 3}
+    name: PlayerRespawn
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: d0a30a9d717cab348853872a62f7f4c6, type: 3}
+    name: WeaponHitmarker
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 8cabb7530d87f3f409ddfc389a5d1423, type: 3}
+    name: WeaponShadowAttack
+    volume: 1
+    pitch: 1
+    loop: 1
+  - clip: {fileID: 8300000, guid: 37e4bbdcfc998424ebeb46d0efc7fab5, type: 3}
+    name: WeaponShadowUtility
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 127cfcdeebb6c9a498b4ded37a88bcb7, type: 3}
+    name: WeaponWindAttack
+    volume: 1
+    pitch: 1
+    loop: 1
+  - clip: {fileID: 8300000, guid: 61e4c0296850c0f4fb508e502e5ff921, type: 3}
+    name: WeaponWindUtility
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: f2698698347877a4eb65ab67cc56b390, type: 3}
+    name: ManaCoreSpawn
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 9605232bacdf30248a857e1ee9c6b3af, type: 3}
+    name: ManaCoreGrab
+    volume: 1
+    pitch: 1
+    loop: 0
+  - clip: {fileID: 8300000, guid: 8903adae433a0e146b6be48ec5773a42, type: 3}
+    name: ManaCoreCrush
     volume: 1
     pitch: 1
     loop: 0

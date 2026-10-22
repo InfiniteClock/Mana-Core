@@ -6534,6 +6534,8 @@ MonoBehaviour:
   leftUtilitySlider: {fileID: 4352626365955475920}
   rightConsumeTimerSlider: {fileID: 7053314958974547230}
   LeftConsumeTimerSlider: {fileID: 5196935430766790503}
+  coreCrushSFX: ManaCoreCrush
+  coreEquipSFX: ManaCoreGrab
   pickupRadius: 2
   whatIsPickupable:
     serializedVersion: 2
@@ -6594,6 +6596,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   maxSlopeAngle: 50
+  jumpSFX: PlayerJump
+  walkSFX: PlayerSprint
+  crouchWalkSFX: PlayerCrouchWalk
+  slideSFX: PlayerSlide
+  deathSFX: PlayerDeath
+  respawnSFX: PlayerRespawn
 --- !u!1 &9202679734278652577
 GameObject:
   m_ObjectHideFlags: 0
