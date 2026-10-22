@@ -468,6 +468,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void SoundControl()
     {
+        if (movementSource == null) return;
+
         if (audioTimer < movementSource.clip.length)
         {
             audioTimer += Time.deltaTime;
