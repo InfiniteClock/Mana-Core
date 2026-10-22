@@ -26,6 +26,13 @@ public class PlayerWeapons : MonoBehaviour
     public Slider rightConsumeTimerSlider;
     public Slider LeftConsumeTimerSlider;
 
+    [Header("HUD Ability Icons")]
+    public Image RightAbility;
+    public Image LeftAbility;
+    public Image RightAbilityIcon;
+    public Image LeftAbilityIcon;
+
+
     [Header("SFX")]
     public string coreCrushSFX;
     public string coreEquipSFX;
@@ -219,6 +226,7 @@ public class PlayerWeapons : MonoBehaviour
             rightAmmoSlider.maxValue = weapon.maxAmmo;
             rightAmmoSlider.value = weapon.currentAmmo;
             rightAmmoSlider.fillRect.GetComponent<Image>().color = weapon.uiColor;
+            RightAbility.color = weapon.uiColor;
             weapon.InitiateReticle(reticleParent);
         }
         else
@@ -230,6 +238,7 @@ public class PlayerWeapons : MonoBehaviour
             leftAmmoSlider.maxValue = weapon.maxAmmo;
             leftAmmoSlider.value = weapon.currentAmmo;
             leftAmmoSlider.fillRect.GetComponent<Image>().color= weapon.uiColor;
+            LeftAbility.color = weapon.uiColor;
             leftWeapon.InitiateReticle(reticleParent, 45f);
         }
 
