@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
         spotLight.innerSpotAngle = detectionAngle;
         pointLight.range = minDetectionRange;
     }
-    protected void Update()
+    protected virtual void Update()
     {
         Detection();
         if (!hasTriggeredDeath && healthScript.isDead)

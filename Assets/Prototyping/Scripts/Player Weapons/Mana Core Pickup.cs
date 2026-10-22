@@ -8,6 +8,7 @@ public class ManaCorePickup : MonoBehaviour
     public float spinSpeed;
     public float gravity;
     public float objectHeight;
+    public string spawnInSFX;
     public LayerMask whatIsGround;
 
     private bool isGrounded;
@@ -15,6 +16,9 @@ public class ManaCorePickup : MonoBehaviour
     private Rigidbody rb;
     private void Start()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(spawnInSFX);
+
         rb = GetComponent<Rigidbody>();
     }
     private void FixedUpdate()

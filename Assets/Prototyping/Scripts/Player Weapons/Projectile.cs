@@ -24,6 +24,9 @@ public class Projectile : MonoBehaviour
     [Tooltip("Set to true if this projectile should pierce through multiple colliders")]
     public bool isPiercing = false;
 
+    [Header("SFX")]
+    public string launchSFX;
+    public string hitSFX;
     
     private Vector3 direction;
     private float speed;
@@ -42,7 +45,9 @@ public class Projectile : MonoBehaviour
             selfColliders[i].excludeLayers = ignoreTheseLayers;
         }
         
-
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(launchSFX, transform);
+        
         spinAxis = spinAxis.normalized;
         rb = GetComponent<Rigidbody>();
         hitColliders = new List<Collider>();
@@ -88,6 +93,8 @@ public class Projectile : MonoBehaviour
             // Adds collider to list of colliders projectile has already hit
             hitColliders.Add(other);
             health.TakeDamage(damage);
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(hitSFX, transform);
         }
 
         // Destroys projectile on collision with anything UNLESS it has piercing property
