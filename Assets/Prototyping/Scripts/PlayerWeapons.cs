@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerWeapons : MonoBehaviour
 {
@@ -16,6 +16,19 @@ public class PlayerWeapons : MonoBehaviour
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
     public GameObject emptyHandPrefab;
+
+    [Header("HUD Sliders")]
+    public Slider rightAmmoSlider;    
+    public Slider leftAmmoSlider;
+    public Slider rightUtilitySlider;
+    public Slider leftUtilitySlider;
+    public Slider rightConsumeTimerSlider;
+    public Slider LeftConsumeTimerSlider;
+
+    [Header("SFX")]
+    public string coreCrushSFX;
+    public string coreEquipSFX;
+
 
     [Header("Pickup Settings")]
     public float pickupRadius;
@@ -126,7 +139,7 @@ public class PlayerWeapons : MonoBehaviour
     private void Update()
     {
         ControlTimers();
-        DisplayAbilityCooldowns();
+        DisplayUIChanges();
 
         // Draw rays from player guns for debugging direction
         Debug.DrawRay(rightWeapon.projectileSpawnPoint.position, (camTarget - rightWeapon.projectileSpawnPoint.position).normalized * 20f, Color.cyan);
@@ -147,34 +160,34 @@ public class PlayerWeapons : MonoBehaviour
         // Run the right weapon's cooldown timer
         if (rightAbilityCharges < rightWeapon.displayedMaxCharges)
         {
-            if (rightWeapon.Ability.cooldownTimer > 0)
-                rightWeapon.Ability.cooldownTimer -= Time.deltaTime;
+            if (rightWeapon.Ability.cooldownTimer < rightWeapon.Ability.cooldown)
+                rightWeapon.Ability.cooldownTimer += Time.deltaTime;
             else
             {
                 GainAbilityCharge(true);
                 // If there are still charges to restore, reset the timer
                 if (rightAbilityCharges < rightWeapon.displayedMaxCharges)
-                    rightWeapon.Ability.cooldownTimer = rightWeapon.Ability.cooldown;
+                    rightWeapon.Ability.cooldownTimer = 0f;
             }
         }
         else
-            rightWeapon.Ability.cooldownTimer = rightWeapon.Ability.cooldown;
+            rightWeapon.Ability.cooldownTimer = 0f;
 
         // Run the left weapon's cooldown timer
         if (leftAbilityCharges < leftWeapon.displayedMaxCharges)
         {
-            if (leftWeapon.Ability.cooldownTimer > 0)
-                leftWeapon.Ability.cooldownTimer -= Time.deltaTime;
+            if (leftWeapon.Ability.cooldownTimer < leftWeapon.Ability.cooldown)
+                leftWeapon.Ability.cooldownTimer += Time.deltaTime;
             else
             {
                 GainAbilityCharge(false);
                 // If there are still charges to restore, reset the timer
                 if (leftAbilityCharges < leftWeapon.displayedMaxCharges)
-                    leftWeapon.Ability.cooldownTimer = leftWeapon.Ability.cooldown;
+                    leftWeapon.Ability.cooldownTimer = 0f;
             }
         }
         else
-            leftWeapon.Ability.cooldownTimer = leftWeapon.Ability.cooldown;
+            leftWeapon.Ability.cooldownTimer = 0f;
 
         // If both weapons are same, countdown buffer timer
         if (hasTwinWeapons)
@@ -183,36 +196,42 @@ public class PlayerWeapons : MonoBehaviour
                 bufferTimer -= Time.deltaTime;
         }
     }
-    private void DisplayAbilityCooldowns()
+    private void DisplayUIChanges()
     {
-        rightAbilityText.text = "Ability: " + rightWeapon.wType + " : " + rightAbilityCharges.ToString("0") + "/" + rightWeapon.displayedMaxCharges.ToString("0")
-            + "\nAmmo : " + rightWeapon.currentAmmo+"/"+rightWeapon.maxAmmo;
-
-        leftAbilityText.text = "Ability: " + leftWeapon.wType + " : " + leftAbilityCharges.ToString("0") + "/" + leftWeapon.displayedMaxCharges.ToString("0")
-            + "\nAmmo : " + leftWeapon.currentAmmo.ToString("0") + "/" + leftWeapon.maxAmmo.ToString("0");
+        rightAmmoSlider.value = rightWeapon.currentAmmo;
+        rightUtilitySlider.value = rightWeapon.Ability.cooldownTimer / rightWeapon.Ability.cooldown + rightAbilityCharges;
+        leftAmmoSlider.value = leftWeapon.currentAmmo;
+        leftUtilitySlider.value = leftWeapon.Ability.cooldownTimer / leftWeapon.Ability.cooldown + leftAbilityCharges;
     }
     public void EquipToHand(Weapon weapon, bool toRightHand)
     {
         // Equips a selected weapon to the specified hand
         if (toRightHand)
         {
+            // Get and set the weapon stats
             rightWeapon = weapon;
             rWeaponType = weapon.wType;
             rightWeapon.isRightWeapon = true;
-
+            rightAmmoSlider.maxValue = weapon.maxAmmo;
+            rightAmmoSlider.value = weapon.currentAmmo;
+            rightAmmoSlider.fillRect.GetComponent<Image>().color = weapon.uiColor;
         }
         else
         {
+            // Get and set the weapon stats
             leftWeapon = weapon;
             lWeaponType = weapon.wType;
             leftWeapon.isRightWeapon = false;
+            leftAmmoSlider.maxValue = weapon.maxAmmo;
+            leftAmmoSlider.value = weapon.currentAmmo;
+            leftAmmoSlider.fillRect.GetComponent<Image>().color= weapon.uiColor;
         }
-
-        // Checks if both weapons are the same, with a delay in case this is a weapon swap
-        Invoke(nameof(CheckTwinWeapons), 0.01f);
 
         // Initializes weapon with important references to player
         weapon.EquipWeapon(playerMovement);
+
+        // Checks if both weapons are the same, with a delay in case this is a weapon swap
+        Invoke(nameof(CheckTwinWeapons), 0.01f);
     }
     private void CheckTwinWeapons()
     {
@@ -235,6 +254,15 @@ public class PlayerWeapons : MonoBehaviour
             rightAbilityCharges = Mathf.Min(rightAbilityCharges, rightWeapon.maxAbilityCharges);
             leftAbilityCharges = Mathf.Min(leftAbilityCharges, leftWeapon.maxAbilityCharges);
         }
+
+        // Have to set both side's abilities again on each weapon switch to ensure neither gets missed when swapping from twin to untwinned or vice versa
+        rightUtilitySlider.maxValue = rightWeapon.displayedMaxCharges;
+        rightUtilitySlider.value = rightWeapon.Ability.cooldownTimer / rightWeapon.Ability.cooldown + rightAbilityCharges;
+        rightUtilitySlider.fillRect.GetComponent<Image>().color = rightWeapon.uiColor;
+        leftUtilitySlider.maxValue = leftWeapon.displayedMaxCharges;
+        leftUtilitySlider.value = leftWeapon.Ability.cooldownTimer / leftWeapon.Ability.cooldown + leftAbilityCharges;
+        leftUtilitySlider.fillRect.GetComponent<Image>().color = leftWeapon.uiColor;
+        
     }
     public void GainAbilityCharge(bool usedRightWeapon)
     {
@@ -295,6 +323,7 @@ public class PlayerWeapons : MonoBehaviour
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
+                        isSwapping = false;
                     }
                 }
                 else
@@ -303,6 +332,7 @@ public class PlayerWeapons : MonoBehaviour
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
+                        isSwapping = false;
                     }
                 }
             }
@@ -319,16 +349,36 @@ public class PlayerWeapons : MonoBehaviour
     }
     private IEnumerator ConsumeWeapon(bool isRightWeapon)
     {
+        if (isRightWeapon && rightWeapon.wType != WeaponType.Empty)
+        {
+            rightConsumeTimerSlider.gameObject.SetActive(true);
+        } 
+        else if (!isRightWeapon && leftWeapon.wType != WeaponType.Empty)
+        {
+            LeftConsumeTimerSlider.gameObject.SetActive(true);
+        }
+
         float consumeTimer = 0f;
         while (isConsuming && consumeTimer < consumeHoldTime)
         {
             consumeTimer += Time.deltaTime;
+            if (isRightWeapon)
+            {
+                rightConsumeTimerSlider.value = consumeTimer;
+            }
+            else
+            {
+                LeftConsumeTimerSlider.value = consumeTimer;
+            }
             yield return null;
         }
 
         // Only completes the coroutine if consume button is still being held at end of timer
         if (isConsuming)
         {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(coreCrushSFX);
+
             // Destroyes the existing weapon
             if (isRightWeapon)
                 Destroy(rightWeapon.gameObject);
@@ -340,9 +390,15 @@ public class PlayerWeapons : MonoBehaviour
 
         // Resets the coroutine and allowing it to trigger again
         if (isRightWeapon)
+        {
+            rightConsumeTimerSlider.gameObject.SetActive(false);
             rightConsumeRoutine = null;
-        else
+        }
+        else 
+        {
+            LeftConsumeTimerSlider.gameObject.SetActive(false);
             leftConsumeRoutine = null;
+        }            
     }
     private void SwapWeapons()
     {
@@ -385,6 +441,8 @@ public class PlayerWeapons : MonoBehaviour
             Destroy(leftWeapon.gameObject);
 
         }
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(coreEquipSFX);
         // Creates the new weapon and then equips it to hand
         GameObject newObj = Instantiate(newWeapon, hand);
         EquipToHand(newObj.GetComponent<Weapon>(), isRightWeapon);
@@ -435,7 +493,7 @@ public class PlayerWeapons : MonoBehaviour
     private void OnSwapStart(InputAction.CallbackContext context) => isSwapping = true;
     private void OnSwapRelease(InputAction.CallbackContext context) 
     {
-        if (swapTimer < swapHoldTime)
+        if (swapTimer < swapHoldTime && isSwapping && !isConsuming)
             SwapWeapons();
         isSwapping = false;
     }

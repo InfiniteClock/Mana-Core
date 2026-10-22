@@ -1,0 +1,45 @@
+using UnityEngine;
+
+public abstract class Ability : MonoBehaviour
+{
+    [Header("References")]
+    public Transform orientation {  get; protected set; }
+    public Transform playerCam { get; protected set; }
+
+    protected Rigidbody rb;
+    protected PlayerMovement playerMovement;
+    protected PlayerWeapons playerWeapons;
+    protected Weapon weapon;
+
+    [Header("SFX")]
+    public string abilitySFX;
+
+    [Header("Cooldown")]
+    public float cooldown;
+    //[HideInInspector]
+    public float cooldownTimer;
+
+
+    public void Setup(PlayerMovement p)
+    {
+        weapon = GetComponent<Weapon>();
+        playerMovement = p;
+        playerWeapons = p.GetComponent<PlayerWeapons>();
+        rb = playerMovement.GetComponent<Rigidbody>();
+        orientation = p.orientation;
+        playerCam = p.playerCam.transform;
+    }
+
+    protected void InitiateAbility()
+    {
+        
+        //cooldownTimer = Mathf.Max(0f, cooldownTimer - cooldown);
+        playerWeapons.UseAbilityCharge(weapon.isRightWeapon);
+
+        if (AudioManager.Instance != null) 
+            AudioManager.Instance.PlaySFX(abilitySFX);
+
+        if (playerWeapons.hasTwinWeapons)
+            playerWeapons.bufferTimer = playerWeapons.dashBuffer;
+    } 
+}

@@ -11,6 +11,7 @@ public class CameraLook : MonoBehaviour
     private float xRotation = 0f;
     private float yRotation = 0f;
     private InputAction escInput;
+    public GameObject pauseMenu;
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -48,7 +49,13 @@ public class CameraLook : MonoBehaviour
     }
     public void QuitGame()
     {
-        Application.Quit();
+        pauseMenu.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void ResumeGame()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
     }
     public void OnEscape(InputAction.CallbackContext context) => QuitGame();
 }

@@ -8,6 +8,7 @@ public class Health : MonoBehaviour
     public float maxHealth;
     public float corpseDuration;
 
+    public bool isDead { get; private set; }
     public float currentHealth { get; private set; }
 
     private float corpseTimer = 0f;
@@ -24,7 +25,7 @@ public class Health : MonoBehaviour
     private Coroutine flashRoutine;
     private Coroutine deathRoutine;
 
-    private void Start()
+    private void Awake()
     {
         // Collects EVERY MeshRenderer and associated starting Material and stores for later
         MeshRenderer[] tempMR = GetComponentsInChildren<MeshRenderer>();
@@ -76,7 +77,7 @@ public class Health : MonoBehaviour
         if (!canTakeDamage) return;
 
         currentHealth -= dmg;
-        Debug.Log("I have " + currentHealth + " health remaining!");
+
         // Only plays damage feedback if the enemy is still alive
         if (currentHealth > 0)
             flashRoutine ??= StartCoroutine(DamageFeedback(flashDuration));
@@ -115,13 +116,14 @@ public class Health : MonoBehaviour
     }
     protected void TriggerDeath()
     {
-        canTakeDamage = false;
         deathRoutine ??= StartCoroutine(WhileDead());
     }
     protected void DeathThroes() { }
     private IEnumerator WhileDead()
     {
-        while(corpseTimer < corpseDuration)
+        canTakeDamage = false;
+        isDead = true;
+        while (corpseTimer < corpseDuration)
         {
             // Do things that need to happen during death here
             DeathThroes();
