@@ -29,6 +29,7 @@ public class FodderFlame : EnemyWeapon
                     GameObject shot = Instantiate(projectile, projectileSpawnPoint.position, rotation);
 
                     Projectile shotPro = shot.GetComponent<Projectile>();
+                    shotPro.origin = transform;
 
                     // Adjust weapon bloom
                     BloomOnShotFired();

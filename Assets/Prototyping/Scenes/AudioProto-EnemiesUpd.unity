@@ -2576,10 +2576,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 432125785516354235, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: m_Name
-      value: Reticle Left
-      objectReference: {fileID: 0}
     - target: {fileID: 1495040229108770364, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2588,18 +2584,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2377452220693261211, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: m_Name
-      value: 'Reticle Top '
-      objectReference: {fileID: 0}
-    - target: {fileID: 3113091673620289109, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: m_Name
-      value: Wind Reticle
-      objectReference: {fileID: 0}
-    - target: {fileID: 3113091673620289109, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4206860994337999667, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2607,18 +2591,6 @@ PrefabInstance:
     - target: {fileID: 4206860994337999667, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415431053074830048, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: jumpSound
-      value: playerJump
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753553787239019670, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: m_Name
-      value: Reticle Right
-      objectReference: {fileID: 0}
-    - target: {fileID: 5920251881556815633, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: m_Name
-      value: Shadow Reticle
       objectReference: {fileID: 0}
     - target: {fileID: 5958985989787543498, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2679,10 +2651,6 @@ PrefabInstance:
     - target: {fileID: 6862896425267769029, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6969331801042865766, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: m_Name
-      value: Reticle Bot
       objectReference: {fileID: 0}
     - target: {fileID: 7425649019385301865, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_Name
