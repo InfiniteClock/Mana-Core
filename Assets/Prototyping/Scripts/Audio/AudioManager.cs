@@ -62,6 +62,8 @@ public class AudioManager : MonoBehaviour
     }
     public AudioSource PlayReplaceableSFX(string name, GameObject obj, Transform parent = null)
     {
+        if (name  == null) name = "";
+
         // If no parent is provided, use Audio Manager as the parent
         if (parent == null) parent = transform;
         GameObject targetSource;

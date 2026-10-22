@@ -16,6 +16,7 @@ public class PlayerWeapons : MonoBehaviour
     public TextMeshProUGUI rightAbilityText;
     public TextMeshProUGUI leftAbilityText;
     public GameObject emptyHandPrefab;
+    public Transform reticleParent;
 
     [Header("HUD Sliders")]
     public Slider rightAmmoSlider;    
@@ -71,6 +72,7 @@ public class PlayerWeapons : MonoBehaviour
     private Coroutine rightConsumeRoutine;
     private Coroutine leftConsumeRoutine;
 
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -78,6 +80,8 @@ public class PlayerWeapons : MonoBehaviour
 
         EquipToHand(rightWeapon, true);
         EquipToHand(leftWeapon, false);
+        rightWeapon.currentAmmo = rightWeapon.maxAmmo;
+        leftWeapon.currentAmmo = leftWeapon.maxAmmo;
     }
 
     private void OnEnable()
@@ -215,6 +219,7 @@ public class PlayerWeapons : MonoBehaviour
             rightAmmoSlider.maxValue = weapon.maxAmmo;
             rightAmmoSlider.value = weapon.currentAmmo;
             rightAmmoSlider.fillRect.GetComponent<Image>().color = weapon.uiColor;
+            weapon.InitiateReticle(reticleParent);
         }
         else
         {
@@ -225,6 +230,7 @@ public class PlayerWeapons : MonoBehaviour
             leftAmmoSlider.maxValue = weapon.maxAmmo;
             leftAmmoSlider.value = weapon.currentAmmo;
             leftAmmoSlider.fillRect.GetComponent<Image>().color= weapon.uiColor;
+            leftWeapon.InitiateReticle(reticleParent, 45f);
         }
 
         // Initializes weapon with important references to player
@@ -381,9 +387,15 @@ public class PlayerWeapons : MonoBehaviour
 
             // Destroyes the existing weapon
             if (isRightWeapon)
+            {
+                Destroy(rightWeapon.reticle.gameObject);
                 Destroy(rightWeapon.gameObject);
+            }
             else
+            {
+                Destroy(leftWeapon.reticle.gameObject);
                 Destroy(leftWeapon.gameObject);
+            }
             // Equips the empty hand in its place
             EquipNewWeapon(emptyHandPrefab, isRightWeapon);
         }
@@ -418,6 +430,25 @@ public class PlayerWeapons : MonoBehaviour
 
         EquipToHand(tempRight, false);
         EquipToHand(tempLeft, true);
+
+        rightWeapon.currentAmmo = tempLeft.currentAmmo;
+        leftWeapon.currentAmmo = tempRight.currentAmmo;
+
+        if (tempRight.isFiring && tempLeft.isFiring)
+        {
+            rightWeapon.PrimaryBegin();
+            leftWeapon.PrimaryBegin();
+        } 
+        else if (tempRight.isFiring)
+        {
+            rightWeapon.PrimaryRelease();
+            leftWeapon.PrimaryBegin();
+        }
+        else if (tempLeft.isFiring)
+        {
+            rightWeapon.PrimaryBegin();
+            leftWeapon.PrimaryRelease();
+        }
     }
     /// <summary>
     /// Instantiates the new weapon and sets its transform position, then equips it
@@ -445,7 +476,9 @@ public class PlayerWeapons : MonoBehaviour
             AudioManager.Instance.PlaySFX(coreEquipSFX);
         // Creates the new weapon and then equips it to hand
         GameObject newObj = Instantiate(newWeapon, hand);
-        EquipToHand(newObj.GetComponent<Weapon>(), isRightWeapon);
+        Weapon weapon = newObj.GetComponent<Weapon>();
+        EquipToHand(weapon, isRightWeapon);
+        weapon.currentAmmo = weapon.maxAmmo;
     }
     private void CheckForNearbyCores()
     {
