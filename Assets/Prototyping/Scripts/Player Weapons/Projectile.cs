@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Projectile : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class Projectile : MonoBehaviour
     public float randomZRotation = 0f;
     [Tooltip("Set to true if this projectile should pierce through multiple colliders")]
     public bool isPiercing = false;
+    public Transform origin;
+
 
     [Header("SFX")]
     public string launchSFX;
@@ -93,6 +96,16 @@ public class Projectile : MonoBehaviour
             // Adds collider to list of colliders projectile has already hit
             hitColliders.Add(other);
             health.TakeDamage(damage);
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(hitSFX, transform);
+        }
+        
+        // Damage player object's health script
+        else if (other.gameObject.TryGetComponent(out PlayerHealth phealth))
+        {
+            hitColliders.Add(other);
+            phealth.TakeDamage(origin, damage);
+
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySFX(hitSFX, transform);
         }
