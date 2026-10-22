@@ -676,7 +676,12 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     loop: 0
-  musicTracks: []
+  musicTracks:
+  - clip: {fileID: 8300000, guid: bccf99e4eb635dd44a9d1d2f9b54e486, type: 3}
+    name: PoC BGM
+    volume: 1
+    pitch: 1
+    loop: 1
 --- !u!1 &458610773
 GameObject:
   m_ObjectHideFlags: 0
