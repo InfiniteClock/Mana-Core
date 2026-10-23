@@ -156,7 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   ignoreTheseLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   lifeTime: 1
   travelSpeed: 50
   speedCurve:
@@ -188,6 +188,7 @@ MonoBehaviour:
   damage: 1
   randomZRotation: 180
   isPiercing: 0
+  origin: {fileID: 0}
   launchSFX: WeaponWindAttack
   hitSFX: WeaponHitmarker
 --- !u!1 &6713910599793580270
