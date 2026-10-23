@@ -158,6 +158,8 @@ MonoBehaviour:
   crouchingMulti: 0.6
   slidingMulti: 1.5
   airbornMulti: 2
+  fullHeal: 10
+  emptyHeal: 0
   usingCircularDistribution: 1
   maxAbilityCharges: 3
   displayedMaxCharges: 0

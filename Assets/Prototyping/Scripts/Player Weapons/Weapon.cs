@@ -61,6 +61,10 @@ public abstract class Weapon : MonoBehaviour
     protected float movement01;
     protected float selectedMulti;
 
+    [Header("Healing")]
+    public float fullHeal;
+    public float emptyHeal;
+
     [Header("Settings")]
     public bool usingCircularDistribution = true;
     public int maxAbilityCharges = 1;
@@ -171,6 +175,10 @@ public abstract class Weapon : MonoBehaviour
             default:
                 return true;
         }
+    }
+    public float GetHealValue()
+    {
+        return Mathf.Lerp(emptyHeal, fullHeal, currentAmmo / maxAmmo);
     }
     public abstract void PrimaryBegin();
     public abstract void PrimaryRelease();
