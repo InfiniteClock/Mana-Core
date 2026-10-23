@@ -65,6 +65,7 @@ public class PlayerWeapons : MonoBehaviour
     private bool isSwapping;
     private bool isConsuming;
     private PlayerMovement playerMovement;
+    private PlayerHealth playerHealth;
     private Rigidbody rb;
     private WeaponType rWeaponType;
     private WeaponType lWeaponType;
@@ -84,6 +85,7 @@ public class PlayerWeapons : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerMovement = GetComponent<PlayerMovement>();
+        playerHealth = GetComponent<PlayerHealth>();
 
         EquipToHand(rightWeapon, true);
         EquipToHand(leftWeapon, false);
@@ -394,14 +396,16 @@ public class PlayerWeapons : MonoBehaviour
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySFX(coreCrushSFX);
 
-            // Destroyes the existing weapon
+            // Destroys the existing weapon
             if (isRightWeapon)
             {
+                playerHealth.TakeHealing(rightWeapon.GetHealValue());
                 Destroy(rightWeapon.reticle.gameObject);
                 Destroy(rightWeapon.gameObject);
             }
             else
             {
+                playerHealth.TakeHealing(leftWeapon.GetHealValue());
                 Destroy(leftWeapon.reticle.gameObject);
                 Destroy(leftWeapon.gameObject);
             }

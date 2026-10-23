@@ -10,9 +10,11 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth;
     public float currentHealth;
     public float iFramesDuration;
+    public float minCoreHealing;
+    public float healDelay;
 
     public bool isDead { get; private set; }
-
+    private Coroutine healRoutine;
     [Header("Feedback")]
     public Slider healthBar;
     public Transform damageMarkerParent;
@@ -79,6 +81,33 @@ public class PlayerHealth : MonoBehaviour
         }
 
         Destroy(marker);
+    }
+    public void TakeHealing(float heal)
+    {
+        // Rounds the healing to the nearest first decimal place value then adds it to current health and clamps it within acceptable values
+        float healTarget = Mathf.Max(minCoreHealing, currentHealth + Mathf.Round(heal * 10.0f) * 0.1f);
+        healTarget = Mathf.Clamp(healTarget, 0f, maxHealth);
+
+        if (healRoutine != null)
+            StopCoroutine(healRoutine); healRoutine = null;
+        healRoutine ??= StartCoroutine(Heal(healTarget));
+    }
+    private IEnumerator Heal(float healTarget)
+    {
+        float timer = 0f;
+        float startHealth = currentHealth;
+
+        // Sets the actual current health immediately, then shows the over-time heal effect
+        currentHealth = healTarget;
+
+        while (timer < healDelay)
+        {
+            healthBar.value = Mathf.Lerp(startHealth, healTarget, timer / healDelay);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        healthBar.value = healTarget;
+        healRoutine = null;
     }
     private void TriggerDeath()
     {
