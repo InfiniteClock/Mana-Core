@@ -1,4 +1,3 @@
-using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +28,12 @@ public class AudioManager : MonoBehaviour
         musicSourceFadeOut = gameObject.AddComponent<AudioSource>();
 
         InitializeSounds();
+
+        musicSource.clip = musicTracks[0].clip;
+        musicSource.volume = musicTracks[0].volume;
+        musicSource.pitch = musicTracks[0].pitch;
+        musicSource.loop = musicTracks[0].loop;
+        musicSource.Play();
     }
     private void InitializeSounds()
     {

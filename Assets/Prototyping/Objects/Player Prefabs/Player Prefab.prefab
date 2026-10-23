@@ -1540,7 +1540,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7403545677721560500}
-  - component: {fileID: 8537163962184818198}
   - component: {fileID: 6344200558100851515}
   - component: {fileID: 5762406624259994572}
   m_Layer: 6
@@ -1565,29 +1564,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3967552503506133421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &8537163962184818198
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2901735430202989801}
-  m_Material: {fileID: 13400000, guid: 5e9df1b6cdc27a34995845b151e862b9, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 65536
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &6344200558100851515
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3395,6 +3371,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4013030141145242171}
+  - {fileID: 8159551968650519274}
   - {fileID: 7849060715296793829}
   - {fileID: 4691080065249746162}
   - {fileID: 6746994437911883733}
@@ -4050,6 +4027,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &6246919673047212651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8159551968650519274}
+  m_Layer: 6
+  m_Name: Damage Marker Parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8159551968650519274
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6246919673047212651}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2789923097895311914}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6256185539154675523
 GameObject:
   m_ObjectHideFlags: 0
@@ -5809,9 +5821,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3967552503506133421}
+  - component: {fileID: 7554524781454712797}
   - component: {fileID: 7332546724831343754}
   - component: {fileID: 6619584650059826037}
   - component: {fileID: 4415431053074830048}
+  - component: {fileID: 9088684978489071392}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -5837,6 +5851,29 @@ Transform:
   - {fileID: 211450603769727361}
   m_Father: {fileID: 6101955150775061395}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &7554524781454712797
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9156015083564304686}
+  m_Material: {fileID: 13400000, guid: 5e9df1b6cdc27a34995845b151e862b9, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 65536
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7332546724831343754
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5963,6 +6000,50 @@ MonoBehaviour:
   slideSFX: PlayerSlide
   deathSFX: PlayerDeath
   respawnSFX: PlayerRespawn
+--- !u!114 &9088684978489071392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9156015083564304686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cdb48e76a2a4854a929d2880550da3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  orientation: {fileID: 5329227057146195108}
+  maxHealth: 20
+  currentHealth: 20
+  iFramesDuration: 0
+  healthBar: {fileID: 104249856670600730}
+  damageMarkerParent: {fileID: 8159551968650519274}
+  damageMarkerPrefab: {fileID: 5868738716574823648, guid: cc5b4592155819e488fc4f21cd145572, type: 3}
+  damageMarkerDuration: 1
+  fadeAwayCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.0011319413
+      outSlope: 0.0011319413
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.39218938
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.1111093
+      outSlope: -3.1111093
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.037500024
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &9202679734278652577
 GameObject:
   m_ObjectHideFlags: 0
