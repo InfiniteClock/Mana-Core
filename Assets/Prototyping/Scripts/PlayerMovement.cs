@@ -171,7 +171,7 @@ public class PlayerMovement : MonoBehaviour
         {
             GameObject moveAudio = Instantiate(AudioManager.Instance.sfxPrefab, transform);
             movementSource = AudioManager.Instance.PlayReplaceableSFX(respawnSFX, moveAudio, transform);
-            Debug.Log("movementSource = " + movementSource.name);
+            //Debug.Log("movementSource = " + movementSource.name);
         }
     }
     private void OnEnable()
@@ -475,7 +475,7 @@ public class PlayerMovement : MonoBehaviour
         if (currentMoveSFX != previousMoveSFX)
         {
             previousMoveSFX = currentMoveSFX;
-            Debug.Log("Playing new sound: " + currentMoveSFX);
+            //Debug.Log("Playing new sound: " + currentMoveSFX);
             audioTimer = 0f;
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlayReplaceableSFX(currentMoveSFX, movementSource.gameObject, transform);

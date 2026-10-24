@@ -11,11 +11,11 @@ public class DoorScript : Enemy
         base.Update();
         if (dState == DetectionState.confused)
         {
-            Debug.Log(dState);
+            //Debug.Log(dState);
             Door.gameObject.SetActive(false);
         } else
         {
-            Debug.Log(dState);
+            //Debug.Log(dState);
             Door.gameObject.SetActive(true);
         }
     }

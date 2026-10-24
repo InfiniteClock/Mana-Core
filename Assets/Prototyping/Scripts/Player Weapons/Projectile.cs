@@ -24,8 +24,7 @@ public class Projectile : MonoBehaviour
     public float randomZRotation = 0f;
     [Tooltip("Set to true if this projectile should pierce through multiple colliders")]
     public bool isPiercing = false;
-    public Transform origin;
-
+    public Vector3 origin;
 
     [Header("SFX")]
     public string launchSFX;
@@ -57,7 +56,7 @@ public class Projectile : MonoBehaviour
 
         // Set the direction of travel before applying any rotational forces
         direction = transform.forward;
-        
+
         // Spawns at a random Z rotation
         Vector3 randRot = transform.rotation.eulerAngles;
         randRot.z += Random.Range(-randomZRotation, randomZRotation);

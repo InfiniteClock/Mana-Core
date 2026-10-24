@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
         if (iFrameTimer < iFramesDuration)
             iFrameTimer += Time.deltaTime;
     }
-    public void TakeDamage(Transform dmgOrigin, float dmg = 0f)
+    public void TakeDamage(Vector3 dmgOrigin, float dmg = 0f)
     {
         // Can't take damage during i-frames or while dead
         if (iFrameTimer < iFramesDuration || isDead) return;
@@ -54,7 +54,7 @@ public class PlayerHealth : MonoBehaviour
             TriggerDeath();
         
     }
-    private IEnumerator DamageMarker(Transform dmgOrigin, float dmg)
+    private IEnumerator DamageMarker(Vector3 dmgOrigin, float dmg)
     {
         float lifeTime = damageMarkerDuration * dmg;
         float timer = 0f;
@@ -67,7 +67,7 @@ public class PlayerHealth : MonoBehaviour
         while (timer < lifeTime)
         {
             Vector3 a = orientation.forward;
-            Vector3 b = dmgOrigin.position - orientation.position;
+            Vector3 b = dmgOrigin - orientation.position;
 
             float dirToOrigin = Vector3.Angle(a, b);
             dirToOrigin *= Mathf.Sign(Vector3.Dot(Vector3.up, Vector3.Cross(a, b))) * -1f;
