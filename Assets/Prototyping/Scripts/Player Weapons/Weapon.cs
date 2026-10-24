@@ -71,6 +71,14 @@ public abstract class Weapon : MonoBehaviour
 
     //[HideInInspector]
     public int displayedMaxCharges;
+
+
+    [Header("Animator Controllers")]
+    protected WeaponAnimatorContainer playerViewRoot;
+    protected Animator[] weaponAnimators;
+
+
+
     public virtual Reticle InitiateReticle(Transform canvasParent, float reticleRotation = 0f)
     {
         if (reticle == null)
@@ -90,6 +98,8 @@ public abstract class Weapon : MonoBehaviour
 
         if (reticle.reticleDirections.Count != reticle.reticlePieces.Count)
             Debug.LogError("Improper reticle setup on: " + gameObject.name);
+
+        FindAnimator(p);
     }
     private void Update()
     {
@@ -184,4 +194,23 @@ public abstract class Weapon : MonoBehaviour
     public abstract void PrimaryRelease();
     public abstract void SecondaryBegin();
     public abstract void SecondaryRelease();
+
+    protected void FindAnimator(PlayerMovement pm)
+    {
+        //playerViewRoot = GameObject.FindGameObjectsWithTag("PlayerViewRoot");     
+
+        playerViewRoot = pm.transform.parent.GetComponentInChildren<WeaponAnimatorContainer>();
+
+        if (playerViewRoot != null)
+        {
+            weaponAnimators = playerViewRoot.GetAnimators(); // get array of all animators assigned to the player root
+            // use CharacterAnimators enum to get array indexes!!!
+            return;
+        }
+        else
+        {
+            Debug.Log("View Root error");
+            return;
+        }
+    }
 }

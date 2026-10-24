@@ -14,9 +14,12 @@ public class WindWeapon : Weapon
     public override void EquipWeapon(PlayerMovement p)
     {
         base.EquipWeapon(p);
+        weaponAnimators[(int)CharacterAnimators.Arms].SetBool("IsShadow",false);
+
         windDash = GetComponent<WindDash>();
         windDash.Setup(p);
         fireCD = 1f / fireRate;
+
     }
     private IEnumerator Fire()
     {

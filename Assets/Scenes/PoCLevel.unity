@@ -30410,6 +30410,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 993984785736199834, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1495040229108770364, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -30448,6 +30452,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4206860994337999667, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299121796902075030, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054994587156505472, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_CullingMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5958985989787543498, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
@@ -30514,6 +30526,10 @@ PrefabInstance:
       propertyPath: rightWeapon
       value: 
       objectReference: {fileID: 435394829}
+    - target: {fileID: 6688442972766486348, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6862896425267769029, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
