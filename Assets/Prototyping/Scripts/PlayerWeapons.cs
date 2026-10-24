@@ -85,6 +85,10 @@ public class PlayerWeapons : MonoBehaviour
     private Coroutine rightConsumeRoutine;
     private Coroutine leftConsumeRoutine;
 
+    [Header("Animator Controllers")]
+    private WeaponAnimatorContainer playerViewRoot;
+    [SerializeField]private Animator[] weaponAnimators;
+
 
     private void Start()
     {
@@ -96,6 +100,7 @@ public class PlayerWeapons : MonoBehaviour
         EquipToHand(leftWeapon, false);
         rightWeapon.currentAmmo = rightWeapon.maxAmmo;
         leftWeapon.currentAmmo = leftWeapon.maxAmmo;
+        FindAnimator(playerMovement);
     }
 
     private void OnEnable()
@@ -416,6 +421,8 @@ public class PlayerWeapons : MonoBehaviour
             }
             // Equips the empty hand in its place
             EquipNewWeapon(emptyHandPrefab, isRightWeapon);
+
+            //Weapon.weaponAnimators[(int)CharacterAnimators.Arms].SetTrigger("Equip.R");
         }
 
         // Resets the coroutine and allowing it to trigger again
@@ -481,6 +488,8 @@ public class PlayerWeapons : MonoBehaviour
             hand = rightHand;
             // Removes the empty hand object
             Destroy(rightWeapon.gameObject);
+            weaponAnimators[(int)CharacterAnimators.SwordR].SetTrigger("NotShadow");
+            weaponAnimators[(int)CharacterAnimators.Arms].SetBool("WeaponDestroy.R", true);
         }
 
         else
@@ -488,6 +497,8 @@ public class PlayerWeapons : MonoBehaviour
             hand = leftHand;
             // Removes the empty hand object
             Destroy(leftWeapon.gameObject);
+            weaponAnimators[(int)CharacterAnimators.SwordL].SetTrigger("NotShadow");
+            weaponAnimators[(int)CharacterAnimators.Arms].SetBool("WeaponDestroy.L", true);
 
         }
         if (AudioManager.Instance != null)
@@ -559,5 +570,24 @@ public class PlayerWeapons : MonoBehaviour
         else
             Gizmos.color = Color.rebeccaPurple;
         Gizmos.DrawWireSphere(transform.position, pickupRadius);
+    }
+
+        protected void FindAnimator(PlayerMovement pm)
+    {
+        //playerViewRoot = GameObject.FindGameObjectsWithTag("PlayerViewRoot");     
+
+        playerViewRoot = pm.transform.parent.GetComponentInChildren<WeaponAnimatorContainer>();
+
+        if (playerViewRoot != null)
+        {
+            weaponAnimators = playerViewRoot.GetAnimators(); // get array of all animators assigned to the player root
+            // use CharacterAnimators enum to get array indexes!!!
+            return;
+        }
+        else
+        {
+            Debug.Log("View Root error");
+            return;
+        }
     }
 }

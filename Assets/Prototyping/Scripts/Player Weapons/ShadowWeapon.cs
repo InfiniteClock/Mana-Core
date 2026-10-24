@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEngine.TextCore.Text;
 
 public class ShadowWeapon : Weapon
 {
@@ -20,34 +21,42 @@ public class ShadowWeapon : Weapon
     private ShadowCloak shadowCloak;
     private float slashCD;
     private Coroutine slashRoutine;
+    private Animator swordSide;
+    private Animator coreSide;
+    private Animator arms;
+    private int attackCount = 0;
+    private string side;
 
-    [Header("Shadow Stats")]
-    public GameObject characterPrefab;
-    public GameObject lShadowSwordPrefab;
-    public GameObject rShadowSwordPrefab;
-
-    public Animator characterAnimationController;
-    public Animator lSwordAnimationController;
-    public Animator rSwordAnimationController;
 
 
     public override void EquipWeapon(PlayerMovement p)
     {
         base.EquipWeapon(p);
+        
+        side = isRightWeapon ? "R" : "L";
+
+        arms = weaponAnimators[(int)CharacterAnimators.Arms];
+        
+        if (isRightWeapon)
+        {
+            swordSide = weaponAnimators[(int)CharacterAnimators.SwordR];
+            coreSide = weaponAnimators[(int)CharacterAnimators.CoreR];
+        } else
+        {
+            swordSide = weaponAnimators[(int)CharacterAnimators.SwordL];
+            coreSide = weaponAnimators[(int)CharacterAnimators.CoreL];
+        }
+
+        swordSide.SetTrigger("Equip");
+        swordSide.SetBool("NotShadow", false);
+        coreSide.SetTrigger("Equip");
+        arms.SetBool("IsShadow",true);
+        arms.SetBool($"WeaponDestroy.{side}", false);
+        arms.SetTrigger($"Equip.{side}");
+
         shadowCloak = GetComponent<ShadowCloak>();
         shadowCloak.Setup(p);
         slashCD = 1f / slashRate;
-
-        characterAnimationController = characterPrefab.GetComponent<Animator>();
-        lSwordAnimationController = lShadowSwordPrefab.GetComponent<Animator>();
-        rSwordAnimationController = rShadowSwordPrefab.GetComponent<Animator>();
-
-        if (characterAnimationController != null)
-        {
-            characterAnimationController.SetBool("Shadow",true);
-            lSwordAnimationController.SetTrigger("Equip");
-            rSwordAnimationController.SetTrigger("Equip");
-        }
     }
 
     private IEnumerator Slash()
@@ -58,6 +67,18 @@ public class ShadowWeapon : Weapon
             // This allows player to continue holding button while sprinting and dashing to begin slashing when entering a slashable state
             if (PlayerCanShoot())
             {
+                swordSide.SetBool("NoInput", false);
+                CancelInvoke(nameof(ResetAnimation));
+                Invoke(nameof(ResetAnimation), 1.5f);
+
+                attackCount++;
+                if (attackCount >= 4)
+                {
+                    attackCount = 1;
+                }
+                swordSide.SetTrigger($"Attack.{attackCount}");
+                arms.SetTrigger($"SAttack.{attackCount}.{side}");
+
                 // Get direction of slash. No bloom applied but still needs to call function for correct direction
                 Quaternion rotation = Quaternion.LookRotation(target - projectileSpawnPoint.position, Vector3.up);
                 rotation = GetSpreadRotation(1f) * rotation;
@@ -94,6 +115,8 @@ public class ShadowWeapon : Weapon
         }
         slashRoutine = null;
     }
+
+    
     private IEnumerator SlashDelay(Projectile cutPro)
     {
         Vector3 downOffset = new Vector3(stageOffset.x, -stageOffset.y, stageOffset.z);
@@ -135,5 +158,12 @@ public class ShadowWeapon : Weapon
     public override void SecondaryRelease()
     {
         // No effect triggered
+    }
+
+    private void ResetAnimation()
+    {
+        arms.SetTrigger($"NoInput.{side}");
+        swordSide.SetTrigger("NoInput");
+        attackCount = 0;
     }
 }
