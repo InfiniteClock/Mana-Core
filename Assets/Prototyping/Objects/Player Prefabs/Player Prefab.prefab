@@ -6411,9 +6411,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1298102635160924996, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1315011064005083078, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
       propertyPath: m_Name
       value: Player View Root
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621397222080489288, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4835320013550592658, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480236030586617438, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8684019113731309614, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

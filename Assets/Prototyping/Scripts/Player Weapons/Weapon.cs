@@ -2,14 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public enum WeaponType { Shadow, Wind, Fire, Ice, Earth, Lightning, Empty }
-[Tooltip("Used to reference array index for character model and weapon animators. Should be updated from the enum constructor if the relevant array is changed." )] public enum CharacterAnimators
-    {
-        CoreR = 0,
-        CoreL = 1,
-        Arms = 2,
-        SwordR = 3,
-        SwordL = 4,
-    }
 public abstract class Weapon : MonoBehaviour
 {
     protected PlayerMovement playerMovement;

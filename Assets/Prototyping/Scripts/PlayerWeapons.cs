@@ -572,9 +572,8 @@ public class PlayerWeapons : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, pickupRadius);
     }
 
-        protected void FindAnimator(PlayerMovement pm)
+    protected void FindAnimator(PlayerMovement pm)
     {
-        //playerViewRoot = GameObject.FindGameObjectsWithTag("PlayerViewRoot");     
 
         playerViewRoot = pm.transform.parent.GetComponentInChildren<WeaponAnimatorContainer>();
 
