@@ -439,6 +439,8 @@ public class PlayerWeapons : MonoBehaviour
     }
     private void SwapWeapons()
     {
+
+        Animator arms = weaponAnimators[(int)CharacterAnimators.Arms];
         Weapon tempRight = rightWeapon;
         Weapon tempLeft = leftWeapon;
 
@@ -452,6 +454,12 @@ public class PlayerWeapons : MonoBehaviour
         int tempLeftCharges = leftAbilityCharges;
         rightAbilityCharges = tempLeftCharges;
         leftAbilityCharges = tempRightCharges;
+
+        weaponAnimators[(int)CharacterAnimators.SwordL].SetBool("NotShadow", true);
+        weaponAnimators[(int)CharacterAnimators.SwordR].SetBool("NotShadow", true);
+
+        arms.SetBool("WeaponDestroy.L", true);
+        arms.SetBool("WeaponDestroy.R", true);
 
         EquipToHand(tempRight, false);
         EquipToHand(tempLeft, true);
