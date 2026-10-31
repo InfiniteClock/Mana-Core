@@ -3,7 +3,27 @@ guid: 5e04b7392dbbfff48b8d1f033d0225e2
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blade
+    second: {fileID: 2100000, guid: 04d3716daddd8c64999cec9ce99ab5b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grip
+    second: {fileID: 2100000, guid: f69481df790a8584f82121e1ca8b0222, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Guard
+    second: {fileID: 2100000, guid: dee3f1394ac9b53418c80c2943b18980, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pommel
+    second: {fileID: 2100000, guid: b58c3edf46bd93142861e1eb37e4741a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
