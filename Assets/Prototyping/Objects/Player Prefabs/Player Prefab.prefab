@@ -2702,7 +2702,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 45
   orthographic: 0
@@ -6988,7 +6988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponShaderController
   visibility: 1
-  swordRenderers: []
+  objectRenderers: []
   visibleAmount: 0
   hiddenAmount: 1.02
 --- !u!1 &1985259174769058624 stripped
@@ -7009,7 +7009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponShaderController
   visibility: 1
-  swordRenderers: []
+  objectRenderers: []
   visibleAmount: 0
   hiddenAmount: 1.02
 --- !u!4 &2142416133767314439 stripped
@@ -7035,7 +7035,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponShaderController
   visibility: 1
-  swordRenderers: []
+  objectRenderers: []
   visibleAmount: 0
   hiddenAmount: 1.02
 --- !u!1 &5791817813446323802 stripped
@@ -7056,6 +7056,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponShaderController
   visibility: 1
-  swordRenderers: []
+  objectRenderers: []
   visibleAmount: 0
   hiddenAmount: 1.02
