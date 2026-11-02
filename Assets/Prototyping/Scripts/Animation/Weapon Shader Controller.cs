@@ -1,6 +1,6 @@
 using UnityEngine;
 
-
+[ExecuteAlways]
 [DisallowMultipleComponent]
 public class WeaponShaderController : MonoBehaviour
 {
