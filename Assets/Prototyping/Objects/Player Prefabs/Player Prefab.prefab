@@ -2745,7 +2745,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -6956,10 +6956,106 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5739895999419020164, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5651661669839703519}
+    - targetCorrespondingSourceObject: {fileID: 307810677190360734, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1486541540522056525}
+    - targetCorrespondingSourceObject: {fileID: 2677435229700210926, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5574737604055873029}
+    - targetCorrespondingSourceObject: {fileID: 2211686979924959826, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1466597963050943817}
   m_SourcePrefab: {fileID: 100100000, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+--- !u!1 &106365700389060492 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2211686979924959826, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+  m_PrefabInstance: {fileID: 2290254809329114590}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1466597963050943817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106365700389060492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f448c55b3cae178438eba49f079e2afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponShaderController
+  visibility: 1
+  swordRenderers: []
+  visibleAmount: 0
+  hiddenAmount: 1.02
+--- !u!1 &1985259174769058624 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 307810677190360734, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+  m_PrefabInstance: {fileID: 2290254809329114590}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1486541540522056525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985259174769058624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f448c55b3cae178438eba49f079e2afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponShaderController
+  visibility: 1
+  swordRenderers: []
+  visibleAmount: 0
+  hiddenAmount: 1.02
 --- !u!4 &2142416133767314439 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 176760246741836249, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
   m_PrefabInstance: {fileID: 2290254809329114590}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4242592861634485552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2677435229700210926, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+  m_PrefabInstance: {fileID: 2290254809329114590}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5574737604055873029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4242592861634485552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f448c55b3cae178438eba49f079e2afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponShaderController
+  visibility: 1
+  swordRenderers: []
+  visibleAmount: 0
+  hiddenAmount: 1.02
+--- !u!1 &5791817813446323802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5739895999419020164, guid: 1ff4394fade9a974785c5a3501a80bbf, type: 3}
+  m_PrefabInstance: {fileID: 2290254809329114590}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5651661669839703519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5791817813446323802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f448c55b3cae178438eba49f079e2afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponShaderController
+  visibility: 1
+  swordRenderers: []
+  visibleAmount: 0
+  hiddenAmount: 1.02

@@ -666,7 +666,7 @@
                 "m_Node": {
                     "m_Id": "67505fc3c74e4284b9d18a2f44ede551"
                 },
-                "m_SlotId": 0
+                "m_SlotId": 4
             },
             "m_InputSlot": {
                 "m_Node": {
@@ -890,7 +890,7 @@
                 "m_Node": {
                     "m_Id": "b6460cb2109c444987880538f44e31ce"
                 },
-                "m_SlotId": 0
+                "m_SlotId": 7
             },
             "m_InputSlot": {
                 "m_Node": {
@@ -2891,7 +2891,7 @@
     "m_Title": "Directional Texture Offset Switch",
     "m_Position": {
         "x": -1851.0,
-        "y": 1866.9998779296875
+        "y": 1867.0
     }
 }
 
@@ -4002,8 +4002,8 @@
     "m_ObjectId": "659bc929476f49499592bb230108d16c",
     "m_Title": "Materialization [Random Noise]",
     "m_Position": {
-        "x": -935.0000610351563,
-        "y": 1415.999755859375
+        "x": -935.0,
+        "y": 1416.0
     }
 }
 
@@ -5262,8 +5262,8 @@
     "m_ObjectId": "97c72f20fb86469fb7ed77eece9e0ae7",
     "m_Title": "Materialization Output",
     "m_Position": {
-        "x": -96.0002670288086,
-        "y": 810.9996948242188
+        "x": -96.0,
+        "y": 811.0
     }
 }
 
@@ -5823,8 +5823,8 @@
     "m_ObjectId": "aea3e67efeda4cf5aed69c168c750924",
     "m_Title": "Materialization [Directional]",
     "m_Position": {
-        "x": -1838.0001220703125,
-        "y": 459.0000305175781
+        "x": -1838.0,
+        "y": 459.0
     }
 }
 
@@ -6088,8 +6088,8 @@
     "m_ObjectId": "b728e74cbeed47d691318f0fa5080004",
     "m_Title": "PBR Setup",
     "m_Position": {
-        "x": -766.000244140625,
-        "y": -42.0
+        "x": -766.0,
+        "y": -41.9999885559082
     }
 }
 
@@ -6341,7 +6341,7 @@
     "m_Title": "Position to UV swap",
     "m_Position": {
         "x": -2093.0,
-        "y": 454.9998779296875
+        "y": 455.0
     }
 }
 
