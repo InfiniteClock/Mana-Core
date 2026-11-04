@@ -739,6 +739,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2104246136464998927, guid: 6eb8d89cb5580c0498022e646a44ca8d, type: 3}
+      propertyPath: scrollValue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2216602139552223347, guid: 6eb8d89cb5580c0498022e646a44ca8d, type: 3}
       propertyPath: m_Name
       value: SM_Sword Slash
