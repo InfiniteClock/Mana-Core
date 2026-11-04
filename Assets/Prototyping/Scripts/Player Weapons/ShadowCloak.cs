@@ -13,12 +13,14 @@ public class ShadowCloak : Ability
     [Header("References")]
     public bool isRightWeapon;
     public GameObject smokeCloudPrefab;
+    protected MordredShaderController invisibilityController;
 
     [Header("Cloak")]
     public float cloakDuration;
     public float speedMulti;
     public float cloakGravMod;
     public float cloakAirMod;
+    [Range(0f, 1f)] public float invisibilityAmmount;
 
     [Header("Smoke")]
     public float smokeDuration;
@@ -32,7 +34,7 @@ public class ShadowCloak : Ability
 
     private void Start()
     {
-
+        FindMaterials(playerMovement);
         if (rendererData != null)
             {
                foreach (var feature in rendererData.rendererFeatures)
@@ -61,6 +63,7 @@ public class ShadowCloak : Ability
         playerMovement.isCloaked = true;
         playerMovement.cloakSpeedMulti = speedMulti;
         playerMovement.cloakGravMod = cloakGravMod;
+        invisibilityController.visibility = invisibilityAmmount;
 
         if (boostsAirControl)
             playerMovement.cloakAirMod = cloakAirMod;
@@ -94,7 +97,14 @@ public class ShadowCloak : Ability
         playerMovement.cloakSpeedMulti = 1f;
         playerMovement.cloakGravMod = 1f;
         playerMovement.cloakAirMod = 1f;
+        invisibilityController.visibility = 1.03f;
     }
 
     private void OnCloak(InputAction.CallbackContext context) => Cloak();
+
+
+    protected void FindMaterials(PlayerMovement pm)
+    {
+        invisibilityController = pm.transform.parent.GetComponentInChildren<MordredShaderController>();
+    }
 }
