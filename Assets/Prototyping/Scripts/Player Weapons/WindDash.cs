@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,10 +11,15 @@ public class WindDash : Ability
     public float maxDashYSpeed;
     private Vector3 delayedForceToApply;
 
+    [Header("Camera")]
+    public float cameraFovValue;
+    private float initialCameraValue;
+
     [Header("Settings")]
     public bool useCameraForward;
     public bool omnidirectionalDash;
     public bool resetVelocity;
+
     public void Dash()
     {
         // Returns if dash has no remaining charges or is on internal buffer from other weapon
@@ -36,6 +42,9 @@ public class WindDash : Ability
         // Triggers the dash after a very short delay to account for player script order of operations
         delayedForceToApply = forceToApply;
 
+        initialCameraValue = playerWeapons.playerCam.fieldOfView;
+        playerWeapons.playerCam.fieldOfView = cameraFovValue;
+
         Invoke(nameof(DelayedDashForce), 0.025f);
 
         Invoke(nameof(ResetDash), dashDuration);
@@ -56,6 +65,7 @@ public class WindDash : Ability
     {
         playerMovement.isDashing = false;
         playerMovement.maxYSpeed = 0;
+        playerWeapons.playerCam.fieldOfView = initialCameraValue;
     }
     private Vector3 GetDirection(Transform forwardT)
     {

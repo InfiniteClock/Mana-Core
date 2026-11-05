@@ -183,6 +183,7 @@ MonoBehaviour:
   dashUpwardForce: 0
   dashDuration: 0.25
   maxDashYSpeed: 15
+  cameraFovValue: 61
   useCameraForward: 1
   omnidirectionalDash: 1
   resetVelocity: 1
