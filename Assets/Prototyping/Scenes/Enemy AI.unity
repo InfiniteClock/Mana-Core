@@ -420,7 +420,7 @@ MonoBehaviour:
   spawnableObj: {fileID: 6195750443292183592, guid: dae9755b75a316446aed82a5fed49122, type: 3}
   spawnPoint: {fileID: 563165404}
   maxObjsInWorld: 1
-  delayBeforeSpawning: 10
+  delayBeforeSpawning: 2
   spawnOnAwake: 1
   spawnedObjects: []
 --- !u!4 &563165404
@@ -512,6 +512,56 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1045506269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045506271}
+  - component: {fileID: 1045506270}
+  m_Layer: 0
+  m_Name: Fire Core Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1045506270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045506269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28bd25e56465dd84e8bc18a6bf5eeff2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectSpawner
+  spawnableObj: {fileID: 6195750443292183592, guid: ab2aecdab977b9746b2715d8ad0f0cbf, type: 3}
+  spawnPoint: {fileID: 1045506271}
+  maxObjsInWorld: 1
+  delayBeforeSpawning: 2
+  spawnOnAwake: 1
+  spawnedObjects: []
+--- !u!4 &1045506271
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045506269}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 5, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -900,7 +950,7 @@ MonoBehaviour:
   spawnableObj: {fileID: 6195750443292183592, guid: 3e0c7d57171f3994cb45454132bbcd54, type: 3}
   spawnPoint: {fileID: 1722834400}
   maxObjsInWorld: 1
-  delayBeforeSpawning: 10
+  delayBeforeSpawning: 2
   spawnOnAwake: 1
   spawnedObjects: []
 --- !u!4 &1722834400
@@ -1129,4 +1179,5 @@ SceneRoots:
   - {fileID: 1734527705}
   - {fileID: 1722834400}
   - {fileID: 563165404}
+  - {fileID: 1045506271}
   - {fileID: 1086165002}

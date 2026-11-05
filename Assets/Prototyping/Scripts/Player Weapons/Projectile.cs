@@ -24,6 +24,10 @@ public class Projectile : MonoBehaviour
     public float randomZRotation = 0f;
     [Tooltip("Set to true if this projectile should pierce through multiple colliders")]
     public bool isPiercing = false;
+    [Tooltip("Leave null if projectile does not explode")]
+    public GameObject explosionPrefab;
+
+    [HideInInspector]
     public Vector3 origin;
 
     [Header("SFX")]
@@ -111,6 +115,12 @@ public class Projectile : MonoBehaviour
 
         // Destroys projectile on collision with anything UNLESS it has piercing property
         if (!isPiercing)
+        {
+            if (explosionPrefab != null)
+            {
+                GameObject boom = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            }
             Destroy(gameObject);
+        }
     }
 }

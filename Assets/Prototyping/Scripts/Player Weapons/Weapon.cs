@@ -46,7 +46,8 @@ public abstract class Weapon : MonoBehaviour
     public float maxBloomReticleOffset;
     [Tooltip("Speed at which bloom returns to minimum in degrees per second")]
     public float bloomDecayPerSec;
-
+    public float rightSideReticleRotation;
+    public float leftSideReticleRotation;
 
     protected float bloom;
 
@@ -79,7 +80,7 @@ public abstract class Weapon : MonoBehaviour
 
 
 
-    public virtual Reticle InitiateReticle(Transform canvasParent, float reticleRotation = 0f)
+    public virtual Reticle InitiateReticle(Transform canvasParent, bool rightSide = true)
     {
         if (reticle == null)
         {
@@ -87,6 +88,7 @@ public abstract class Weapon : MonoBehaviour
             reticle = newRet.GetComponent<Reticle>();
         }
 
+        float reticleRotation = rightSide ? rightSideReticleRotation : leftSideReticleRotation;
         reticle.SetZRotation(reticleRotation);
         return reticle;
     }

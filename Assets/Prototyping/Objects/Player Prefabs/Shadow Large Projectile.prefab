@@ -336,6 +336,7 @@ MonoBehaviour:
   damage: 10
   randomZRotation: 60
   isPiercing: 1
+  explosionPrefab: {fileID: 0}
   origin: {x: 0, y: 0, z: 0}
   launchSFX: WeaponShadowAttack
   hitSFX: WeaponHitmarker
@@ -746,6 +747,10 @@ PrefabInstance:
     - target: {fileID: 2216602139552223347, guid: 6eb8d89cb5580c0498022e646a44ca8d, type: 3}
       propertyPath: m_Name
       value: SM_Sword Slash
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216602139552223347, guid: 6eb8d89cb5580c0498022e646a44ca8d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

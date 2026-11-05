@@ -153,6 +153,8 @@ MonoBehaviour:
   maxBloom: 5
   maxBloomReticleOffset: 100
   bloomDecayPerSec: 3.5
+  rightSideReticleRotation: 0
+  leftSideReticleRotation: 180
   standingMulti: 1
   walkingMulti: 1.2
   crouchingMulti: 0.6

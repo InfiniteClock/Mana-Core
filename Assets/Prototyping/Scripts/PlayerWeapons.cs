@@ -239,7 +239,7 @@ public class PlayerWeapons : MonoBehaviour
             rightAmmoSlider.value = weapon.currentAmmo;
             rightAmmoSlider.fillRect.GetComponent<Image>().color = weapon.uiColor;
             RightAbility.color = weapon.uiColor;
-            weapon.InitiateReticle(reticleParent);
+            
         }
         else
         {
@@ -251,8 +251,8 @@ public class PlayerWeapons : MonoBehaviour
             leftAmmoSlider.value = weapon.currentAmmo;
             leftAmmoSlider.fillRect.GetComponent<Image>().color= weapon.uiColor;
             LeftAbility.color = weapon.uiColor;
-            leftWeapon.InitiateReticle(reticleParent, 45f);
         }
+        weapon.InitiateReticle(reticleParent, toRightHand);
 
         // Initializes weapon with important references to player
         weapon.EquipWeapon(playerMovement);
