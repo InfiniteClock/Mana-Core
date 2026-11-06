@@ -107,7 +107,7 @@
                     "priority": 0
                 },
                 {
-                    "name": "Swap",
+                    "name": "Right Equip",
                     "type": "Button",
                     "id": "26cd4c6a-04b9-4999-9a83-f7eb2159efe7",
                     "expectedControlType": "",
@@ -117,7 +117,7 @@
                     "priority": 0
                 },
                 {
-                    "name": "Consume",
+                    "name": "Left Equip",
                     "type": "Button",
                     "id": "323a1b50-a897-495c-9a4c-bc1616c36b8d",
                     "expectedControlType": "",
@@ -443,40 +443,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Swap",
+                    "action": "Right Equip",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "2a419c65-cda9-4751-a59e-df2a0c2e6b3a",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Swap",
+                    "action": "Right Equip",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "0936287b-2023-47df-83a9-db0ba4b457b2",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Consume",
+                    "action": "Left Equip",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "8bf4f491-6dc7-4952-96e5-ebbe236a3257",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Consume",
+                    "action": "Left Equip",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

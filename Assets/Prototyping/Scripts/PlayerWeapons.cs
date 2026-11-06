@@ -29,7 +29,7 @@ public class PlayerWeapons : MonoBehaviour
     public Slider rightUtilitySlider;
     public Slider leftUtilitySlider;
     public Slider rightConsumeTimerSlider;
-    public Slider LeftConsumeTimerSlider;
+    public Slider leftConsumeTimerSlider;
 
     [Header("HUD Ability Icons")]
     public Image RightAbility;
@@ -53,7 +53,7 @@ public class PlayerWeapons : MonoBehaviour
 
     [Header("Weapon Control")]
     public float dashBuffer;
-    public float swapHoldTime;
+    //public float swapHoldTime;
     public float consumeHoldTime;
 
     public bool hasTwinWeapons { get; private set; }
@@ -65,10 +65,12 @@ public class PlayerWeapons : MonoBehaviour
     //[HideInInspector]
     public float bufferTimer;
     //[HideInInspector]
-    public float swapTimer;
+    //public float swapTimer;
 
-    private bool isSwapping;
-    private bool isConsuming;
+    private bool isEquippingRight;
+    private bool isEquippingLeft;
+    private float consumeRightTimer;
+    private float consumeLeftTimer;
     private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
     private Rigidbody rb;
@@ -80,8 +82,8 @@ public class PlayerWeapons : MonoBehaviour
     private InputAction leftFireInput;
     private InputAction rightUtilityInput;
     private InputAction leftUtilityInput;
-    private InputAction swapInput;
-    private InputAction consumeInput;
+    private InputAction rEquipInput;
+    private InputAction lEquipInput;
     private Coroutine rightConsumeRoutine;
     private Coroutine leftConsumeRoutine;
 
@@ -98,8 +100,6 @@ public class PlayerWeapons : MonoBehaviour
 
         EquipToHand(rightWeapon, true);
         EquipToHand(leftWeapon, false);
-        rightWeapon.currentAmmo = rightWeapon.maxAmmo;
-        leftWeapon.currentAmmo = leftWeapon.maxAmmo;
         FindAnimator(playerMovement);
     }
 
@@ -109,8 +109,8 @@ public class PlayerWeapons : MonoBehaviour
         leftFireInput = InputSystem.actions.FindAction("Left Fire");
         rightUtilityInput = InputSystem.actions.FindAction("Right Utility");
         leftUtilityInput = InputSystem.actions.FindAction("Left Utility");
-        swapInput = InputSystem.actions.FindAction("Swap");
-        consumeInput = InputSystem.actions.FindAction("Consume");
+        rEquipInput = InputSystem.actions.FindAction("Right Equip");
+        lEquipInput = InputSystem.actions.FindAction("Left Equip");
 
 
         rightFireInput.performed += OnRightPrimaryStart;
@@ -121,10 +121,10 @@ public class PlayerWeapons : MonoBehaviour
         leftFireInput.canceled += OnLeftPrimaryRelease;
         leftUtilityInput.performed += OnLeftSecondaryStart;
         leftUtilityInput.canceled += OnLeftSecondaryRelease;
-        swapInput.performed += OnSwapStart;
-        swapInput.canceled += OnSwapRelease;
-        consumeInput.performed += OnConsumeStart;
-        consumeInput.canceled += OnConsumeRelease;
+        rEquipInput.performed += OnRightEquipStart;
+        rEquipInput.canceled += OnRightEquipRelease;
+        lEquipInput.performed += OnLeftEquipStart;
+        lEquipInput.canceled += OnLeftEquipRelease;
     }
     private void OnDisable()
     {
@@ -136,10 +136,10 @@ public class PlayerWeapons : MonoBehaviour
         leftFireInput.canceled -= OnLeftPrimaryRelease;
         leftUtilityInput.performed -= OnLeftSecondaryStart;
         leftUtilityInput.canceled -= OnLeftSecondaryRelease;
-        swapInput.performed -= OnSwapStart;
-        swapInput.canceled -= OnSwapRelease;
-        consumeInput.performed -= OnConsumeStart;
-        consumeInput.canceled -= OnConsumeRelease;
+        rEquipInput.performed -= OnRightEquipStart;
+        rEquipInput.canceled -= OnRightEquipRelease;
+        lEquipInput.performed -= OnLeftEquipStart;
+        lEquipInput.canceled -= OnLeftEquipRelease;
     }
     private void FixedUpdate()
     {
@@ -161,6 +161,7 @@ public class PlayerWeapons : MonoBehaviour
     }
     private void Update()
     {
+        EquipOrConsume();
         ControlTimers();
         DisplayUIChanges();
 
@@ -169,14 +170,6 @@ public class PlayerWeapons : MonoBehaviour
         Debug.DrawRay(leftWeapon.projectileSpawnPoint.position, (camTarget - leftWeapon.projectileSpawnPoint.position).normalized * 20f, Color.cyan);
 
         Debug.DrawRay(playerCam.transform.position, playerCam.transform.forward * 100f, Color.coral);
-
-        if (isSwapping)
-        {
-            if (swapTimer < swapHoldTime)
-                swapTimer += Time.deltaTime;
-        }
-        else
-            swapTimer = 0f;
     }
     private void ControlTimers()
     {
@@ -225,6 +218,141 @@ public class PlayerWeapons : MonoBehaviour
         rightUtilitySlider.value = rightWeapon.Ability.cooldownTimer / rightWeapon.Ability.cooldown + rightAbilityCharges;
         leftAmmoSlider.value = leftWeapon.currentAmmo;
         leftUtilitySlider.value = leftWeapon.Ability.cooldownTimer / leftWeapon.Ability.cooldown + leftAbilityCharges;
+    }
+    private void EquipOrConsume()
+    {
+        bool rightOutOfAmmo = rightWeapon.currentAmmo <= 0 && rightWeapon.wType != WeaponType.Empty;
+        bool leftOutOfAmmo = leftWeapon.currentAmmo <= 0 && leftWeapon.wType != WeaponType.Empty;
+
+        // Run the timers for the Right Equip Button Controls
+        if (isEquippingRight)
+        {
+            // Right hand is empty and we are pressing input to equip
+            if (rightWeapon.wType == WeaponType.Empty)
+            {
+                // There is a nearest core in range to pick up
+                if (nearestCore != null)
+                {
+                    EquipNewWeapon(nearestCore.weaponPrefab, true);
+                    nearestCore.PickThisUp();
+                    isEquippingRight = false;
+                }
+
+            }
+            // Right hand has a weapon and we are pressing input to consume
+            else
+            {
+                ConsumeRightWeapon();
+            }
+        }
+        // Consume the weapon still if out of ammo
+        else if (rightOutOfAmmo)
+        {
+            ConsumeRightWeapon();
+        }
+        // The right input is no longer pressed
+        else
+        {
+            rightConsumeTimerSlider.gameObject.SetActive(false);
+            consumeRightTimer = 0f;
+        }
+
+        // Run the timers for the Left Equip Button Controls
+        if (isEquippingLeft)
+        {
+            // Right hand is empty and we are pressing input to equip
+            if (leftWeapon.wType == WeaponType.Empty)
+            {
+                // There is a nearest core in range to pick up
+                if (nearestCore != null)
+                {
+                    EquipNewWeapon(nearestCore.weaponPrefab, false);
+                    nearestCore.PickThisUp();
+                    isEquippingLeft = false;
+                }
+
+            }
+            // Right hand has a weapon and we are pressing input to consume
+            else
+            {
+                ConsumeLeftWeapon();
+            }
+        }
+        // Consume the weapon still if out of ammo
+        else if (leftOutOfAmmo)
+        {
+            ConsumeLeftWeapon();
+        }
+        // The left input is no longer pressed
+        else
+        {
+            leftConsumeTimerSlider.gameObject.SetActive(false);
+            consumeLeftTimer = 0f;
+        }
+    }
+    private void ConsumeRightWeapon()
+    {
+        // Count up the consume timer
+        if (consumeRightTimer < consumeHoldTime)
+        {
+            consumeRightTimer += Time.deltaTime;
+            // Set the consume slider to be active
+            rightConsumeTimerSlider.gameObject.SetActive(true);
+            rightConsumeTimerSlider.value = consumeRightTimer;
+        }
+        // Consume the weapon
+        else
+        {
+            // Plays SFX
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(coreCrushSFX);
+
+            // Heals from the consumption and removes the existing weapon and reticle
+            playerHealth.TakeHealing(rightWeapon.GetHealValue());
+            Destroy(rightWeapon.reticle.gameObject);
+            Destroy(rightWeapon.gameObject);
+
+            // Equips the empty hand in its place
+            EquipNewWeapon(emptyHandPrefab, true);
+
+            // Remove the consume slider from screen
+            rightConsumeTimerSlider.gameObject.SetActive(false);
+
+            // Reset the consume timer
+            consumeRightTimer = 0f;
+        }
+    }
+    private void ConsumeLeftWeapon()
+    {
+        // Count up the consume timer
+        if (consumeLeftTimer < consumeHoldTime)
+        {
+            consumeLeftTimer += Time.deltaTime;
+            // Set the consume slider to be active
+            leftConsumeTimerSlider.gameObject.SetActive(true);
+            leftConsumeTimerSlider.value = consumeLeftTimer;
+        }
+        // Consume the weapon
+        else
+        {
+            // Plays SFX
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(coreCrushSFX);
+
+            // Heals from the consumption and removes the existing weapon and reticle
+            playerHealth.TakeHealing(leftWeapon.GetHealValue());
+            Destroy(leftWeapon.reticle.gameObject);
+            Destroy(leftWeapon.gameObject);
+
+            // Equips the empty hand in its place
+            EquipNewWeapon(emptyHandPrefab, false);
+
+            // Remove the consume slider from screen
+            leftConsumeTimerSlider.gameObject.SetActive(false);
+
+            // Reset the consume timer
+            consumeLeftTimer = 0f;
+        }
     }
     public void EquipToHand(Weapon weapon, bool toRightHand)
     {
@@ -325,10 +453,11 @@ public class PlayerWeapons : MonoBehaviour
         return usedRightWeapon ? rightAbilityCharges : leftAbilityCharges;
     }
 
+    // Removed from old controls
     private void CheckPrimaryStart(bool isRightWeapon)
     {
         // Check if player is holding consume input first
-        if (isConsuming)
+        if (isEquippingLeft)
         {
             // Only allows the consume coroutine to start if its not already running for that hand
             if (isRightWeapon)
@@ -338,7 +467,7 @@ public class PlayerWeapons : MonoBehaviour
         }
 
         // Check if player is holding swap input next
-        else if (isSwapping)
+        else if (isEquippingRight)
         {
             // Ensure that there is a core to pickup
             if (nearestCore != null)
@@ -350,7 +479,7 @@ public class PlayerWeapons : MonoBehaviour
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
-                        isSwapping = false;
+                        isEquippingRight = false;
                     }
                 }
                 else
@@ -359,7 +488,7 @@ public class PlayerWeapons : MonoBehaviour
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
-                        isSwapping = false;
+                        isEquippingRight = false;
                     }
                 }
             }
@@ -374,6 +503,7 @@ public class PlayerWeapons : MonoBehaviour
                 leftWeapon.PrimaryBegin();
         }
     }
+    // Removed from old controls
     private IEnumerator ConsumeWeapon(bool isRightWeapon)
     {
         if (isRightWeapon && rightWeapon.wType != WeaponType.Empty)
@@ -382,11 +512,11 @@ public class PlayerWeapons : MonoBehaviour
         } 
         else if (!isRightWeapon && leftWeapon.wType != WeaponType.Empty)
         {
-            LeftConsumeTimerSlider.gameObject.SetActive(true);
+            leftConsumeTimerSlider.gameObject.SetActive(true);
         }
 
         float consumeTimer = 0f;
-        while (isConsuming && consumeTimer < consumeHoldTime)
+        while (isEquippingLeft && consumeTimer < consumeHoldTime)
         {
             consumeTimer += Time.deltaTime;
             if (isRightWeapon)
@@ -395,13 +525,13 @@ public class PlayerWeapons : MonoBehaviour
             }
             else
             {
-                LeftConsumeTimerSlider.value = consumeTimer;
+                leftConsumeTimerSlider.value = consumeTimer;
             }
             yield return null;
         }
 
         // Only completes the coroutine if consume button is still being held at end of timer
-        if (isConsuming)
+        if (isEquippingLeft)
         {
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySFX(coreCrushSFX);
@@ -433,10 +563,11 @@ public class PlayerWeapons : MonoBehaviour
         }
         else 
         {
-            LeftConsumeTimerSlider.gameObject.SetActive(false);
+            leftConsumeTimerSlider.gameObject.SetActive(false);
             leftConsumeRoutine = null;
         }            
     }
+    // Removed from old controls
     private void SwapWeapons()
     {
 
@@ -553,23 +684,18 @@ public class PlayerWeapons : MonoBehaviour
         }
     }
 
-    private void OnRightPrimaryStart(InputAction.CallbackContext context) => CheckPrimaryStart(true);
+    private void OnRightPrimaryStart(InputAction.CallbackContext context) => rightWeapon.PrimaryBegin();
     private void OnRightPrimaryRelease(InputAction.CallbackContext context) => rightWeapon.PrimaryRelease();
     private void OnRightSecondaryStart(InputAction.CallbackContext context) => rightWeapon.SecondaryBegin();
     private void OnRightSecondaryRelease(InputAction.CallbackContext context) => rightWeapon.SecondaryRelease();
-    private void OnLeftPrimaryStart(InputAction.CallbackContext context) => CheckPrimaryStart(false);
+    private void OnLeftPrimaryStart(InputAction.CallbackContext context) => leftWeapon.PrimaryBegin();
     private void OnLeftPrimaryRelease(InputAction.CallbackContext context) => leftWeapon.PrimaryRelease();
     private void OnLeftSecondaryStart(InputAction.CallbackContext context) => leftWeapon.SecondaryBegin();
     private void OnLeftSecondaryRelease(InputAction.CallbackContext context) => leftWeapon.SecondaryRelease();
-    private void OnSwapStart(InputAction.CallbackContext context) => isSwapping = true;
-    private void OnSwapRelease(InputAction.CallbackContext context) 
-    {
-        if (swapTimer < swapHoldTime && isSwapping && !isConsuming)
-            SwapWeapons();
-        isSwapping = false;
-    }
-    private void OnConsumeStart(InputAction.CallbackContext context) => isConsuming = true;
-    private void OnConsumeRelease(InputAction.CallbackContext context) => isConsuming = false;
+    private void OnRightEquipStart(InputAction.CallbackContext context) => isEquippingRight = true;
+    private void OnRightEquipRelease(InputAction.CallbackContext context) => isEquippingRight = false;
+    private void OnLeftEquipStart(InputAction.CallbackContext context) => isEquippingLeft = true;
+    private void OnLeftEquipRelease(InputAction.CallbackContext context) => isEquippingLeft = false;
 
     private void OnDrawGizmos()
     {

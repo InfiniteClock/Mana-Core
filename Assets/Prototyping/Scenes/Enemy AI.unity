@@ -883,16 +883,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9088684978489071392, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: healDelay
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 9088684978489071392, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: maxCoreHealing
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 9088684978489071392, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
-      propertyPath: minCoreHealing
-      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
