@@ -139,7 +139,7 @@ Material:
     - _MaterializationWidth: 0.02
     - _Metallic: 0
     - _Mode: 0
-    - _Noise_Pattern: 0
+    - _Noise_Pattern: 1
     - _NormalsStrength: 0.5
     - _OcclusionStrength: 1
     - _Parallax: 0.02

@@ -1440,8 +1440,8 @@
     "m_ObjectId": "0d8a82c7acd742e495dc20dc55b1c34a",
     "m_Title": "Texture Offset ",
     "m_Position": {
-        "x": -2407.99951171875,
-        "y": 1415.0
+        "x": -2407.999755859375,
+        "y": 1414.9998779296875
     }
 }
 
@@ -2890,8 +2890,8 @@
     "m_ObjectId": "4b707e6525524a448b2b962a8f4f0105",
     "m_Title": "Directional Texture Offset Switch",
     "m_Position": {
-        "x": -1850.99951171875,
-        "y": 1867.00048828125
+        "x": -1850.999755859375,
+        "y": 1867.0
     }
 }
 
@@ -4002,8 +4002,8 @@
     "m_ObjectId": "659bc929476f49499592bb230108d16c",
     "m_Title": "Materialization [Random Noise]",
     "m_Position": {
-        "x": -934.9994506835938,
-        "y": 1416.0
+        "x": -934.9998168945313,
+        "y": 1416.0001220703125
     }
 }
 
@@ -5262,8 +5262,8 @@
     "m_ObjectId": "97c72f20fb86469fb7ed77eece9e0ae7",
     "m_Title": "Materialization Output",
     "m_Position": {
-        "x": -95.9994888305664,
-        "y": 811.000244140625
+        "x": -95.99987030029297,
+        "y": 811.0
     }
 }
 
@@ -5823,8 +5823,8 @@
     "m_ObjectId": "aea3e67efeda4cf5aed69c168c750924",
     "m_Title": "Materialization [Directional]",
     "m_Position": {
-        "x": -1837.99951171875,
-        "y": 459.00048828125
+        "x": -1837.999755859375,
+        "y": 459.0000915527344
     }
 }
 
@@ -6088,8 +6088,8 @@
     "m_ObjectId": "b728e74cbeed47d691318f0fa5080004",
     "m_Title": "PBR Setup",
     "m_Position": {
-        "x": -765.99951171875,
-        "y": -41.9997444152832
+        "x": -765.9998779296875,
+        "y": -41.999839782714847
     }
 }
 
@@ -6340,8 +6340,8 @@
     "m_ObjectId": "c00149f5cbd34478be8b87544ff4433d",
     "m_Title": "Position to UV swap",
     "m_Position": {
-        "x": -2092.99951171875,
-        "y": 455.000244140625
+        "x": -2093.0,
+        "y": 455.0000915527344
     }
 }
 
