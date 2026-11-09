@@ -890,7 +890,7 @@ GameObject:
   - component: {fileID: 6555348874746036613}
   - component: {fileID: 7053314958974547230}
   m_Layer: 6
-  m_Name: right Consume Timer
+  m_Name: Right Consume Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10897,7 +10897,7 @@ MonoBehaviour:
   rightUtilitySlider: {fileID: 8780068504884946346}
   leftUtilitySlider: {fileID: 4352626365955475920}
   rightConsumeTimerSlider: {fileID: 7053314958974547230}
-  LeftConsumeTimerSlider: {fileID: 5196935430766790503}
+  leftConsumeTimerSlider: {fileID: 5196935430766790503}
   RightAbility: {fileID: 8858619190621987759}
   LeftAbility: {fileID: 2352172217144995541}
   RightAbilityIcon: {fileID: 5350631527482772547}
@@ -10910,12 +10910,10 @@ MonoBehaviour:
     m_Bits: 65536
   pickupText: {fileID: 8071756219252751210}
   dashBuffer: 0.5
-  swapHoldTime: 0.1
   consumeHoldTime: 1
   rightAbilityCharges: 0
   leftAbilityCharges: 0
   bufferTimer: 0
-  swapTimer: 0
   weaponAnimators: []
 --- !u!114 &4415431053074830048
 MonoBehaviour:
@@ -10988,7 +10986,7 @@ MonoBehaviour:
   currentHealth: 20
   iFramesDuration: 0
   minCoreHealing: 0
-  healDelay: 0
+  healDelay: 0.35
   healthBar: {fileID: 104249856670600730}
   damageMarkerParent: {fileID: 8159551968650519274}
   damageMarkerPrefab: {fileID: 5868738716574823648, guid: cc5b4592155819e488fc4f21cd145572, type: 3}

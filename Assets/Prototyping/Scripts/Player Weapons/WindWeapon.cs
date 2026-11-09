@@ -26,7 +26,7 @@ public class WindWeapon : Weapon
         while (isFiring)
         {
             // If statement prevents shooting while not in shootable state without ending the routine
-            // This allows player to continue holding button while sprinting and dashing to begin shooting when entering a shootable state
+            // This allows player to continue holding button to begin shooting when entering a shootable state
             if (PlayerCanShoot())
             {
                 // Get direction of shot, applying bloom
