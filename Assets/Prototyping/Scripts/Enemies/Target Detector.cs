@@ -6,6 +6,8 @@ public class TargetDetector : MonoBehaviour
     [Header("Detection")]
     public GameObject target;
     public Transform eyePoint;
+    [Tooltip("Deg/s")]
+    public float headTurnSpeed;
     [Min(1f)]
     public float maxDetectRange;
     [Min(0f)]
@@ -23,6 +25,9 @@ public class TargetDetector : MonoBehaviour
     [Header("Feedback")]
     public Light spotLight;
     public Light pointLight;
+
+    [HideInInspector]
+    public bool spottedTarget;
 
     [Header("Status Effects")]
     public float confusionDuration;
@@ -90,6 +95,7 @@ public class TargetDetector : MonoBehaviour
             if (spotTimer < timeToDetect)
             {
                 spotTimer += Time.deltaTime;
+                spottedTarget = false;
                 return false;
             }
             // Has spotted target
@@ -97,6 +103,10 @@ public class TargetDetector : MonoBehaviour
             {
                 // We have spotted them, so reset the loseTimer
                 loseTimer = 0f;
+
+                // Try to follow them with head
+                SmoothLookAt(target.transform);
+                spottedTarget = true;
                 return true;
             }
 
@@ -111,6 +121,10 @@ public class TargetDetector : MonoBehaviour
             if (loseTimer < timeToLoseDetection)
             {
                 loseTimer += Time.deltaTime;
+
+                // Try to follow them with head
+                SmoothLookAt(target.transform);
+                spottedTarget = false;
                 return true;
             }
             // Has lost target
@@ -118,8 +132,32 @@ public class TargetDetector : MonoBehaviour
             {
                 // We have lost them, so reset the spotTimer
                 spotTimer = 0f;
+                spottedTarget = false;
                 return false;
             }
+        }
+    }
+    private void SmoothLookAt(Transform targ)
+    {
+        // Must have target to look at
+        if (target == null) return;
+
+        // Calculate direction to target. Cannot continue with a zero-length direction vector
+        Vector3 direction = targ.position - eyePoint.position;
+        if (direction.sqrMagnitude < Mathf.Epsilon) return;
+
+        Quaternion lookRot = Quaternion.LookRotation(direction);
+
+        eyePoint.rotation = Quaternion.RotateTowards(eyePoint.rotation, lookRot, headTurnSpeed * Time.deltaTime);
+    }
+    public void SetConfused()
+    {
+        if (!isConfused)
+        {
+            isConfused = true;
+            // Allows resetting the confusion timer just slightly before it would otherwise end if still in the effect
+            if (confusionTimer <= 0.1f) 
+                confusionTimer = confusionDuration;
         }
     }
     private bool CheckConfusion()
@@ -133,5 +171,21 @@ public class TargetDetector : MonoBehaviour
         {
             return isConfused = false;
         }
+    }
+    private void OnDrawGizmos()
+    {
+        // Draws max radius of detection
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(eyePoint.position, maxDetectRange);
+
+        // Draws minimum area of detection
+        Gizmos.color = Color.wheat;
+        Gizmos.DrawWireSphere(eyePoint.position, minDetectRange);
+
+        // Draws angle between min and max radius of detection
+        Vector3 rightSideLine = Quaternion.Euler(0f, detectAngle / 2f, 0f) * eyePoint.transform.forward;
+        Vector3 leftSideLine = Quaternion.Euler(0f, -detectAngle / 2f, 0f) * eyePoint.transform.forward;
+        Gizmos.DrawLine(eyePoint.position + rightSideLine * minDetectRange, eyePoint.position + rightSideLine * maxDetectRange);
+        Gizmos.DrawLine(eyePoint.position + leftSideLine * minDetectRange, eyePoint.position + leftSideLine * maxDetectRange);
     }
 }

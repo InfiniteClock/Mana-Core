@@ -9,11 +9,12 @@ public class DoorScript : Enemy
     protected override void Update()
     {
         base.Update();
-        if (dState == DetectionState.confused)
+        if (!targetDetector.spottedTarget || targetDetector.isConfused)
         {
             //Debug.Log(dState);
             Door.gameObject.SetActive(false);
-        } else
+        } 
+        else
         {
             //Debug.Log(dState);
             Door.gameObject.SetActive(true);
