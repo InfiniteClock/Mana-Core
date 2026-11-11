@@ -680,7 +680,7 @@ public class PlayerWeapons : MonoBehaviour
         //Otherwise, display a prompt to pickup the item
         else
         {
-            pickupText.text = "Hold 'R' and Right or Left Mouse Click to pickup " + nearestCore.element.ToString() + " weapon.";
+            pickupText.text = "Hold 'E' or 'Q' to pickup " + nearestCore.element.ToString() + " weapon.";
         }
     }
 
