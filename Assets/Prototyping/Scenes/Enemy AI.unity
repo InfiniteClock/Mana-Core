@@ -1068,6 +1068,18 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3650167537604624514, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650167537604624514, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650167537604624514, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3967552503506133421, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_LocalPosition.y
       value: 6.65
@@ -1106,6 +1118,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5054994587156505472, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
       propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5158367565408849830, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5158367565408849830, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5158367565408849830, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5958985989787543498, guid: 0b21c3d6e65bfe9448f574f9bbded598, type: 3}
@@ -2044,6 +2068,7 @@ GameObject:
   - component: {fileID: 8159868920236824742}
   - component: {fileID: 8159868920236824741}
   - component: {fileID: 8159868920236824740}
+  - component: {fileID: 8159868920236824743}
   - component: {fileID: 8159868920236824738}
   - component: {fileID: 8159868920236824739}
   m_Layer: 15
@@ -2399,6 +2424,7 @@ MonoBehaviour:
   - rid: 6388994056013742467
   - rid: 6388994056013742466
   - rid: 6388994056013742465
+  - rid: 6388994056860991554
   m_OriginalGraph: {fileID: 1028023535859497394, guid: 7f7cf7195fb9694489997433126a1d63, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -2435,11 +2461,19 @@ MonoBehaviour:
         GUID:
           m_Value0: 14402014559507018030
           m_Value1: 11143304757248766679
-        Name: Patrol Points
+        Name: PatrolPoints
         m_Value:
         - {fileID: 430488807}
         - {fileID: 693809}
         - {fileID: 666100942}
+    - rid: 6388994056860991554
+      type: {class: 'BlackboardVariable`1[[EnemyWeapon, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 14698908859297308256
+          m_Value1: 11140074439786263313
+        Name: Weapon
+        m_Value: {fileID: 8159868920236824743}
 --- !u!114 &8159868920236824740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2504,6 +2538,30 @@ MonoBehaviour:
   manaCorePrefab: {fileID: 6195750443292183592, guid: ab2aecdab977b9746b2715d8ad0f0cbf, type: 3}
   willDropCore: 1
   deathDelay: 1
+--- !u!114 &8159868920236824743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4843278483459945991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8754e51057f8bd944a7fb52e07211129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FodderFlame
+  projectileSpawnPoint: {fileID: 6053453423489898121}
+  projectile: {fileID: 7930782499964670024, guid: 283ab0ab2dc0c504ea2a7d3eb7cf6ace, type: 3}
+  coreType: 2
+  fireRate: 1
+  burstDelay: 0.33333334
+  target: {x: 0, y: 0, z: 0}
+  baseSpread: 0
+  bloomPerShot: 1.5
+  maxBloom: 3
+  bloomDecayPerSec: 3
+  distributionType: 2
+  shootStraightAhead: 1
 --- !u!1 &8264776919069147334
 GameObject:
   m_ObjectHideFlags: 0
