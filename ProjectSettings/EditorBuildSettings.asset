@@ -20,9 +20,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Prototyping/Scenes/Weapons Update V1.unity
     guid: e9f6f4e63bd9c56498719516304d9b08
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PoCLevel.unity
     guid: 0febd3589bdcd7641a9a66ddb7701934
+  - enabled: 1
+    path: Assets/Prototyping/Scenes/Enemy AI.unity
+    guid: 05d1e2de526a2bc4f8e00883ae335fc5
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 99f9c9493070a9d4c979a8fec7c5a8d3, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
