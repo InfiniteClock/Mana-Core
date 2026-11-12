@@ -1018,6 +1018,35 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 516452899}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: 'managedReferences[6388994078862213560]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[FodderSecondaryState,
+        Assembly-CSharp]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213560].Name
+      value: SecondaryState
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213560].m_Value
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[8]'
+      value: 6388994078862213560
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213560].GUID.m_Value0
+      value: 6077941958082377854
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213560].GUID.m_Value1
+      value: 3897476027286916793
+      objectReference: {fileID: 0}
     - target: {fileID: 7863672502444268148, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: m_LocalPosition.x
       value: -25.08
@@ -1820,8 +1849,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 516452899}
     - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: 'managedReferences[6388994078862213562]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[FodderSecondaryState,
+        Assembly-CSharp]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213562].Name
+      value: SecondaryState
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: managedReferences[6388994078526931712].m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213562].m_Value
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[8]'
+      value: 6388994078862213562
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213562].GUID.m_Value0
+      value: 6077941958082377854
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213562].GUID.m_Value1
+      value: 3897476027286916793
       objectReference: {fileID: 0}
     - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: managedReferences[6388994056013742467].m_Value.Array.size
@@ -2489,8 +2547,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 516452899}
     - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: 'managedReferences[6388994078862213561]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[FodderSecondaryState,
+        Assembly-CSharp]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213561].Name
+      value: SecondaryState
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: managedReferences[6388994078526931712].m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213561].m_Value
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[8]'
+      value: 6388994078862213561
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213561].GUID.m_Value0
+      value: 6077941958082377854
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213561].GUID.m_Value1
+      value: 3897476027286916793
       objectReference: {fileID: 0}
     - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: managedReferences[6388994056013742467].m_Value.Array.size
@@ -2570,8 +2657,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 516452899}
     - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: 'managedReferences[6388994078862213563]'
+      value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[FodderSecondaryState,
+        Assembly-CSharp]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213563].Name
+      value: SecondaryState
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: m_BlackboardVariableOverridesList.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: managedReferences[6388994078526931712].m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213563].m_Value
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: 'm_BlackboardVariableOverridesList.Array.data[8]'
+      value: 6388994078862213563
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213563].GUID.m_Value0
+      value: 6077941958082377854
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
+      propertyPath: managedReferences[6388994078862213563].GUID.m_Value1
+      value: 3897476027286916793
       objectReference: {fileID: 0}
     - target: {fileID: 4083749818898222472, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: managedReferences[6388994056013742467].m_Value.Array.size

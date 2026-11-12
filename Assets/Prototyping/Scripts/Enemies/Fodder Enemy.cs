@@ -28,7 +28,7 @@ public class FodderEnemy : Enemy
         {
             // Ensures that a primed enemy will explode upon death
             if (fSecondState.Value == FodderSecondaryState.Prime)
-                fSecondState.Value = FodderSecondaryState.Explode;
+                fExplode.Detonate();
             Die();
         }
     }

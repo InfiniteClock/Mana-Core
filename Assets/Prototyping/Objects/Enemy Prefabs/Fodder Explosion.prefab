@@ -156,7 +156,7 @@ MonoBehaviour:
   ignoreTheseLayers:
     serializedVersion: 2
     m_Bits: 0
-  lifeTime: 0.25
+  lifeTime: 0.75
   travelSpeed: 0
   speedCurve:
     serializedVersion: 2
