@@ -25,7 +25,7 @@ public class CameraLook : MonoBehaviour
     {
         escInput.performed -= OnEscape;
     }
-    private void Update()
+    private void LateUpdate()
     {
         HandleRotation();
     }

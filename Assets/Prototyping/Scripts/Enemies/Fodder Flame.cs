@@ -4,6 +4,7 @@ using UnityEngine;
 public class FodderFlame : EnemyWeapon
 {
     public bool shootStraightAhead;
+    public float burstDelay;
     private Coroutine shootRoutine;
 
     private IEnumerator FlameBurst()

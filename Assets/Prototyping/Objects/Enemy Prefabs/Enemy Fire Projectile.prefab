@@ -556,3 +556,7 @@ MonoBehaviour:
   damage: 1
   randomZRotation: 0
   isPiercing: 0
+  explosionPrefab: {fileID: 5462679850225452715, guid: 0184e96511d2e364f9aed4ea615bca43, type: 3}
+  origin: {x: 0, y: 0, z: 0}
+  launchSFX: 
+  hitSFX: 

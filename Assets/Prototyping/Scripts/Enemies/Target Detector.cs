@@ -43,13 +43,6 @@ public class TargetDetector : MonoBehaviour
         spotLight.innerSpotAngle = detectAngle;
         pointLight.range = minDetectRange;
     }
-    private void OnValidate()
-    {
-        spotLight.range = maxDetectRange;
-        spotLight.spotAngle = detectAngle;
-        spotLight.innerSpotAngle = detectAngle;
-        pointLight.range = minDetectRange;
-    }
     public void SetTarget(GameObject newTarget)
     {
         target = newTarget;

@@ -12,7 +12,6 @@ public class EnemyWeapon : MonoBehaviour
     public GameObject projectile;
     public WeaponType coreType;
     public float fireRate;
-    public float burstDelay;
 
     [HideInInspector]
     public Vector3 target;

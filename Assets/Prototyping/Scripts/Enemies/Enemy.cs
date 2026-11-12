@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
-    protected Health health;
+    public Health health { get; protected set; }
     protected TargetDetector targetDetector;
     protected Rigidbody rb;
 
@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
 
     
 
-    private void Start()
+    protected virtual void Start()
     {
         health = GetComponent<Health>();
         targetDetector = GetComponent<TargetDetector>();
@@ -78,7 +78,7 @@ public class Enemy : MonoBehaviour
     {
         targetDetector.SetConfused();
     }
-    private void Die()
+    protected void Die()
     {
         hasTriggeredDeath = true;
         targetDetector.spotLight.enabled = false;
