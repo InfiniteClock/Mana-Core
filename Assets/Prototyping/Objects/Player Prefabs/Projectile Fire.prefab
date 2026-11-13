@@ -155,39 +155,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   ignoreTheseLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 65728
   lifeTime: 3.333
   travelSpeed: 30
-  speedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   spinSpeed: 0
   spinAxis: {x: 0, y: 0, z: 0}
   damage: 1
   randomZRotation: 0
   isPiercing: 0
+  isSticking: 0
   explosionPrefab: {fileID: 5462679850225452715, guid: 597c76e9c7017c1458f3614617a3059c, type: 3}
   origin: {x: 0, y: 0, z: 0}
+  hasFired: 1
   launchSFX: 
   hitSFX: 

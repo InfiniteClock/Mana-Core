@@ -103,7 +103,7 @@ public abstract class Weapon : MonoBehaviour
 
         FindAnimator(p);
     }
-    private void Update()
+    protected virtual void Update()
     {
         BloomTick(Time.deltaTime);
     }

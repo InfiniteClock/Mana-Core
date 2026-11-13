@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 7244353039339437010}
   - component: {fileID: 3500451152067984225}
   - component: {fileID: 8997833009987160721}
-  - component: {fileID: 2655997794472283493}
+  - component: {fileID: 847273988627070844}
+  - component: {fileID: -2008465759723476874}
   - component: {fileID: 4464504053620320309}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Projectile Ice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -92,8 +93,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &2655997794472283493
-SphereCollider:
+--- !u!136 &847273988627070844
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -110,9 +111,38 @@ SphereCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
+  serializedVersion: 2
+  m_Radius: 0.75
+  m_Height: 1
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &-2008465759723476874
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5462679850225452715}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 1
 --- !u!114 &4464504053620320309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +155,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35ec6a5b99cba5d479020692ccbce563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  travelSpeed: 12
-  lifeTime: 3
+  ignoreTheseLayers:
+    serializedVersion: 2
+    m_Bits: 65728
+  lifeTime: 10
+  travelSpeed: 25
+  spinSpeed: 0
+  spinAxis: {x: 0, y: 0, z: 0}
   damage: 1
+  randomZRotation: 0
+  isPiercing: 0
+  isSticking: 1
+  explosionPrefab: {fileID: 0}
+  origin: {x: 0, y: 0, z: 0}
+  hasFired: 1
+  launchSFX: 
+  hitSFX: 
