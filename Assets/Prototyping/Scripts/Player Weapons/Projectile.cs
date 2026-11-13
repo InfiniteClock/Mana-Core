@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Projectile : MonoBehaviour
 {
@@ -12,8 +11,6 @@ public class Projectile : MonoBehaviour
     public float lifeTime;
     [Tooltip("m/s")]
     public float travelSpeed;
-    [Tooltip("The curve at which the projectile applies travelSpeed over lifetime")]
-    public AnimationCurve speedCurve;
     [Tooltip("deg/s")]
     public float spinSpeed;
     [Tooltip("Vector axis to spin around. Normalized")]
@@ -24,24 +21,27 @@ public class Projectile : MonoBehaviour
     public float randomZRotation = 0f;
     [Tooltip("Set to true if this projectile should pierce through multiple colliders")]
     public bool isPiercing = false;
+    [Tooltip("Set to true if this projectile should stick to what it collides with")]
+    public bool isSticking = false;
     [Tooltip("Leave null if projectile does not explode")]
     public GameObject explosionPrefab;
 
     [HideInInspector]
     public Vector3 origin;
+    [HideInInspector]
+    public bool hasFired = true;
 
     [Header("SFX")]
     public string launchSFX;
     public string hitSFX;
     
     private Vector3 direction;
-    private float speed;
     private float lifeTimer;
     private Rigidbody rb;
     private List<Collider> hitColliders;
     private List<Collider> selfColliders;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         // Set the excluded layers for every collider in the projectile
         selfColliders = new List<Collider>();
@@ -54,33 +54,23 @@ public class Projectile : MonoBehaviour
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(launchSFX, transform);
         
-        spinAxis = spinAxis.normalized;
         rb = GetComponent<Rigidbody>();
         hitColliders = new List<Collider>();
-
-        // Set the direction of travel before applying any rotational forces
-        direction = transform.forward;
-
-        // Spawns at a random Z rotation
-        Vector3 randRot = transform.rotation.eulerAngles;
-        randRot.z += Random.Range(-randomZRotation, randomZRotation);
-        transform.rotation = Quaternion.Euler(randRot);
-        
-        // Adds random spinning to the projectile
-        spinSpeed *= Random.Range(-1f, 1f);
-        rb.AddRelativeTorque(spinAxis * spinSpeed, ForceMode.Impulse);
     }
-    private void FixedUpdate()
+    protected virtual void Start()
     {
-        speed = speedCurve.Evaluate(lifeTimer / lifeTime) * travelSpeed;
-        rb.linearVelocity = direction * speed;
+        if (hasFired)
+            Fire();
     }
     public void Update()
     {
+        if (!hasFired) return;
+        
         if (lifeTimer < lifeTime)
             lifeTimer += Time.deltaTime;
         else
-            Destroy(gameObject);
+            Destroy(gameObject); 
+        
     }
     protected void OnTriggerEnter(Collider other)
     {
@@ -120,7 +110,48 @@ public class Projectile : MonoBehaviour
             {
                 GameObject boom = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             }
-            Destroy(gameObject);
+
+            if (isSticking)
+            {
+                ToggleFireOn(false);
+                hasFired = true;
+                transform.SetParent(other.transform);
+            }
+            else
+                Destroy(gameObject);
         }
+    }
+    public void Fire()
+    {
+        // Set the direction of travel before applying any rotational forces
+        direction = transform.forward;
+        spinAxis = spinAxis.normalized;
+
+        // Spawns at a random Z rotation
+        Vector3 randRot = transform.rotation.eulerAngles;
+        randRot.z += Random.Range(-randomZRotation, randomZRotation);
+        transform.rotation = Quaternion.Euler(randRot);
+
+        // Adds random spinning to the projectile
+        spinSpeed *= Random.Range(-1f, 1f);
+        rb.AddRelativeTorque(spinAxis * spinSpeed, ForceMode.Impulse);
+
+        // Sets the projectile in motion
+        rb.AddForce(direction * travelSpeed, ForceMode.Impulse);
+    }
+    public void ToggleFireOn(bool toggleOn)
+    {
+        hasFired = toggleOn;
+        foreach(Collider col in selfColliders)
+        {
+            col.enabled = toggleOn;
+        }
+
+        rb.isKinematic = !toggleOn;
+        rb.detectCollisions = toggleOn;
+
+        // If setting to true, fire the projectile
+        if (toggleOn)
+            Fire();
     }
 }
