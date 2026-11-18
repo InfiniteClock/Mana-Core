@@ -35,9 +35,9 @@ public class FlyerEnemy : Enemy
     public void ChangeHeight(float additionalHeight)
     {
         // Check that new height is within range
-        if (meshAgent.height + additionalHeight > maxHeight)
+        if (meshAgent.baseOffset + additionalHeight > maxHeight)
             additionalHeight = maxHeight;
-        if (meshAgent.height + additionalHeight < minHeight)
+        if (meshAgent.baseOffset + additionalHeight < minHeight)
             additionalHeight = minHeight;
 
         // Check that there is nothing in the way
@@ -65,21 +65,19 @@ public class FlyerEnemy : Enemy
     private IEnumerator AdjustHeight(float newHeight)
     {
         float speed = meshAgent.speed;
-        float startHeight = meshAgent.height;
+        float startHeight = meshAgent.baseOffset;
         float timer = 0f;
         float timeToHeight = newHeight / speed;
         
         while (timer < timeToHeight)
         {
             float currentHeight = Mathf.Lerp(startHeight, startHeight + newHeight, timer / timeToHeight);
-            meshAgent.height = currentHeight;
             meshAgent.baseOffset = currentHeight;
 
             timer += Time.deltaTime;
             yield return null;
         }
-        meshAgent.height = newHeight;
-        meshAgent.baseOffset = newHeight;
+        meshAgent.baseOffset = startHeight + newHeight;
 
         heightCheckRoutine = null;
     }

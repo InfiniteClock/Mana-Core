@@ -13,6 +13,11 @@ public class FlyerWeapon : EnemyWeapon
         {
             if (canShoot)
             {
+                // Look towards the target before shooting
+                Vector3 dirToTarget = (target - transform.position).normalized;
+                dirToTarget.y = 0;
+                transform.forward = dirToTarget;
+
                 // Get direction of shot, applying bloom
                 Quaternion rotation = Quaternion.LookRotation(target - projectileSpawnPoint.position, Vector3.up);
                 float spreadDeg = GetCurrentSpreadDegrees();

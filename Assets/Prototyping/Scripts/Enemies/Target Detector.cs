@@ -34,9 +34,10 @@ public class TargetDetector : MonoBehaviour
     public bool isConfused;
 
     private float confusionTimer;
-
+    private Vector3 defaultRotation;
     private void Start()
     {
+        defaultRotation = eyePoint.transform.localEulerAngles;
         SetTarget(target);
         spotLight.range = maxDetectRange;
         spotLight.spotAngle = detectAngle;
@@ -126,6 +127,7 @@ public class TargetDetector : MonoBehaviour
                 // We have lost them, so reset the spotTimer
                 spotTimer = 0f;
                 spottedTarget = false;
+                eyePoint.transform.localEulerAngles = defaultRotation;
                 return false;
             }
         }
