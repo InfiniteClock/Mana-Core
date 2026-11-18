@@ -174,7 +174,10 @@ public class TargetDetector : MonoBehaviour
         Gizmos.DrawWireSphere(eyePoint.position, maxDetectRange);
 
         // Draws minimum area of detection
-        Gizmos.color = Color.wheat;
+        if (spottedTarget)
+            Gizmos.color = Color.tomato;
+        else
+            Gizmos.color = Color.wheat;
         Gizmos.DrawWireSphere(eyePoint.position, minDetectRange);
 
         // Draws angle between min and max radius of detection

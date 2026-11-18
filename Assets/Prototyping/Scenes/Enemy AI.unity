@@ -1486,7 +1486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8647456478046316399, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2755,6 +2755,7 @@ MonoBehaviour:
   maxHeight: 19
   minHeight: 4
   rollTime: 0.25
+  rollResistance: 0.5
   rollables: {fileID: 145559412}
 --- !u!114 &1413208995
 MonoBehaviour:
@@ -2777,6 +2778,7 @@ MonoBehaviour:
   - rid: 6388994169362711011
   - rid: 6388994169362711246
   - rid: 6388994171321975782
+  - rid: 6388994216067334869
   m_OriginalGraph: {fileID: 0}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -2841,6 +2843,14 @@ MonoBehaviour:
           m_Value1: 11140074439786263313
         Name: Weapon
         m_Value: {fileID: 1413208991}
+    - rid: 6388994216067334869
+      type: {class: 'BlackboardVariable`1[[FlyerPrimaryState, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5403520124773320486
+          m_Value1: 1975697342992042781
+        Name: Primary State
+        m_Value: 1
 --- !u!195 &1413208996
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3082,7 +3092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8647456478046316399, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4323,7 +4333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8647456478046316399, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4437,7 +4447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8647456478046316399, guid: bdbc4ca96ac15bc4c82fb9bf02433d57, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

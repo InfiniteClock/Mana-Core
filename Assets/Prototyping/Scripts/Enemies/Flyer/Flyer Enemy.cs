@@ -1,5 +1,4 @@
 using System.Collections;
-using System.ComponentModel;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,6 +10,7 @@ public class FlyerEnemy : Enemy
     public float maxHeight;
     public float minHeight;
     public float rollTime;
+    public float rollResistance;
     public Transform rollables;
 
     private float agentRadius;
@@ -85,13 +85,15 @@ public class FlyerEnemy : Enemy
     /// Triggers a coroutine that rolls the selected transform along its local z axis
     /// </summary>
     /// <param name="isClockwise">Whether to rotate clockwise or counter clockwise</param>
-    public void BarrelRoll(int direction)
+    public void BarrelRoll(int direction, float force)
     {
-        rollRoutine ??= StartCoroutine(Roll(rollTime, direction));
+        rollRoutine ??= StartCoroutine(Roll(rollTime, direction, force));
     }
-    private IEnumerator Roll(float rollTime, int direction)
+    private IEnumerator Roll(float rollTime, int direction, float force)
     {
         float timer = 0f;
+        rb.AddForce(Vector3.right * direction * force, ForceMode.Impulse);
+        rb.linearDamping = rollResistance;
 
         while (timer < rollTime)
         {
@@ -101,6 +103,8 @@ public class FlyerEnemy : Enemy
             yield return null;
         }
         rollables.rotation = Quaternion.Euler(rollables.eulerAngles.x, rollables.eulerAngles.y, 0f);
+        rb.linearDamping = 0f;
+
         rollRoutine = null;
     }
 }
