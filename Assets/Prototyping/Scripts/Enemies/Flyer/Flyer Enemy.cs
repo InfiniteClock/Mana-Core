@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,14 +10,10 @@ public class FlyerEnemy : Enemy
     public float minHeight;
     public float rollTime;
     public float rollResistance;
-    public Transform rollables;
 
     private float agentRadius;
     private Coroutine rollRoutine;
     private Coroutine heightCheckRoutine;
-    private readonly WaitForSeconds heightCheckWait = new(0.25f);
-    private BehaviorGraphAgent agent;
-    private BlackboardVariable<FlyerSecondaryState> fSecondState;
     private FlyerWeapon fWeapon;
     private NavMeshAgent meshAgent;
 
@@ -26,19 +21,17 @@ public class FlyerEnemy : Enemy
     {
         base.Start();
         fWeapon = GetComponent<FlyerWeapon>();
-        agent = GetComponent<BehaviorGraphAgent>();
 
-        agent.GetVariable("SecondaryState", out fSecondState);
         meshAgent = GetComponent<NavMeshAgent>();
         agentRadius = meshAgent.radius;
     }
     public void ChangeHeight(float additionalHeight)
     {
-        // Check that new height is within range
+        // Clamp the additional height to keep flyer within height restrictions
         if (meshAgent.baseOffset + additionalHeight > maxHeight)
-            additionalHeight = maxHeight;
+            additionalHeight = maxHeight - meshAgent.baseOffset;
         if (meshAgent.baseOffset + additionalHeight < minHeight)
-            additionalHeight = minHeight;
+            additionalHeight = meshAgent.baseOffset - minHeight;
 
         // Check that there is nothing in the way
         // If going up...
@@ -92,18 +85,25 @@ public class FlyerEnemy : Enemy
     private IEnumerator Roll(float rollTime, int direction, float force)
     {
         float timer = 0f;
-        rb.AddForce(Vector3.right * direction * force, ForceMode.Impulse);
         rb.linearDamping = rollResistance;
 
+        // Disable the navmesh agent, then apply force.
+        meshAgent.enabled = false;
+        rb.AddForce(Vector3.right * direction * force, ForceMode.Impulse);
+        
         while (timer < rollTime)
         {
-            rollables.rotation = Quaternion.Euler(rollables.eulerAngles.x, rollables.eulerAngles.y, Mathf.Lerp(0f, 360f * direction, timer / rollTime));
+            modelParts.rotation = Quaternion.Euler(modelParts.eulerAngles.x, modelParts.eulerAngles.y, Mathf.Lerp(0f, 360f * direction, timer / rollTime));
 
             timer += Time.deltaTime;
             yield return null;
         }
-        rollables.rotation = Quaternion.Euler(rollables.eulerAngles.x, rollables.eulerAngles.y, 0f);
+        modelParts.rotation = Quaternion.Euler(modelParts.eulerAngles.x, modelParts.eulerAngles.y, 0f);
         rb.linearDamping = 0f;
+        
+        // Reset the velocity, then reenable the navmesh agent
+        rb.linearVelocity = new Vector3();
+        meshAgent.enabled = true;
 
         rollRoutine = null;
     }
