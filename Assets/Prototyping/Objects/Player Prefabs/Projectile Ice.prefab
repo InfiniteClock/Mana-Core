@@ -159,10 +159,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65728
   lifeTime: 10
-  travelSpeed: 25
+  travelSpeed: 50
   spinSpeed: 0
   spinAxis: {x: 0, y: 0, z: 0}
-  damage: 1
+  damage: 6
   randomZRotation: 0
   isPiercing: 0
   isSticking: 1

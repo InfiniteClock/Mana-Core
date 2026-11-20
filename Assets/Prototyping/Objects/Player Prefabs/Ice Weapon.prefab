@@ -178,13 +178,13 @@ MonoBehaviour:
   currentAmmo: 0
   projectileSpawnPoint: {fileID: 5108551783996909161}
   uiColor: {r: 0.53333336, g: 0.9882353, b: 1, a: 1}
-  reticlePrefab: {fileID: 6301688751641128443, guid: 68ac2e96357c3ee4f9c2bbfb7bdff2ff, type: 3}
+  reticlePrefab: {fileID: 4732925191331083816, guid: 2457c2304026caf46b093236c6212c86, type: 3}
   reticle: {fileID: 0}
   baseSpread: 0
-  bloomPerShot: 0.5
+  bloomPerShot: 1.5
   maxBloom: 1.5
-  maxBloomReticleOffset: 50
-  bloomDecayPerSec: 1
+  maxBloomReticleOffset: 100
+  bloomDecayPerSec: 0.5
   rightSideReticleRotation: 0
   leftSideReticleRotation: 0
   standingMulti: 1
@@ -199,7 +199,7 @@ MonoBehaviour:
   displayedMaxCharges: 0
   fireRate: 1
   rechargeTime: 3
-  maxChargeDamage: 8
+  maxChargeDamage: 18
   maxChargeScaleMulti: 3
   maxChargeAmmoPerShot: 3
   maxChargeBloomMulti: 3

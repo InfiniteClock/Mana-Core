@@ -14,7 +14,7 @@ public partial class TargetViewToSelfCondition : Condition
 
     public override bool IsTrue()
     {
-        if (Self == null || TargetView == null) return false;
+        if (Self.Value == null || TargetView.Value == null) return false;
 
         // Compares the angle of the target's forward view to the angle between targetview object and self
         Vector3 dirToTarget = (TargetView.Value.position - Self.Value.transform.position).normalized;
