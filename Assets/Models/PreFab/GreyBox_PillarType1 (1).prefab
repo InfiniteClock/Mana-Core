@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7945317823670855072}
   - component: {fileID: 7856642834504982163}
   - component: {fileID: 7135884712192628456}
+  - component: {fileID: 3708661691611064159}
   m_Layer: 0
   m_Name: GreyBox_PillarType1 (1)
   m_TagString: Untagged
@@ -113,3 +114,23 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4105960817111080018, guid: 8e0ffbb95165e3c4dba6e08a0b87c2d8, type: 3}
+--- !u!114 &3708661691611064159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4065171122777374203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 30223114459725617}
   - component: {fileID: 6916233711078859617}
   - component: {fileID: 5053076613903516842}
+  - component: {fileID: -3660180062851949524}
   m_Layer: 0
   m_Name: Rubble_Type2 (1)
   m_TagString: Untagged
@@ -113,3 +114,23 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1986554753429261667, guid: 4bd2290ef50f93642b3885a236132e93, type: 3}
+--- !u!114 &-3660180062851949524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4034161479206822581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
