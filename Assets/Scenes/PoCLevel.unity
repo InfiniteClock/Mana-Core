@@ -22983,21 +22983,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3916164884892019488, guid: d554a230798a0b64d8c10bddbf8fc2b3, type: 3}
   m_PrefabInstance: {fileID: 1193730038}
   m_PrefabAsset: {fileID: 0}
---- !u!108 &1193730040 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 12590353899408775, guid: d554a230798a0b64d8c10bddbf8fc2b3, type: 3}
-  m_PrefabInstance: {fileID: 1193730038}
-  m_PrefabAsset: {fileID: 0}
---- !u!108 &1193730041 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 2735528927457966956, guid: d554a230798a0b64d8c10bddbf8fc2b3, type: 3}
-  m_PrefabInstance: {fileID: 1193730038}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1193730042 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4246310867174736921, guid: d554a230798a0b64d8c10bddbf8fc2b3, type: 3}
-  m_PrefabInstance: {fileID: 1193730038}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1193730043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23010,21 +22995,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8776a4dbe920b4bad18a5354fa6a49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorScript
-  player: {fileID: 1593606220}
-  perspectivePoint: {fileID: 1193730042}
-  maxDetectionRange: 20
-  minDetectionRange: 1
-  detectionAngle: 90
-  sightBlockingMask:
-    serializedVersion: 2
-    m_Bits: 0
-  spotLight: {fileID: 1193730041}
-  pointLight: {fileID: 1193730040}
-  searchingCol: {r: 0.8679245, g: 0.76414084, b: 0.28248486, a: 0}
-  spottedCol: {r: 0.8867924, g: 0.27189392, b: 0.27189392, a: 0}
-  confusedCol: {r: 0.6389677, g: 0.25342646, b: 0.8018868, a: 0}
-  isInSmoke: 0
-  confusionDuration: 10
+  lookWithX: 1
+  lookWithY: 1
+  lookWithZ: 1
+  modelParts: {fileID: 0}
   manaCorePrefab: {fileID: 0}
   willDropCore: 1
   deathDelay: 1
@@ -32832,128 +32806,6 @@ Transform:
   - {fileID: 304260633}
   m_Father: {fileID: 973833334}
   m_LocalEulerAnglesHint: {x: -90, y: 180, z: 90}
---- !u!1 &1734527703
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1734527705}
-  - component: {fileID: 1734527704}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1734527704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734527703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6f7057d6b0fa6041a14efa85065cd7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  sfxPrefab: {fileID: 1285791830669611184, guid: d8b880c195e70c74c94d8c61161a7e35, type: 3}
-  soundEffects:
-  - clip: {fileID: 8300000, guid: 621c4bf0dd18c9f428899abdca02a451, type: 3}
-    name: PlayerSprint
-    volume: 1
-    pitch: 1
-    loop: 1
-  - clip: {fileID: 8300000, guid: 1a434c8ff2896104d9f9c740dd8b5142, type: 3}
-    name: PlayerCrouchWalk
-    volume: 1
-    pitch: 1
-    loop: 1
-  - clip: {fileID: 8300000, guid: 2b1baf7e0c6484447b8b849fe1ad7423, type: 3}
-    name: PlayerSlide
-    volume: 1
-    pitch: 1
-    loop: 1
-  - clip: {fileID: 8300000, guid: c8ef3085d9d647b49afd4edbaecafd89, type: 3}
-    name: PlayerJump
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: 436c9644530c64541b8e7f59627cd717, type: 3}
-    name: PlayerDeath
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: 3d5582a69c96d1740b2a4f98bc19ab7f, type: 3}
-    name: PlayerRespawn
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: d0a30a9d717cab348853872a62f7f4c6, type: 3}
-    name: WeaponHitmarker
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: 8cabb7530d87f3f409ddfc389a5d1423, type: 3}
-    name: WeaponShadowAttack
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: 37e4bbdcfc998424ebeb46d0efc7fab5, type: 3}
-    name: WeaponShadowUtility
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: 88569afb11c4183449e285026588f63c, type: 3}
-    name: WeaponWindAttack
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: 61e4c0296850c0f4fb508e502e5ff921, type: 3}
-    name: WeaponWindUtility
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: f2698698347877a4eb65ab67cc56b390, type: 3}
-    name: ManaCoreSpawn
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: 9605232bacdf30248a857e1ee9c6b3af, type: 3}
-    name: ManaCoreGrab
-    volume: 1
-    pitch: 1
-    loop: 0
-  - clip: {fileID: 8300000, guid: 8903adae433a0e146b6be48ec5773a42, type: 3}
-    name: ManaCoreCrush
-    volume: 1
-    pitch: 1
-    loop: 0
-  musicTracks:
-  - clip: {fileID: 8300000, guid: bccf99e4eb635dd44a9d1d2f9b54e486, type: 3}
-    name: PoC BGM
-    volume: 1
-    pitch: 1
-    loop: 1
---- !u!4 &1734527705
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734527703}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1735631611
 GameObject:
   m_ObjectHideFlags: 0
@@ -39541,6 +39393,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2142689423}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1327196223850368754
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286788769462637636, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
 --- !u!1001 &2366555004088698879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39752,6 +39661,6 @@ SceneRoots:
   - {fileID: 1147733599}
   - {fileID: 1884587366}
   - {fileID: 1169807638}
-  - {fileID: 1734527705}
+  - {fileID: 1327196223850368754}
   - {fileID: 1722834400}
   - {fileID: 563165404}
