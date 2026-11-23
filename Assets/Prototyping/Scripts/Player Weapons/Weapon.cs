@@ -170,18 +170,18 @@ public abstract class Weapon : MonoBehaviour
         // Determines how each state affects shooting, applying a set movement modifier or returning false is not allowed to shoot
         switch (playerMovement.moveState)
         {
-            case PlayerMovement.MovementState.dashing:
+            case PlayerMovementState.dashing:
                 return false;
-            case PlayerMovement.MovementState.walking:
+            case PlayerMovementState.walking:
                 selectedMulti = walkingMulti;
                 return true;
-            case PlayerMovement.MovementState.crouching:
+            case PlayerMovementState.crouching:
                 selectedMulti = crouchingMulti;
                 return true;
-            case PlayerMovement.MovementState.sliding:
+            case PlayerMovementState.sliding:
                 selectedMulti = slidingMulti;
                 return true;
-            case PlayerMovement.MovementState.airborne:
+            case PlayerMovementState.airborne:
                 selectedMulti = airbornMulti;
                 return true;
             default:

@@ -6,8 +6,6 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public enum MovementState { walking, crouching, sliding, airborne, dashing }
-
     [Header("VFX Controller")]
     [SerializeField] private UniversalRendererData rendererData;
     [SerializeField] private string dashingFeatureName = "Dash VFX";
@@ -26,8 +24,8 @@ public class PlayerMovement : MonoBehaviour
     public float baseAccelMultiplier;
     public float groundDrag;
 
-    public MovementState moveState { get; private set; }
-    private MovementState lastMoveState;
+    public PlayerMovementState moveState { get; private set; }
+    private PlayerMovementState lastMoveState;
     public float moveSpeed { get; private set; }
     public float desiredMoveSpeed { get; private set; }
     public float lastDesiredMoveSpeed { get; private set; }
@@ -171,7 +169,6 @@ public class PlayerMovement : MonoBehaviour
         {
             GameObject moveAudio = Instantiate(AudioManager.Instance.sfxPrefab, transform);
             movementSource = AudioManager.Instance.PlayReplaceableSFX(respawnSFX, moveAudio, transform);
-            //Debug.Log("movementSource = " + movementSource.name);
         }
     }
     private void OnEnable()
@@ -194,7 +191,6 @@ public class PlayerMovement : MonoBehaviour
         jumpInput.performed -= OnJump;
         jumpInput.canceled -= OnJumpCancel;
     }
-
     private void FixedUpdate()
     {
         // Ground Check
@@ -207,9 +203,9 @@ public class PlayerMovement : MonoBehaviour
 
         // Apply Drag when in a grounded state only (except in initial stages of jumping)
         if ( canJump && 
-            (moveState == MovementState.walking ||
-            moveState == MovementState.crouching ||
-            moveState == MovementState.sliding))
+            (moveState == PlayerMovementState.walking ||
+            moveState == PlayerMovementState.crouching ||
+            moveState == PlayerMovementState.sliding))
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
@@ -239,7 +235,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isDashing)
         {
-            moveState = MovementState.dashing;
+            moveState = PlayerMovementState.dashing;
             desiredMoveSpeed = baseDashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
             currentMoveSFX = "";
@@ -248,10 +244,10 @@ public class PlayerMovement : MonoBehaviour
         // Sliding
         else if (isGrounded && isSliding)
         {
-            moveState = MovementState.sliding;
+            moveState = PlayerMovementState.sliding;
 
             // Initiate with a boost of speed into the dash
-            if (lastMoveState != MovementState.sliding)
+            if (lastMoveState != PlayerMovementState.sliding)
                 moveSpeed = baseMoveSpeed * cloakSpeedMulti;
 
             // Apply sliding speed if moving downhill
@@ -268,7 +264,7 @@ public class PlayerMovement : MonoBehaviour
         // Crouching
         else if (isGrounded && CrouchBuffer())
         {
-            moveState = MovementState.crouching;
+            moveState = PlayerMovementState.crouching;
             desiredMoveSpeed = baseCrouchSpeed * cloakSpeedMulti;
 
             if (moveSpeed <= baseCrouchSpeed)
@@ -279,7 +275,7 @@ public class PlayerMovement : MonoBehaviour
         // Walking
         else if (isGrounded)
         {
-            moveState = MovementState.walking;
+            moveState = PlayerMovementState.walking;
             desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
             currentMoveSFX = walkSFX;
         }
@@ -287,7 +283,7 @@ public class PlayerMovement : MonoBehaviour
         // Airborne
         else
         {
-            moveState = MovementState.airborne;
+            moveState = PlayerMovementState.airborne;
             desiredMoveSpeed = baseMoveSpeed * cloakSpeedMulti;
             currentMoveSFX = "";
         }
@@ -295,11 +291,11 @@ public class PlayerMovement : MonoBehaviour
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
 
         // If the last state was dashing, sliding, or crouching after sliding, use momentum lerp
-        if (lastMoveState == MovementState.dashing || moveState == MovementState.sliding || 
-            (lastMoveState == MovementState.sliding && moveState == MovementState.crouching)) keepMomentum = true;
+        if (lastMoveState == PlayerMovementState.dashing || moveState == PlayerMovementState.sliding || 
+            (lastMoveState == PlayerMovementState.sliding && moveState == PlayerMovementState.crouching)) keepMomentum = true;
 
         // Otherwise, if the current state is walking or crouching, do NOT use momentum lerp
-        else if (moveState == MovementState.walking || moveState == MovementState.crouching) keepMomentum = false;
+        else if (moveState == PlayerMovementState.walking || moveState == PlayerMovementState.crouching) keepMomentum = false;
 
 
         if (desiredMoveSpeedHasChanged)
@@ -318,7 +314,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (moveState == MovementState.dashing)
+        if (moveState == PlayerMovementState.dashing)
             dashVFX.SetActive(true);
         else
             dashVFX.SetActive(false);
@@ -390,7 +386,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         // Ignore regular movement control if dashing
-        if (moveState == MovementState.dashing) return;
+        if (moveState == PlayerMovementState.dashing) return;
 
         inputDirection = orientation.forward * rawMoveInput.y + orientation.right * rawMoveInput.x;
 
@@ -496,13 +492,13 @@ public class PlayerMovement : MonoBehaviour
         float speed = rb.linearVelocity.magnitude;
         switch (moveState)
         {
-            case MovementState.walking:
+            case PlayerMovementState.walking:
                 i = speed / baseMoveSpeed;
                 break;
-            case MovementState.crouching:
+            case PlayerMovementState.crouching:
                 i = speed / baseSlideSpeed;
                 break;
-            case MovementState.sliding:
+            case PlayerMovementState.sliding:
                 i = speed / baseSlideSpeed;
                 break;
             default:

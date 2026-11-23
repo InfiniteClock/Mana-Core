@@ -12,9 +12,21 @@ public class PlayerHealth : MonoBehaviour
     public float iFramesDuration;
     public float minCoreHealing;
     public float healDelay;
+        
+    private Coroutine healRoutine;
+
+    [Header("Death / Respawning")]
+    public float respawnHealth;
+    public float respawnCloakDuration;
+    public Transform defaultRespawnPoint;
+    public GameObject continueScreen;
 
     public bool isDead { get; private set; }
-    private Coroutine healRoutine;
+
+    private Transform respawnPoint;
+    private Coroutine deathRoutine;
+    private Coroutine respawnRoutine;
+
     [Header("Feedback")]
     public Slider healthBar;
     public Transform damageMarkerParent;
@@ -27,11 +39,9 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        healthBar.maxValue = maxHealth;
-
-        // Set current health to max by default
-        currentHealth = maxHealth;
-        healthBar.value = currentHealth;
+        SetRespawnPoint(defaultRespawnPoint);
+        // Originally spawns at its set transform position in world
+        Spawn(transform);
     }
     private void Update()
     {
@@ -52,7 +62,6 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth < 0f)
             TriggerDeath();
-        
     }
     private IEnumerator DamageMarker(Vector3 dmgOrigin, float dmg)
     {
@@ -109,8 +118,32 @@ public class PlayerHealth : MonoBehaviour
         healthBar.value = healTarget;
         healRoutine = null;
     }
-    private void TriggerDeath()
+    public void TriggerDeath()
     {
         isDead = true;
+        continueScreen.SetActive(true);
+    }
+    public void SetRespawnPoint(Transform point)
+    {
+        respawnPoint = point;
+    }
+    public void Respawn()
+    {
+        Spawn(respawnPoint);
+    }
+    private void Spawn(Transform spawnpoint)
+    {
+        healthBar.maxValue = maxHealth;
+
+        // Set current health to max by default
+        currentHealth = maxHealth;
+        healthBar.value = currentHealth;
+
+        if (spawnpoint != null)
+            transform.SetPositionAndRotation(spawnpoint.position, spawnpoint.rotation);
+        else
+            transform.SetPositionAndRotation(defaultRespawnPoint.position, defaultRespawnPoint.rotation);
+        isDead = false;
+        continueScreen.SetActive(false);
     }
 }
