@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
@@ -10,7 +9,7 @@ public class EnemyWeapon : MonoBehaviour
     [Header("Shooting/Attacking")]
     public Transform projectileSpawnPoint;
     public GameObject projectile;
-    public WeaponType coreType;
+    public CoreTypes coreType;
     public float fireRate;
 
     [HideInInspector]

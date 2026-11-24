@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Death / Respawning")]
     public float respawnHealth;
-    public float respawnCloakDuration;
+    public Fountain checkpointFountain;
     public Transform defaultRespawnPoint;
     public GameObject continueScreen;
 
@@ -36,9 +36,10 @@ public class PlayerHealth : MonoBehaviour
     public AnimationCurve fadeAwayCurve;
 
     private float iFrameTimer;
-
+    private CameraLook playerCam;
     private void Start()
     {
+        playerCam = Camera.main.GetComponent<CameraLook>();
         SetRespawnPoint(defaultRespawnPoint);
         // Originally spawns at its set transform position in world
         Spawn(transform);
@@ -121,7 +122,18 @@ public class PlayerHealth : MonoBehaviour
     public void TriggerDeath()
     {
         isDead = true;
+        playerCam.SetActiveCam(false);
         continueScreen.SetActive(true);
+    }
+    public void SetCheckpoint(Fountain newFountain)
+    {
+        checkpointFountain = newFountain;
+        SetRespawnPoint(newFountain.respawnPoint);
+    }
+    public void SetDefaultSpawnPoint(Transform point)
+    {
+        if (point != null)
+            defaultRespawnPoint = point;
     }
     public void SetRespawnPoint(Transform point)
     {
@@ -130,6 +142,7 @@ public class PlayerHealth : MonoBehaviour
     public void Respawn()
     {
         Spawn(respawnPoint);
+        playerCam.SetActiveCam(true);
     }
     private void Spawn(Transform spawnpoint)
     {
@@ -139,10 +152,17 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         healthBar.value = currentHealth;
 
-        if (spawnpoint != null)
-            transform.SetPositionAndRotation(spawnpoint.position, spawnpoint.rotation);
-        else
-            transform.SetPositionAndRotation(defaultRespawnPoint.position, defaultRespawnPoint.rotation);
+        // Respawn at the set spawnpoint, or the default spawnpoint if no set spawnpoint. Set the camera orientation to match spawnpoint's
+        if (spawnpoint == null)
+        {
+            spawnpoint = defaultRespawnPoint;
+            playerCam.SetRotation(spawnpoint.localEulerAngles);
+        }
+        transform.position = spawnpoint.position;
+
+
+
+        // Unkills the player
         isDead = false;
         continueScreen.SetActive(false);
     }

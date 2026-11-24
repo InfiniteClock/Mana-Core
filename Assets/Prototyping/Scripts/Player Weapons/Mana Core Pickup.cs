@@ -3,7 +3,7 @@ using UnityEngine;
 public class ManaCorePickup : MonoBehaviour
 {
     [Header("References")]
-    public WeaponType element;
+    public CoreTypes element;
     public GameObject weaponPrefab;
     public float spinSpeed;
     public float gravity;

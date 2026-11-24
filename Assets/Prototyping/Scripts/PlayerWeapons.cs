@@ -74,8 +74,8 @@ public class PlayerWeapons : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
     private Rigidbody rb;
-    private WeaponType rWeaponType;
-    private WeaponType lWeaponType;
+    private CoreTypes rWeaponType;
+    private CoreTypes lWeaponType;
     private Vector3 camTarget;
     private RaycastHit hit;
     private InputAction rightFireInput;
@@ -221,14 +221,14 @@ public class PlayerWeapons : MonoBehaviour
     }
     private void EquipOrConsume()
     {
-        bool rightOutOfAmmo = rightWeapon.currentAmmo <= 0 && rightWeapon.wType != WeaponType.Empty;
-        bool leftOutOfAmmo = leftWeapon.currentAmmo <= 0 && leftWeapon.wType != WeaponType.Empty;
+        bool rightOutOfAmmo = rightWeapon.currentAmmo <= 0 && rightWeapon.coreType != CoreTypes.Empty;
+        bool leftOutOfAmmo = leftWeapon.currentAmmo <= 0 && leftWeapon.coreType != CoreTypes.Empty;
 
         // Run the timers for the Right Equip Button Controls
         if (isEquippingRight)
         {
             // Right hand is empty and we are pressing input to equip
-            if (rightWeapon.wType == WeaponType.Empty)
+            if (rightWeapon.coreType == CoreTypes.Empty)
             {
                 // There is a nearest core in range to pick up
                 if (nearestCore != null)
@@ -261,7 +261,7 @@ public class PlayerWeapons : MonoBehaviour
         if (isEquippingLeft)
         {
             // Right hand is empty and we are pressing input to equip
-            if (leftWeapon.wType == WeaponType.Empty)
+            if (leftWeapon.coreType == CoreTypes.Empty)
             {
                 // There is a nearest core in range to pick up
                 if (nearestCore != null)
@@ -361,7 +361,7 @@ public class PlayerWeapons : MonoBehaviour
         {
             // Get and set the weapon stats
             rightWeapon = weapon;
-            rWeaponType = weapon.wType;
+            rWeaponType = weapon.coreType;
             rightWeapon.isRightWeapon = true;
             rightAmmoSlider.maxValue = weapon.maxAmmo;
             rightAmmoSlider.value = weapon.currentAmmo;
@@ -373,7 +373,7 @@ public class PlayerWeapons : MonoBehaviour
         {
             // Get and set the weapon stats
             leftWeapon = weapon;
-            lWeaponType = weapon.wType;
+            lWeaponType = weapon.coreType;
             leftWeapon.isRightWeapon = false;
             leftAmmoSlider.maxValue = weapon.maxAmmo;
             leftAmmoSlider.value = weapon.currentAmmo;
@@ -390,7 +390,7 @@ public class PlayerWeapons : MonoBehaviour
     }
     private void CheckTwinWeapons()
     {
-        hasTwinWeapons = rightWeapon.wType == leftWeapon.wType;
+        hasTwinWeapons = rightWeapon.coreType == leftWeapon.coreType;
 
         // Set the ability charges based on if both weapons are the same, then based on whether it is left or right weapon
         if (hasTwinWeapons)
@@ -475,7 +475,7 @@ public class PlayerWeapons : MonoBehaviour
                 // Check which hand we want to equip it to, but only equip if the hand is empty
                 if (isRightWeapon)
                 {
-                    if (rightWeapon.wType == WeaponType.Empty)
+                    if (rightWeapon.coreType == CoreTypes.Empty)
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
@@ -484,7 +484,7 @@ public class PlayerWeapons : MonoBehaviour
                 }
                 else
                 {
-                    if (leftWeapon.wType == WeaponType.Empty)
+                    if (leftWeapon.coreType == CoreTypes.Empty)
                     {
                         EquipNewWeapon(nearestCore.weaponPrefab, isRightWeapon);
                         nearestCore.PickThisUp();
@@ -506,11 +506,11 @@ public class PlayerWeapons : MonoBehaviour
     // Removed from old controls
     private IEnumerator ConsumeWeapon(bool isRightWeapon)
     {
-        if (isRightWeapon && rightWeapon.wType != WeaponType.Empty)
+        if (isRightWeapon && rightWeapon.coreType != CoreTypes.Empty)
         {
             rightConsumeTimerSlider.gameObject.SetActive(true);
         } 
-        else if (!isRightWeapon && leftWeapon.wType != WeaponType.Empty)
+        else if (!isRightWeapon && leftWeapon.coreType != CoreTypes.Empty)
         {
             leftConsumeTimerSlider.gameObject.SetActive(true);
         }

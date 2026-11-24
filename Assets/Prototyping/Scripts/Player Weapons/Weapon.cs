@@ -1,7 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
-
-public enum WeaponType { Shadow, Wind, Fire, Ice, Earth, Lightning, Empty }
 public abstract class Weapon : MonoBehaviour
 {
     protected PlayerMovement playerMovement;
@@ -10,7 +7,7 @@ public abstract class Weapon : MonoBehaviour
 
     [Header("Shooting")]
     public GameObject projectile;
-    public WeaponType wType;
+    public CoreTypes coreType;
 
     [HideInInspector]
     public bool isRightWeapon;
