@@ -16,7 +16,7 @@ public class CameraLook : MonoBehaviour
     public bool isActive { get; private set; }
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        SetActiveCam(true);
 
         lookInput = InputSystem.actions.FindAction("Look");
         escInput = InputSystem.actions.FindAction("Quit Game");

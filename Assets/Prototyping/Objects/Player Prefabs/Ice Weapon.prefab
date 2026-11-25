@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceWeapon
   projectile: {fileID: 5462679850225452715, guid: 1a9a5979440cc864e8eafae17c2ee95f, type: 3}
-  wType: 3
+  coreType: 3
   isRightWeapon: 0
   target: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}

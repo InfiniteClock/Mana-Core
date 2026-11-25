@@ -1795,6 +1795,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: efc87fdb430ece240a0f70fa557d62d0, type: 2}
+    - target: {fileID: 3255099223614629194, guid: baee0dbb8e170494e88ba4ce48fc54dc, type: 3}
+      propertyPath: manaCorePrefab
+      value: 
+      objectReference: {fileID: 6195750443292183592, guid: ab2aecdab977b9746b2715d8ad0f0cbf, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

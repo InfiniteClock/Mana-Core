@@ -506,6 +506,8 @@ public class PlayerWeapons : MonoBehaviour
     // Removed from old controls
     private IEnumerator ConsumeWeapon(bool isRightWeapon)
     {
+        Debug.Log("Consuming...");
+
         if (isRightWeapon && rightWeapon.coreType != CoreTypes.Empty)
         {
             rightConsumeTimerSlider.gameObject.SetActive(true);

@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShadowWeapon
   projectile: {fileID: 4072508291409859131, guid: 08e07a5af9c753642a88e3ff0bacb93b, type: 3}
-  wType: 0
+  coreType: 5
   isRightWeapon: 0
   target: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}

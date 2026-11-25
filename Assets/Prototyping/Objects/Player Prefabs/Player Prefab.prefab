@@ -11661,7 +11661,7 @@ MonoBehaviour:
   LeftAbilityIcon: {fileID: 2463103305584546909}
   coreCrushSFX: ManaCoreCrush
   coreEquipSFX: ManCoreGrab
-  pickupRadius: 2
+  pickupRadius: 3
   whatIsPickupable:
     serializedVersion: 2
     m_Bits: 65536
