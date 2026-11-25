@@ -7,8 +7,16 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     public GameObject sfxPrefab;
-    public Sound[] soundEffects;
-    public Sound[] musicTracks;
+    [Range(0f, 1f)]
+    public float masterVolCtrl = 1f;
+    [Range(0f, 1f)]
+    public float sfxVolCtrl = 1f;
+    [Range(0f, 1f)]
+    public float musicVolCtrl = 1f;
+    [field:SerializeField]
+    public Sound[] soundEffects { get; private set; }
+    [field:SerializeField]
+    public Sound[] musicTracks { get; private set; }
 
     private AudioSource musicSource;
     private AudioSource musicSourceFadeOut;
@@ -43,7 +51,13 @@ public class AudioManager : MonoBehaviour
         foreach (Sound clip in musicTracks)
             if (clip != null) musicDict[clip.name] = clip;
     }
-
+    public Sound GetSFXSound(string name)
+    {
+        if (sfxDict.TryGetValue(name, out Sound sound))
+            return sound;
+        else
+            return null;
+    }
     public void PlaySFX(string name, Transform parent = null)
     {
         // If no parent is provided, use Audio Manager as the parent
@@ -58,7 +72,7 @@ public class AudioManager : MonoBehaviour
             newSource.name = name;
             rec.delay = sound.clip.length;
             source.clip = sound.clip;
-            source.volume = sound.volume;
+            source.volume = sound.volume * masterVolCtrl * sfxVolCtrl;
             source.pitch = sound.pitch;
             source.loop = sound.loop;
             source.Play();
@@ -67,11 +81,11 @@ public class AudioManager : MonoBehaviour
     }
     public AudioSource PlayReplaceableSFX(string name, GameObject obj, Transform parent = null)
     {
-        if (name  == null) name = "";
+        // Ensure null names are set as blank strings
+        name ??= "";
 
         // If no parent is provided, assume to keep the original parent
-        if (parent != null) 
-            obj.transform.SetParent(parent);
+        if (parent != null) obj.transform.SetParent(parent);
         
 
         if (sfxDict.TryGetValue(name, out Sound sound))
@@ -82,7 +96,7 @@ public class AudioManager : MonoBehaviour
             source.Stop();
             rec.enabled = false;
             source.clip = sound.clip;
-            source.volume = sound.volume;
+            source.volume = sound.volume * masterVolCtrl * sfxVolCtrl;
             source.pitch = sound.pitch;
             source.loop = sound.loop;
             source.Play();
@@ -99,7 +113,7 @@ public class AudioManager : MonoBehaviour
         if (musicDict.TryGetValue(name, out Sound sound))
         {
             musicSource.clip = sound.clip;
-            musicSource.volume = sound.volume;
+            musicSource.volume = sound.volume * masterVolCtrl * musicVolCtrl;
             musicSource.pitch = sound.pitch;
             musicSource.loop = sound.loop;
             musicSource.Play();
@@ -113,17 +127,26 @@ public class AudioManager : MonoBehaviour
     {
         if (musicDict.TryGetValue(name, out Sound sound))
         {
-            musicSourceFadeOut.clip = sound.clip;
-            musicSourceFadeOut.volume = sound.volume;
-            musicSourceFadeOut.pitch = sound.pitch;
-            musicSourceFadeOut.loop = sound.loop;
-
             // Stop the fade routine early, and start it up again with the new track
             if (fadeRoutine != null) StopCoroutine(fadeRoutine);
+
+            // Set the current music source to be the fadeout source
+            musicSourceFadeOut.clip = musicSource.clip;
+            musicSourceFadeOut.volume = musicSource.volume;
+            musicSourceFadeOut.pitch = musicSource.pitch;
+            musicSourceFadeOut.loop = musicSource.loop;
+
+            // Replace the current music source with 
+            musicSource.clip = sound.clip;
+            musicSource.volume = sound.volume * masterVolCtrl * musicVolCtrl;
+            musicSource.pitch = sound.pitch;
+            musicSource.loop = sound.loop;
+
+            // Begin the fade over time
             StartCoroutine(FadeMusic(fadeTime));
         }
     }
-
+    
     private IEnumerator FadeMusic(float fadeTime)
     {
         float timer = 0f;
@@ -132,14 +155,18 @@ public class AudioManager : MonoBehaviour
 
         while (timer < fadeTime)
         {
-            musicSource.volume = musicVolume * (1f - timer / fadeTime);
-            musicSourceFadeOut.volume = musicVolume2 * timer / fadeTime;
+            // Rebalance the new clip to be louder and the old clip to be quieter over time
+            musicSource.volume = musicVolume * (1f - timer / fadeTime) * masterVolCtrl * musicVolCtrl;
+            musicSourceFadeOut.volume = musicVolume2 * timer / fadeTime * masterVolCtrl * musicVolCtrl;
 
             timer += Time.deltaTime;
             yield return null;
         }
+        // Set the sources to their final volume values
+        musicSource.volume = musicVolume * masterVolCtrl * musicVolCtrl;
+        musicSourceFadeOut.volume = 0f;
 
-        musicSource = musicSourceFadeOut;
+        // Clear the fade out channel of its clip
         musicSourceFadeOut.clip = null;
     }
 }

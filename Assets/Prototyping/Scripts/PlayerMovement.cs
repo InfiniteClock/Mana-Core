@@ -488,24 +488,26 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Interpolate volume based on move speed, so that slow movement is really quiet
-        float i;
+        float volume;
         float speed = rb.linearVelocity.magnitude;
         switch (moveState)
         {
             case PlayerMovementState.walking:
-                i = speed / baseMoveSpeed;
+                volume = speed / baseMoveSpeed;
                 break;
             case PlayerMovementState.crouching:
-                i = speed / baseSlideSpeed;
+                volume = speed / baseSlideSpeed;
                 break;
             case PlayerMovementState.sliding:
-                i = speed / baseSlideSpeed;
+                volume = speed / baseSlideSpeed;
                 break;
             default:
-                i = 0f;
+                volume = 0f;
                 break;
         }
-        movementSource.volume = i;
+        // Multiplies the volume by the volume limits of the balanced audio clip
+        volume *= AudioManager.Instance.GetSFXSound(currentMoveSFX).volume;
+        movementSource.volume = volume;
     }
     private void Jump()
     {
