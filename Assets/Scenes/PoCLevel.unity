@@ -40820,6 +40820,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <musicTracks>k__BackingField.Array.data[0].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[18].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 621c4bf0dd18c9f428899abdca02a451, type: 3}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[21].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[22].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 436c9644530c64541b8e7f59627cd717, type: 3}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[24].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8cabb7530d87f3f409ddfc389a5d1423, type: 3}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[0].volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
