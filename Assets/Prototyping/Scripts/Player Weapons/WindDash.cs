@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class WindDash : Ability
@@ -43,7 +41,6 @@ public class WindDash : Ability
         delayedForceToApply = forceToApply;
 
         initialCameraValue = playerWeapons.playerCam.fieldOfView;
-        playerWeapons.playerCam.fieldOfView = cameraFovValue;
 
         Invoke(nameof(DelayedDashForce), 0.025f);
 
@@ -57,7 +54,7 @@ public class WindDash : Ability
             // Cancels all previous movement first
             rb.linearVelocity = Vector3.zero;
         }
-
+        playerWeapons.playerCam.fieldOfView = cameraFovValue;
         rb.AddForce(delayedForceToApply, ForceMode.Impulse);
     }
 

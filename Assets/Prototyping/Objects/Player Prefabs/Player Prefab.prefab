@@ -13277,7 +13277,7 @@ MonoBehaviour:
   groundDrag: 4
   jumpHeight: 3
   jumpCooldown: 0.25
-  airMultiplier: 0.4
+  airMultiplier: 0.3
   gravity: 30
   jumpForce: 13.416408
   apexJumpTime: 0.4472136
@@ -13288,7 +13288,11 @@ MonoBehaviour:
   minSpeedToSlide: 6
   baseDashSpeed: 30
   dashSpeedChangeFactor: 25
+  baseBlastSpeed: 40
+  blastSpeedChangeFactor: 25
+  blastAirMultiplier: 0.05
   isDashing: 0
+  isBlasting: 0
   maxYSpeed: 0
   isCloaked: 0
   cloakSpeedMulti: 1

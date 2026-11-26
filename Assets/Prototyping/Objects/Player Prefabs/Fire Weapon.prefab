@@ -131,7 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7365273638683096375}
   - component: {fileID: 8308140215416855477}
-  - component: {fileID: 6576310705395656081}
+  - component: {fileID: 239616833067499721}
   m_Layer: 6
   m_Name: Fire Weapon
   m_TagString: Untagged
@@ -195,12 +195,12 @@ MonoBehaviour:
   fullHeal: 10
   emptyHeal: 0
   usingCircularDistribution: 1
-  maxAbilityCharges: 1
+  maxAbilityCharges: 2
   displayedMaxCharges: 0
   fireRate: 2
   burstNumber: 3
-  burstDelay: 0.15
---- !u!114 &6576310705395656081
+  burstDelay: 0.1
+--- !u!114 &239616833067499721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,9 +209,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 9060725928081804950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 450f3f806affd444ea6b87564c1f76f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 8319543946daa9a44ad42538e778579b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NoAbility
+  m_EditorClassIdentifier: Assembly-CSharp::FireBlast
   abilitySFX: 
-  cooldown: 0
+  cooldown: 5
   cooldownTimer: 0
+  blastForce: 40
+  blastUpwardForce: 2.5
+  maxBlastYSpeed: 30
+  blastDuration: 0.5
+  spawnpoint: {fileID: 5108551783996909161}
+  blastPrefab: {fileID: 5462679850225452715, guid: 846e7b40025bea14d9336356ca189573, type: 3}
+  cameraFovValue: 65
+  resetVelocity: 1

@@ -11,7 +11,7 @@ public class FireWeapon : Weapon
 
     private float fireCD;
     private Coroutine shootRoutine;
-
+    private FireBlast fireBlast;
 
     [Header("Animator")]
     private string side;
@@ -44,8 +44,8 @@ public class FireWeapon : Weapon
         arms.SetBool($"WeaponDestroy.{side}", false);
         arms.SetTrigger($"FW_Equip.{side}");
 
-        //windDash = GetComponent<WindDash>();
-        //windDash.Setup(p);
+        fireBlast = GetComponent<FireBlast>();
+        fireBlast.Setup(p);
         fireCD = 1f / fireRate;
 
     }
@@ -55,9 +55,6 @@ public class FireWeapon : Weapon
         int burst = 0;
         float burstCDOffset = burstDelay * burstNumber;
         
-        weaponSide.SetTrigger("Shoot");
-        arms.SetTrigger($"FW_Shoot.{side}");
-        
         while (isFiring)
         {
             // If statement prevents shooting while not in shootable state without ending the routine
@@ -66,6 +63,12 @@ public class FireWeapon : Weapon
             {
                 while (burst < burstNumber)
                 {
+                    if (burst == 0)
+                    {
+                        weaponSide.SetTrigger("Shoot");
+                        arms.SetTrigger($"FW_Shoot.{side}");
+                    }
+
                     // Get direction of shot, applying bloom
                     Quaternion rotation = Quaternion.LookRotation(target - projectileSpawnPoint.position, Vector3.up);
                     float spreadDeg = GetCurrentSpreadDegrees();
@@ -110,7 +113,7 @@ public class FireWeapon : Weapon
     }
     public override void SecondaryBegin()
     {
-        
+        fireBlast.Blast();
     }
     public override void SecondaryRelease()
     {

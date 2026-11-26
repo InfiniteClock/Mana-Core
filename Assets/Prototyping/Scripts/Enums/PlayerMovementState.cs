@@ -4,5 +4,6 @@ public enum PlayerMovementState
     crouching, 
     sliding, 
     airborne, 
-    dashing 
+    dashing,
+    blasting
 }

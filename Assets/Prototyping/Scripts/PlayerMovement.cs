@@ -68,10 +68,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("Abilities")]
     public float baseDashSpeed;
     public float dashSpeedChangeFactor;
+    public float baseBlastSpeed;
+    public float blastSpeedChangeFactor;
+    public float blastAirMultiplier;
 
     // Following are public so other scripts can access, but not set in inspector
     [HideInInspector]
     public bool isDashing;
+    [HideInInspector]
+    public bool isBlasting;
     [HideInInspector]
     public float maxYSpeed;
     [HideInInspector]
@@ -231,13 +236,22 @@ public class PlayerMovement : MonoBehaviour
     }
     private void StateHandler()
     {
-        // Priority of states: Dashing > Sliding > Crouching > Sprinting > Walking > Airborne
+        // Priority of states: Dashing > Blasting > Sliding > Crouching > Sprinting > Walking > Airborne
 
         if (isDashing)
         {
             moveState = PlayerMovementState.dashing;
             desiredMoveSpeed = baseDashSpeed;
             speedChangeFactor = dashSpeedChangeFactor;
+            currentMoveSFX = "";
+        }
+
+        // Blasting
+        else if (isBlasting)
+        {
+            moveState = PlayerMovementState.blasting;
+            desiredMoveSpeed = baseBlastSpeed;
+            speedChangeFactor = blastSpeedChangeFactor;
             currentMoveSFX = "";
         }
 
@@ -290,8 +304,8 @@ public class PlayerMovement : MonoBehaviour
 
         bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
 
-        // If the last state was dashing, sliding, or crouching after sliding, use momentum lerp
-        if (lastMoveState == PlayerMovementState.dashing || moveState == PlayerMovementState.sliding || 
+        // If the last state was dashing, blasting, sliding, or crouching after sliding, use momentum lerp
+        if (lastMoveState == PlayerMovementState.dashing || moveState == PlayerMovementState.sliding || lastMoveState == PlayerMovementState.blasting ||
             (lastMoveState == PlayerMovementState.sliding && moveState == PlayerMovementState.crouching)) keepMomentum = true;
 
         // Otherwise, if the current state is walking or crouching, do NOT use momentum lerp
@@ -430,7 +444,10 @@ public class PlayerMovement : MonoBehaviour
         // In Air
         else if (!isGrounded)
         {
-            rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * airMultiplier * cloakAirMod, ForceMode.Force);
+            if (isBlasting || lastMoveState == PlayerMovementState.blasting)
+                rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * blastAirMultiplier * cloakAirMod, ForceMode.Force);
+            else
+                rb.AddForce(inputDirection.normalized * moveSpeed * baseAccelMultiplier * airMultiplier * cloakAirMod, ForceMode.Force);
         }
 
         // Applies gravity to the player while airborne and not dashing

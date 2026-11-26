@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
@@ -99,9 +98,6 @@ public class ShadowCloak : Ability
         playerMovement.cloakAirMod = 1f;
         invisibilityController.visibility = 1.03f;
     }
-
-    private void OnCloak(InputAction.CallbackContext context) => Cloak();
-
 
     protected void FindMaterials(PlayerMovement pm)
     {

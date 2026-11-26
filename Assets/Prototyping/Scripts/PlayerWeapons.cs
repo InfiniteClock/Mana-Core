@@ -375,8 +375,14 @@ public class PlayerWeapons : MonoBehaviour
             rightAmmoSlider.maxValue = weapon.maxAmmo;
             rightAmmoSlider.value = weapon.currentAmmo;
             rightAmmoSlider.fillRect.GetComponent<Image>().color = weapon.uiColor;
+
+            // Get and set ability stats
+            rightWeapon.displayedMaxCharges = rightWeapon.maxAbilityCharges;
+            rightAbilityCharges = rightWeapon.maxAbilityCharges;
+            rightUtilitySlider.maxValue = rightWeapon.displayedMaxCharges;
+            rightUtilitySlider.value = rightWeapon.displayedMaxCharges;
+            rightUtilitySlider.fillRect.GetComponent<Image>().color = rightWeapon.uiColor;
             RightAbility.color = weapon.uiColor;
-            
         }
         else
         {
@@ -387,7 +393,14 @@ public class PlayerWeapons : MonoBehaviour
             leftAmmoSlider.maxValue = weapon.maxAmmo;
             leftAmmoSlider.value = weapon.currentAmmo;
             leftAmmoSlider.fillRect.GetComponent<Image>().color= weapon.uiColor;
+
+            // Get and set ability stats
+            leftWeapon.displayedMaxCharges = leftWeapon.maxAbilityCharges;
+            leftAbilityCharges = leftWeapon.maxAbilityCharges;
             LeftAbility.color = weapon.uiColor;
+            leftUtilitySlider.maxValue = leftWeapon.displayedMaxCharges;
+            leftUtilitySlider.value = leftWeapon.displayedMaxCharges;
+            leftUtilitySlider.fillRect.GetComponent<Image>().color = leftWeapon.uiColor;
         }
         weapon.InitiateReticle(reticleParent, toRightHand);
 
@@ -395,8 +408,9 @@ public class PlayerWeapons : MonoBehaviour
         weapon.EquipWeapon(playerMovement);
 
         // Checks if both weapons are the same, with a delay in case this is a weapon swap
-        Invoke(nameof(CheckTwinWeapons), 0.01f);
+        //Invoke(nameof(CheckTwinWeapons), 0.01f);
     }
+    // Removed for simplicity
     private void CheckTwinWeapons()
     {
         hasTwinWeapons = rightWeapon.coreType == leftWeapon.coreType;
