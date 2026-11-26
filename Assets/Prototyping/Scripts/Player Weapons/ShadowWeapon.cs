@@ -49,7 +49,7 @@ public class ShadowWeapon : Weapon
 
         swordSide.SetTrigger("Equip");
         swordSide.SetBool("NotShadow", false);
-        coreSide.SetTrigger("Equip");
+        coreSide.SetTrigger("IsShadow");
         arms.SetBool("IsShadow",true);
         arms.SetBool($"WeaponDestroy.{side}", false);
         arms.SetTrigger($"Equip.{side}");
