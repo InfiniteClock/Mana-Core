@@ -5,4 +5,6 @@ public enum CharacterAnimators
         Arms = 2,
         SwordR = 3,
         SwordL = 4,
+        WisperR = 5,
+        WisperL = 6,
     }
