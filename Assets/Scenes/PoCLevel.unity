@@ -40821,13 +40821,41 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: sfxVolCtrl
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: musicVolCtrl
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: masterVolCtrl
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <musicTracks>k__BackingField.Array.data[0].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[3].loop
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
       propertyPath: <musicTracks>k__BackingField.Array.data[0].volume
-      value: 0.5
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[0].pitch
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
       propertyPath: <soundEffects>k__BackingField.Array.data[18].clip
       value: 
       objectReference: {fileID: 8300000, guid: 621c4bf0dd18c9f428899abdca02a451, type: 3}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[1].pitch
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
       propertyPath: <soundEffects>k__BackingField.Array.data[21].loop
       value: 1
@@ -40841,7 +40869,195 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 8cabb7530d87f3f409ddfc389a5d1423, type: 3}
     - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[2].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[3].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[4].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[5].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[6].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[7].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[8].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[9].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
       propertyPath: <soundEffects>k__BackingField.Array.data[0].volume
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[10].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[11].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[12].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[13].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[14].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[15].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[16].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[17].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[18].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[19].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[1].volume
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[20].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[21].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[22].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[23].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[24].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[2].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[3].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[4].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[5].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[6].volume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[7].volume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[8].volume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[9].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[10].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[11].volume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[12].volume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[13].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[14].volume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[15].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[16].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[17].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[18].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[19].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[20].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[21].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[22].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[23].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1141900675061943126, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
+      propertyPath: <soundEffects>k__BackingField.Array.data[24].volume
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5731760055412079291, guid: a1e1a4287ac7ed34e8a4788898880eeb, type: 3}
