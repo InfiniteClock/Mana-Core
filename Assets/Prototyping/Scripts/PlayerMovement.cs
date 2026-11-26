@@ -505,9 +505,11 @@ public class PlayerMovement : MonoBehaviour
                 volume = 0f;
                 break;
         }
-        // Multiplies the volume by the volume limits of the balanced audio clip
-        volume *= AudioManager.Instance.GetSFXSound(currentMoveSFX).volume;
+
+        // Multiplies the volume by the volume limits of the balanced audio clip (sets volume to 0 if no clip)
+        volume *= (currentMoveSFX == "" ? 0 : AudioManager.Instance.GetSFXSound(currentMoveSFX).volume)* AudioManager.Instance.masterVolCtrl * AudioManager.Instance.sfxVolCtrl;
         movementSource.volume = volume;
+        
     }
     private void Jump()
     {
