@@ -8,13 +8,13 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     public GameObject sfxPrefab;
-    [Range(0f, 1f)]
+    [Range(0.01f, 1f)]
     public float masterVolCtrl = 1f;
     public Slider masterVolume;
-    [Range(0f, 1f)]
+    [Range(0.01f, 1f)]
     public float sfxVolCtrl = 1f;
     public Slider sfxVolume;
-    [Range(0f, 1f)]
+    [Range(0.01f, 1f)]
     public float musicVolCtrl = 1f;
     public Slider musicVolume;
     [field:SerializeField]
@@ -231,9 +231,11 @@ public class AudioManager : MonoBehaviour
         // Adjusts both music and sfx audio sources by the master system
         for (int i = 0; i < savedSources.Count; i++)
         {
+            savedSources[i].volume /= lastMasterVol;
             savedSources[i].volume *= masterVolCtrl / lastMasterVol; 
         }
-        musicSource.volume *= masterVolCtrl / lastMasterVol;
+        musicSource.volume /= lastMasterVol;
+        musicSource.volume *= masterVolCtrl;
 
         lastMasterVol = masterVolCtrl;
     }
@@ -244,7 +246,8 @@ public class AudioManager : MonoBehaviour
         // Adjusts every existing saved audio source to change volume when the master sliders are adjusted
         for (int i = 0; i < savedSources.Count; i++)
         {
-            savedSources[i].volume *= sfxVolCtrl / lastSFXVol;
+            savedSources[i].volume /= lastSFXVol;
+            savedSources[i].volume *= sfxVolCtrl;
         }
 
         lastSFXVol = sfxVolCtrl;
@@ -254,7 +257,8 @@ public class AudioManager : MonoBehaviour
         musicVolCtrl = musicVolume.value;
 
         // Don't need to adjust the fade out music source because it is only ever active while under frame-by-frame updates anyway
-        musicSource.volume *= musicVolCtrl / lastMusicVol;
+        musicSource.volume /= lastMusicVol;
+        musicSource.volume *= musicVolCtrl;
 
         lastMusicVol = musicVolCtrl;
     }
