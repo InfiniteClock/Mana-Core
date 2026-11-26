@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1653385774721381237}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -199,7 +199,7 @@ MonoBehaviour:
   displayedMaxCharges: 0
   fireRate: 2
   burstNumber: 3
-  burstDelay: 0.05
+  burstDelay: 0.15
 --- !u!114 &6576310705395656081
 MonoBehaviour:
   m_ObjectHideFlags: 0

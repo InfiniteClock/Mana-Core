@@ -12,10 +12,37 @@ public class FireWeapon : Weapon
     private float fireCD;
     private Coroutine shootRoutine;
 
+
+    [Header("Animator")]
+    private string side;
+    private Animator weaponSide;
+    private Animator coreSide;
+    private Animator arms;
+
     public override void EquipWeapon(PlayerMovement p)
     {
         base.EquipWeapon(p);
-        weaponAnimators[(int)CharacterAnimators.Arms].SetBool("IsShadow", false);
+
+        side = isRightWeapon ? "R" : "L";
+
+        arms = weaponAnimators[(int)CharacterAnimators.Arms];
+        
+        if (isRightWeapon)
+        {
+            weaponSide = weaponAnimators[(int)CharacterAnimators.WisperR];
+            coreSide = weaponAnimators[(int)CharacterAnimators.CoreR];
+        } else
+        {
+            weaponSide = weaponAnimators[(int)CharacterAnimators.WisperL];
+            coreSide = weaponAnimators[(int)CharacterAnimators.CoreL];
+        }
+
+        weaponSide.SetTrigger("Equip");
+        weaponSide.SetBool("IsFire", true);
+        coreSide.SetTrigger("IsFire");
+        arms.SetBool("IsFire",true);
+        arms.SetBool($"WeaponDestroy.{side}", false);
+        arms.SetTrigger($"FW_Equip.{side}");
 
         //windDash = GetComponent<WindDash>();
         //windDash.Setup(p);
@@ -27,6 +54,10 @@ public class FireWeapon : Weapon
     {
         int burst = 0;
         float burstCDOffset = burstDelay * burstNumber;
+        
+        weaponSide.SetTrigger("Shoot");
+        arms.SetTrigger($"FW_Shoot.{side}");
+        
         while (isFiring)
         {
             // If statement prevents shooting while not in shootable state without ending the routine
@@ -45,6 +76,7 @@ public class FireWeapon : Weapon
 
                     // Adjust weapon bloom
                     BloomOnShotFired();
+
 
                     // Adjust ammo and check if there is enough to keep shooting
                     currentAmmo -= ammoPerShot;
