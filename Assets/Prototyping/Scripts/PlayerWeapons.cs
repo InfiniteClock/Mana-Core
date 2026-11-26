@@ -163,7 +163,7 @@ public class PlayerWeapons : MonoBehaviour
     {
         EquipOrConsume();
         ControlTimers();
-        DisplayUIChanges();
+        DisplayUIChanges();     
 
         // Draw rays from player guns for debugging direction
         Debug.DrawRay(rightWeapon.projectileSpawnPoint.position, (camTarget - rightWeapon.projectileSpawnPoint.position).normalized * 20f, Color.cyan);
@@ -243,6 +243,8 @@ public class PlayerWeapons : MonoBehaviour
             else
             {
                 ConsumeRightWeapon();
+                weaponAnimators[(int)CharacterAnimators.WisperR].SetBool("Consumption", true);
+                weaponAnimators[(int)CharacterAnimators.Arms].SetBool("FW_Consumption.R", true);
             }
         }
         // Consume the weapon still if out of ammo
@@ -254,7 +256,11 @@ public class PlayerWeapons : MonoBehaviour
         else
         {
             rightConsumeTimerSlider.gameObject.SetActive(false);
-            consumeRightTimer = 0f;
+            consumeRightTimer = 0f;          
+            weaponAnimators[(int)CharacterAnimators.WisperR].SetBool("Consumption", false);
+            weaponAnimators[(int)CharacterAnimators.Arms].SetBool("FW_Consumption.R", false);
+            weaponAnimators[(int)CharacterAnimators.WisperR].SetTrigger("Consumption_Canceled");
+            weaponAnimators[(int)CharacterAnimators.Arms].SetTrigger("FW_Cosumption_Canceled.R");
         }
 
         // Run the timers for the Left Equip Button Controls
@@ -317,6 +323,8 @@ public class PlayerWeapons : MonoBehaviour
 
             // Remove the consume slider from screen
             rightConsumeTimerSlider.gameObject.SetActive(false);
+            
+            weaponAnimators[(int)CharacterAnimators.WisperR].SetTrigger("Consumed");
 
             // Reset the consume timer
             consumeRightTimer = 0f;
@@ -331,6 +339,7 @@ public class PlayerWeapons : MonoBehaviour
             // Set the consume slider to be active
             leftConsumeTimerSlider.gameObject.SetActive(true);
             leftConsumeTimerSlider.value = consumeLeftTimer;
+            weaponAnimators[(int)CharacterAnimators.WisperL].SetBool("Weapon_Break", true);
         }
         // Consume the weapon
         else
@@ -630,6 +639,7 @@ public class PlayerWeapons : MonoBehaviour
             // Removes the empty hand object
             Destroy(rightWeapon.gameObject);
             weaponAnimators[(int)CharacterAnimators.SwordR].SetTrigger("NotShadow");
+            weaponAnimators[(int)CharacterAnimators.WisperR].SetBool("IsFire", false);
             weaponAnimators[(int)CharacterAnimators.Arms].SetBool("WeaponDestroy.R", true);
         }
 
@@ -639,6 +649,7 @@ public class PlayerWeapons : MonoBehaviour
             // Removes the empty hand object
             Destroy(leftWeapon.gameObject);
             weaponAnimators[(int)CharacterAnimators.SwordL].SetTrigger("NotShadow");
+            weaponAnimators[(int)CharacterAnimators.WisperL].SetBool("IsFire", false);
             weaponAnimators[(int)CharacterAnimators.Arms].SetBool("WeaponDestroy.L", true);
 
         }
