@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TemporaryPlatform : MonoBehaviour
 {
+    public float platformHeight;
     public float growTime;
     public float lifeTime;
     public float breakTime;
@@ -41,6 +42,8 @@ public class TemporaryPlatform : MonoBehaviour
             {
                 colliders[i].gameObject.SetActive(false);
             }
+            // Move the platform further down
+            transform.position -= new Vector3 (0, platformHeight, 0);
             // Skip the grow time and go straight to counting down life time
             StartCoroutine(UpdateTime());
         }

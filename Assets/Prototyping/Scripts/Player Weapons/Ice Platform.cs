@@ -25,6 +25,8 @@ public class IcePlatform : Ability
 
     public void SpawnPlatform(Vector3 spawnpoint, Vector3 upwards, bool isFloating = false)
     {
+        Debug.Log("Spawning " + (isFloating ? "floating " : "") + "platform at: " + spawnpoint.ToString());
+
         // Returns if ability has no remaining charges or is on internal buffer
         if (playerWeapons.GetAbilityCharges(weapon.isRightWeapon) < 1 || playerWeapons.bufferTimer > 0) return;
 

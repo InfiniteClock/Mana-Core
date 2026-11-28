@@ -19,6 +19,7 @@ public class IceWeapon : Weapon
     private IcePlatform icePlatform;
     private Coroutine shootRoutine;
     private Coroutine rechargeRoutine;
+    private Coroutine holdUtilityRoutine;
     private float shootCD;
     private float chargeTimer;
     private Projectile mountedProjectile;
@@ -149,7 +150,7 @@ public class IceWeapon : Weapon
 
         isHoldingUtility = true;
 
-        while (isPressingUtility)
+        while (isHoldingUtility)
         {
             Debug.DrawLine(projectileSpawnPoint.position, projectileSpawnPoint.position + projectileSpawnPoint.forward * maxDistanceToSpawnPlatform, Color.azure);
             yield return null;
@@ -165,7 +166,6 @@ public class IceWeapon : Weapon
         {
             if (Physics.Raycast(projectileSpawnPoint.position, projectileSpawnPoint.forward, out RaycastHit hitInfo, maxDistanceToSpawnPlatform, unspawnableLayers))
             {
-                Debug.Log("Spawning platform at location!");
                 spawnpoint = hitInfo.point;
                 upwards = hitInfo.normal;
                 icePlatform.SpawnPlatform(spawnpoint, upwards);
@@ -174,7 +174,6 @@ public class IceWeapon : Weapon
         // Spawn the platform at the player's feet if there is ground close enough beneath them
         else if (Physics.Raycast(playerMovement.transform.position, Vector3.down, out RaycastHit hitInfo, playerMovement.playerHeight * 3f, unspawnableLayers))
         {
-            Debug.Log("Spawning platform under player");
             spawnpoint = hitInfo.point;
             upwards = Vector3.up;
             icePlatform.SpawnPlatform(spawnpoint, upwards);
@@ -182,12 +181,17 @@ public class IceWeapon : Weapon
         // Spawn the floating version of the platform under the player
         else
         {
-            Debug.Log("Spawning floating platform under player");
             icePlatform.SpawnPlatform(spawnpoint, upwards, true);
         }
 
         isPressingUtility = false;
         isHoldingUtility = false;
+
+        if (holdUtilityRoutine != null)
+        {
+            StopCoroutine(holdUtilityRoutine);
+            holdUtilityRoutine = null;
+        }
     }
     private void OnDestroy()
     {
@@ -207,7 +211,7 @@ public class IceWeapon : Weapon
     public override void SecondaryBegin()
     {
         isPressingUtility = true;
-        StartCoroutine(HeldUtility());
+        holdUtilityRoutine ??= StartCoroutine(HeldUtility());
     }
     public override void SecondaryRelease()
     {

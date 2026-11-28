@@ -186,7 +186,7 @@ MonoBehaviour:
   maxBloomReticleOffset: 100
   bloomDecayPerSec: 0.5
   rightSideReticleRotation: 0
-  leftSideReticleRotation: 0
+  leftSideReticleRotation: 180
   standingMulti: 1
   walkingMulti: 1.2
   crouchingMulti: 0.6
@@ -207,7 +207,7 @@ MonoBehaviour:
   maxDistanceToSpawnPlatform: 20
   unspawnableLayers:
     serializedVersion: 2
-    m_Bits: 98550
+    m_Bits: 1024
 --- !u!114 &5913861331213512483
 MonoBehaviour:
   m_ObjectHideFlags: 0
