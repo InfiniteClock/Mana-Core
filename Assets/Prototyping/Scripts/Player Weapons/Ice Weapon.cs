@@ -11,18 +11,27 @@ public class IceWeapon : Weapon
     public float maxChargeAmmoPerShot;
     public float maxChargeBloomMulti;
 
+    [Header("Platform Spawning")]
+    public float minAbilityHoldTime;
+    public float maxDistanceToSpawnPlatform;
+    public LayerMask unspawnableLayers;
+
+    private IcePlatform icePlatform;
     private Coroutine shootRoutine;
     private Coroutine rechargeRoutine;
     private float shootCD;
     private float chargeTimer;
     private Projectile mountedProjectile;
-
+    private bool isPressingUtility;
+    private bool isHoldingUtility;
     public override void EquipWeapon(PlayerMovement p)
     {
         base.EquipWeapon(p);
         weaponAnimators[(int)CharacterAnimators.Arms].SetBool("IsShadow", false);
 
         shootCD = 1f / fireRate;
+        icePlatform = GetComponent<IcePlatform>();
+        icePlatform.Setup(p);
 
         MountNewProjectile();
     }
@@ -129,6 +138,57 @@ public class IceWeapon : Weapon
 
         rechargeRoutine = null;
     }
+    private IEnumerator HeldUtility()
+    {
+        float timer = 0f;
+        while (isPressingUtility && timer < minAbilityHoldTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        isHoldingUtility = true;
+
+        while (isPressingUtility)
+        {
+            Debug.DrawLine(projectileSpawnPoint.position, projectileSpawnPoint.position + projectileSpawnPoint.forward * maxDistanceToSpawnPlatform, Color.azure);
+            yield return null;
+        }
+    }
+    private void SummonIcePlatform()
+    {
+        Vector3 spawnpoint = playerMovement.transform.position + new Vector3(0f, -playerMovement.playerHeight, 0f);
+        Vector3 upwards = Vector3.up;
+
+        // Spawn the platform where the player is looking
+        if (isHoldingUtility)
+        {
+            if (Physics.Raycast(projectileSpawnPoint.position, projectileSpawnPoint.forward, out RaycastHit hitInfo, maxDistanceToSpawnPlatform, unspawnableLayers))
+            {
+                Debug.Log("Spawning platform at location!");
+                spawnpoint = hitInfo.point;
+                upwards = hitInfo.normal;
+                icePlatform.SpawnPlatform(spawnpoint, upwards);
+            }
+        }
+        // Spawn the platform at the player's feet if there is ground close enough beneath them
+        else if (Physics.Raycast(playerMovement.transform.position, Vector3.down, out RaycastHit hitInfo, playerMovement.playerHeight * 3f, unspawnableLayers))
+        {
+            Debug.Log("Spawning platform under player");
+            spawnpoint = hitInfo.point;
+            upwards = Vector3.up;
+            icePlatform.SpawnPlatform(spawnpoint, upwards);
+        }
+        // Spawn the floating version of the platform under the player
+        else
+        {
+            Debug.Log("Spawning floating platform under player");
+            icePlatform.SpawnPlatform(spawnpoint, upwards, true);
+        }
+
+        isPressingUtility = false;
+        isHoldingUtility = false;
+    }
     private void OnDestroy()
     {
         if (mountedProjectile != null) Destroy(mountedProjectile.gameObject);
@@ -146,10 +206,11 @@ public class IceWeapon : Weapon
     }
     public override void SecondaryBegin()
     {
-        // Create Ice Platform
+        isPressingUtility = true;
+        StartCoroutine(HeldUtility());
     }
     public override void SecondaryRelease()
     {
-
+        SummonIcePlatform();
     }
 }

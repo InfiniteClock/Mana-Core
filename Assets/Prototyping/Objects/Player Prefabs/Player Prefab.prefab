@@ -13290,7 +13290,7 @@ MonoBehaviour:
   dashSpeedChangeFactor: 25
   baseBlastSpeed: 40
   blastSpeedChangeFactor: 25
-  blastAirMultiplier: 0.05
+  blastAirMultiplier: 0.5
   isDashing: 0
   isBlasting: 0
   maxYSpeed: 0

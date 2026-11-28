@@ -131,7 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7365273638683096375}
   - component: {fileID: 7491872486768620800}
-  - component: {fileID: 6576310705395656081}
+  - component: {fileID: 5913861331213512483}
   m_Layer: 6
   m_Name: Ice Weapon
   m_TagString: Untagged
@@ -173,7 +173,7 @@ MonoBehaviour:
   isRightWeapon: 0
   target: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
-  maxAmmo: 50
+  maxAmmo: 20
   ammoPerShot: 1
   currentAmmo: 0
   projectileSpawnPoint: {fileID: 5108551783996909161}
@@ -197,13 +197,18 @@ MonoBehaviour:
   usingCircularDistribution: 1
   maxAbilityCharges: 2
   displayedMaxCharges: 0
-  fireRate: 1
-  rechargeTime: 3
+  fireRate: 0.5
+  rechargeTime: 2
   maxChargeDamage: 18
   maxChargeScaleMulti: 3
   maxChargeAmmoPerShot: 3
   maxChargeBloomMulti: 3
---- !u!114 &6576310705395656081
+  minAbilityHoldTime: 0.25
+  maxDistanceToSpawnPlatform: 20
+  unspawnableLayers:
+    serializedVersion: 2
+    m_Bits: 98550
+--- !u!114 &5913861331213512483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -212,9 +217,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 9060725928081804950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 450f3f806affd444ea6b87564c1f76f4, type: 3}
+  m_Script: {fileID: 11500000, guid: b6af026bdd61ff044bcad39ddbbaa3c6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NoAbility
+  m_EditorClassIdentifier: Assembly-CSharp::IcePlatform
   abilitySFX: 
-  cooldown: 0
+  cooldown: 20
   cooldownTimer: 0
+  platformPrefab: {fileID: 2832094706627889914, guid: 167acd08458d3f4409e0dc18d580c28e, type: 3}
+  summonTime: 0.25
+  launchForce: 10
+  platformLifeTime: 10
+  spawnPosition: {x: 0, y: 0, z: 0}
+  launchesPlayer: 1
+  maxPlatformsInWorld: 1
